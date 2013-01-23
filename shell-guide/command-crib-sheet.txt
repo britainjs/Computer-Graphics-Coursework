@@ -11,4 +11,12 @@
     Ex. cmp tester.class tester.java
     Checks to see if tester.class and tester.java are different. In this case, it outputs:
         tester.class tester.java differ: char 1 line 1.
-3.
+3.fmt
+    Writes to standard output the formatted contents of the specified file.
+    Ex. fmt -w 10 test.txt
+    Writes to standard output the contents of test.txt, up to 10 characters per line.
+4. head
+    Prints the first portion of a file (by default 10 lines).
+    Ex. head -n 2 test.txt
+    Prints the first 2 lines of test.txt
+5.
