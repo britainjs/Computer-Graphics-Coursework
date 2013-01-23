@@ -2,4 +2,13 @@
                                                                         CMSI 387
                                 Command Crib Sheet
                                         
-1.
+1. cat
+    Displays the contents of the given file
+    Ex. cat README.txt
+    Displays the entirety of README.txt
+2. cmp
+    Checks character by character to see if two files differ.
+    Ex. cmp tester.class tester.java
+    Checks to see if tester.class and tester.java are different. In this case, it outputs:
+        tester.class tester.java differ: char 1 line 1.
+3.
