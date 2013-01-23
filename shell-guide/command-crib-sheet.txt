@@ -28,4 +28,13 @@
     Changes the last modified time for the given file
     Ex. touch -t 203212230622 test.txt
     Sets the access time for test.txt to December 23, 2032 at 6:22 am.
-7.
+7. hostname
+    Displays the name of the host system, or changes it if a name is given.
+    Ex. hostname EdwardNigma
+    Changes the host name of the system to EdwardNigma.
+8. show
+    allows the given string to be used in place of a simple command
+    Ex. alias show=ls
+    Allows you to type show to display the contents of the current directory until you
+    exit the shell.
+9. 
