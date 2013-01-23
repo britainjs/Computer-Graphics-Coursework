@@ -19,4 +19,13 @@
     Prints the first portion of a file (by default 10 lines).
     Ex. head -n 2 test.txt
     Prints the first 2 lines of test.txt
-5.
+5. iconv
+    Converts the character encoding of a file to a specified encoding and writes to 
+    standard output.
+    Ex. iconv -f UTF-8 -t UTF-32 test.txt
+    Converts test.txt from UTF-8 to UTF-32 and writes the result to standard output.
+6. touch
+    Changes the last modified time for the given file
+    Ex. touch -t 203212230622 test.txt
+    Sets the access time for test.txt to December 23, 2032 at 6:22 am.
+7.
