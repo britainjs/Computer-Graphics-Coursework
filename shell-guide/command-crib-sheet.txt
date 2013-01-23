@@ -37,4 +37,13 @@
     Ex. alias show=ls
     Allows you to type show to display the contents of the current directory until you
     exit the shell.
-9. 
+9. rev
+    Reverses each line of a file.
+    Ex. rev test.txt
+    Reverses each line of test.txt, so you can make sure there are no satanic messages in
+    it
+10.rm
+    Removes the specified file
+    Ex. rm -i test.txt
+    Removes test.txt, skipping the trash bin, but prompts the user for confirmation first.
+    
