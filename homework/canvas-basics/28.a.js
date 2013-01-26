@@ -6,9 +6,11 @@
     //draw the sky
     renderingContext.fillStyle = "rgb(176, 196, 222)";
     renderingContext.fillRect(0, 0, 512, 512);
+    
     //draw the ground
     renderingContext.fillStyle = "rgb(0, 200, 0)";
     renderingContext.fillRect(0, 300, 512, 512);
+    
     //draw the sun
     renderingContext.fillStyle = "rgb(247, 78, 5)";
     renderingContext.arc(256, 300, 60, 0, Math.PI, true);
