@@ -1,19 +1,12 @@
-/*
- * This template file is meant to be a template for canvas-based
- * web page code.  Nothing here is set in stone; it is mainly
- * intended to save you some typing.
- */
-// Yes, we can use jQuery here, but avoid it just in case you
-// really don't want to use it.  We do still keep things away
-// from the global namespace.
+//A function to draw an 8 made of overlapping purple circles.
 (function () {
-    // Ditto on using jQuery here.
     var canvas = document.getElementById("canvas"),
         renderingContext = canvas.getContext("2d");
-
     renderingContext.fillStyle = "purple";
     renderingContext.beginPath();
+    //draw the first circle
     renderingContext.arc(256, 256, 75, 0, Math.PI * 2, true);
+    //and the second circle about halfway down the first.
     renderingContext.arc(256, 356, 75, 0, Math.PI * 2, true);
     renderingContext.fill();
 }());
