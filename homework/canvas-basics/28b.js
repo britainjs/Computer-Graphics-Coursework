@@ -3,6 +3,10 @@
 (function () {
     var canvas = document.getElementById("canvas"),
         renderingContext = canvas.getContext("2d");
+
+    // JD: Notably no gradients again.  Still, you did do what
+    //     was requested.
+
     //draw the sky
     renderingContext.fillStyle = "rgb(176, 196, 222)";
     renderingContext.fillRect(0, 0, 512, 512);
@@ -22,5 +26,6 @@
     //renderingContext.scale(1, 1.025);
     renderingContext.arc(256, 300, 60, Math.PI, 0, true);
     renderingContext.translate(59, 0);
+    // JD: ^^^^^You realize this has no effect, yes?
     renderingContext.fill();
 }());

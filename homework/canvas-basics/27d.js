@@ -3,7 +3,9 @@
     // Ditto on using jQuery here.
     var canvas = document.getElementById("canvas"),
         renderingContext = canvas.getContext("2d"),
-        radialGradient = renderingContext.createRadialGradient(50, 50, 7, 60, 60, 100 );
+        // JD: The name here could have been a *little* bit more descriptive
+        //     (e.g., faceGradient).
+        radialGradient = renderingContext.createRadialGradient(50, 50, 7, 60, 60, 100);
 
     radialGradient.addColorStop(0, "white");
     radialGradient.addColorStop(1, "yellow");

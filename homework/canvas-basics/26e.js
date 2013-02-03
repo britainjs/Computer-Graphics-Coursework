@@ -9,4 +9,6 @@
     //and the second circle about halfway down the first.
     renderingContext.arc(256, 356, 75, 0, Math.PI * 2, true);
     renderingContext.fill();
+    // JD: ^^^^^I would argue that stroke would have made for a
+    //     more recognizable 8, yes?
 }());

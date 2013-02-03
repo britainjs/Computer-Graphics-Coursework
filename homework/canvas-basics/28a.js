@@ -3,6 +3,11 @@
 (function () {
     var canvas = document.getElementById("canvas"),
         renderingContext = canvas.getContext("2d");
+
+    // JD: I'm a tad surprised that you didn't go crazy with gradients
+    //     here; this particular picture is very easy to spruce up with
+    //     those things.
+
     //draw the sky
     renderingContext.fillStyle = "rgb(176, 196, 222)";
     renderingContext.fillRect(0, 0, 512, 512);

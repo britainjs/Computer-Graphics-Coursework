@@ -2,7 +2,13 @@
 (function () {
     var canvas = document.getElementById("canvas"),
         renderingContext = canvas.getContext("2d");
-    //Style and draw the right side   
+
+    // JD: The final look is nicely done.  However, I think
+    //     you could have separated the cube's data from the
+    //     drawing instructions better.  Note how many sides
+    //     or coordinates are either shared or derived.
+
+    //Style and draw the right side
     renderingContext.fillStyle = "rgb(72,72,72) ";
     renderingContext.beginPath();
     renderingContext.moveTo(461, 511);
@@ -15,7 +21,7 @@
     //Style and draw the left side
     renderingContext.fillStyle = "rgb(128,128,128)  "
     renderingContext.beginPath();
-    renderingContext.moveTo(461,511);
+    renderingContext.moveTo(461, 511);
     renderingContext.lineTo(411, 486);
     renderingContext.lineTo(411, 411);
     renderingContext.lineTo(461, 436);
