@@ -19,6 +19,11 @@
             renderingContext.arc(0, 0, 50, 0, Math.PI * 2);
             renderingContext.stroke();
         },
+        
+        background = function (renderingContext) {
+            renderingContext.fillStyle = "blue";
+            renderingContext.fillRect(0, 0, canvas.width, canvas.height);
+        },
 
         // Then, we have "easing functions" that determine how
         // intermediate frames are computed.
@@ -84,6 +89,7 @@
                 ]
             }
         ];
+        
 
     // Finally, we initialize the engine.  Mainly, it needs
     // to know the rendering context to use.  And the animations
@@ -92,6 +98,7 @@
         renderingContext: canvas.getContext("2d"),
         width: canvas.width,
         height: canvas.height,
-        sprites: sprites
+        sprites: sprites,
+        background: background
     });
 }());
