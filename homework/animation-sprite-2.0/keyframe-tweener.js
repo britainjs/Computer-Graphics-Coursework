@@ -59,6 +59,7 @@ var KeyframeTweener = {
     initialize: function (settings) {
         // We need to keep track of the current frame.
         var currentFrame = 0,
+            innerFrame = 0,
 
             // Avoid having to go through settings to get to the
             // rendering context and sprites.
@@ -89,8 +90,10 @@ var KeyframeTweener = {
                 rotateDistance,
                 currentTweenFrame,
                 duration;
+                
+            
 
-            // Clear the canvas.
+            // Redraw the background.
             if(settings.background){
                 background(renderingContext);
             }else{
@@ -142,16 +145,16 @@ var KeyframeTweener = {
                         );
 
                         // Draw the sprite.
-                        sprites[i].draw(renderingContext);
-
+                        sprites[i].draw[sprites[i].innerFrame(currentFrame)](renderingContext);
+                        
                         // Clean up.
                         renderingContext.restore();
                     }
                 }
             }
-
             // Move to the next frame.
             currentFrame += 1;
+            
         }, 1000 / (settings.frameRate || 24));
     }
 };

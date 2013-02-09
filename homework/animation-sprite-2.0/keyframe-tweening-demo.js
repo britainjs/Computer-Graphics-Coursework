@@ -9,7 +9,12 @@
         // can choose.  Their common trait: they all accept a single
         // renderingContext argument.
         square = function (renderingContext) {
-            renderingContext.fillStyle = "blue";
+            renderingContext.fillStyle = "green";
+            renderingContext.fillRect(-20, -20, 40, 40);
+        },
+        
+        square1 = function (renderingContext) {
+            renderingContext.fillStyle = "red";
             renderingContext.fillRect(-20, -20, 40, 40);
         },
 
@@ -21,7 +26,7 @@
         },
         
         background = function (renderingContext) {
-            renderingContext.fillStyle = "blue";
+            renderingContext.fillStyle = "white";
             renderingContext.fillRect(0, 0, canvas.width, canvas.height);
         },
 
@@ -32,7 +37,14 @@
         // has a drawing function and an array of keyframes.
         sprites = [
             {
-                draw: square,
+                draw: [square, square1],
+                innerFrame : function (currentFrame) {
+                    if( (currentFrame < 30) || (currentFrame > 65) ){
+                        return 0;
+                    }else{
+                        return 1;
+                    }
+                },
                 keyframes: [
                     {
                         frame: 0,
@@ -59,7 +71,10 @@
             },
 
             {
-                draw: circle,
+                draw: [circle],
+                innerFrame : function (currentFrame) {
+                    return 0;
+                },
                 keyframes: [
                     {
                         frame: 50,
