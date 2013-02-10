@@ -8,22 +8,37 @@
         // First, a selection of "drawing functions" from which we
         // can choose.  Their common trait: they all accept a single
         // renderingContext argument.
-        square = function (renderingContext) {
-            renderingContext.fillStyle = "green";
-            renderingContext.fillRect(-20, -20, 40, 40);
-        },
+        balloon = function (renderingContext) {
         
-        square1 = function (renderingContext) {
             renderingContext.fillStyle = "red";
-            renderingContext.fillRect(-20, -20, 40, 40);
-        },
-
-        circle = function (renderingContext) {
-            renderingContext.strokeStyle = "red";
             renderingContext.beginPath();
-            renderingContext.arc(0, 0, 50, 0, Math.PI * 2);
+            renderingContext.arc(100, 400, 20, 0, 2 * Math.PI, true);
+            renderingContext.fill();
+            renderingContext.beginPath();
+            renderingContext.moveTo(100, 420);
+            renderingContext.quadraticCurveTo(120, 440, 100, 450);
+            renderingContext.quadraticCurveTo(80, 460, 100, 480);
             renderingContext.stroke();
         },
+        
+        bird = function (renderingContext) {
+            
+            renderingContext.beginPath();
+            renderingContext.moveTo(canvas.width, 200);
+            renderingContext.lineTo(canvas.width + 70, 230);
+            renderingContext.moveTo(canvas.width, 100);
+            renderingContext.lineTo(canvas.width + 700, 170);
+        },
+        
+        bird1 = function (renderingContext) {
+            
+            renderingContext.beginPath();
+            renderingContext.moveTo(canvas.width, 200);
+            renderingContext.lineTo(canvas.width + 70, 270);
+            renderingContext.moveTo(canvas.width, 100);
+            renderingContext.lineTo(canvas.width + 700, 130);
+        },    
+            
         
         background = function (renderingContext) {
             renderingContext.fillStyle = "white";
@@ -37,72 +52,37 @@
         // has a drawing function and an array of keyframes.
         sprites = [
             {
-                draw: [square, square1],
+                draw: [balloon],
                 innerFrame : function (currentFrame) {
-                    if( (currentFrame < 30) || (currentFrame > 65) ){
-                        return 0;
-                    }else{
-                        return 1;
-                    }
+                    return 0;
                 },
                 keyframes: [
                     {
                         frame: 0,
-                        tx: 20,
-                        ty: 20,
+                        tx: 100,
+                        ty: 300,
                         ease: KeyframeTweener.linear
                     },
 
                     {
                         frame: 30,
                         tx: 100,
-                        ty: 50,
-                        ease: KeyframeTweener.quadEaseInOut
+                        ty: 200,
+                        ease: KeyframeTweener.linear
                     },
 
                     // The last keyframe does not need an easing function.
                     {
-                        frame: 80,
+                        frame: 200,
                         tx: 80,
-                        ty: 500,
-                        rotate: 60 // Keyframe.rotate uses degrees.
+                        ty: -500
                     }
                 ]
             },
-
+            
             {
-                draw: [circle],
-                innerFrame : function (currentFrame) {
-                    return 0;
-                },
-                keyframes: [
-                    {
-                        frame: 50,
-                        tx: 300,
-                        ty: 600,
-                        sx: 0.5,
-                        sy: 0.5,
-                        ease: KeyframeTweener.quadEaseOut
-                    },
-
-                    {
-                        frame: 100,
-                        tx: 300,
-                        ty: 0,
-                        sx: 3,
-                        sy: 0.25,
-                        ease: KeyframeTweener.quadEaseOut
-                    },
-
-                    {
-                        frame: 150,
-                        tx: 300,
-                        ty: 600,
-                        sx: 0.5,
-                        sy: 0.5
-                    }
-                ]
-            }
+                draw :
+            
         ];
         
 
