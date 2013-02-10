@@ -25,6 +25,12 @@ var KeyframeTweener = {
                 (distance / 2) * percentComplete * percentComplete + start :
                 (-distance / 2) * ((percentComplete - 1) * (percentComplete - 3) - 1) + start;
     },
+    
+    easeInOutCirc: function (currentTime, start, distance, duration) {
+        var percentComplete = currentTime / (duration / 2);
+		return(percentComplete < 1) ? (-distance/2) * (Math.sqrt(1 - percentComplete*percentComplete) - 1) + start:
+		    distance/2 * (Math.sqrt(1 - (percentComplete - 2)*percentComplete) + 1) + start;
+	},
 
     // The big one: animation initialization.  The settings parameter
     // is expected to be a JavaScript object with the following
@@ -41,6 +47,10 @@ var KeyframeTweener = {
     // properties:
     //
     // - draw: the function that draws the sprite
+    // - innerFrame: the rate at which the inner animation transitions
+    // - currentInner: a number to track the index of the current inner model
+    // - customFrame: an optional function that takes the place of innerFrame and
+    //     currentInner for more precise model changes
     // - keyframes: the array of keyframes that the sprite should follow
     //
     // Finally, each keyframe is a JavaScript object with the following
@@ -59,7 +69,7 @@ var KeyframeTweener = {
     initialize: function (settings) {
         // We need to keep track of the current frame.
         var currentFrame = 0,
-            innerFrame = 0,
+            lastFrame = 0,
 
             // Avoid having to go through settings to get to the
             // rendering context and sprites.
@@ -144,11 +154,25 @@ var KeyframeTweener = {
                             ease(currentTweenFrame, rotateStart, rotateDistance, duration)
                         );
 
-                        // Draw the sprite.
-                        sprites[i].draw[sprites[i].innerFrame(currentFrame)](renderingContext);
-                        
+                        // Draw the sprite. Will use the custom frame function if defined.
+                        // Will otherwise use the innerFrame.
+                        if(sprites[i].customFrame){
+                            sprites[i].draw[sprites[i].customFrame(currentFrame)];
+                        }else{
+                            sprites[i].draw[sprites[i].currentInner](renderingContext);
+                        }
                         // Clean up.
                         renderingContext.restore();
+                    }
+                }
+                drawLength = sprites[i].draw.length;
+                if( (drawLength > 1) && (sprites[i].innerFrame)){
+                    if(currentFrame % sprites[i].innerFrame == 0){
+                        if(sprites[i].currentInner + 1 >= drawLength){
+                            sprites[i].currentInner = 0;
+                        }else{
+                            sprites[i].currentInner += 1;
+                        }
                     }
                 }
             }

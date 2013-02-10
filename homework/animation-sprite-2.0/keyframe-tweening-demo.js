@@ -9,34 +9,36 @@
         // can choose.  Their common trait: they all accept a single
         // renderingContext argument.
         balloon = function (renderingContext) {
-        
+            height = canvas.height;
             renderingContext.fillStyle = "red";
             renderingContext.beginPath();
-            renderingContext.arc(100, 400, 20, 0, 2 * Math.PI, true);
+            renderingContext.arc(100, height, 20, 0, 2 * Math.PI, true);
             renderingContext.fill();
             renderingContext.beginPath();
-            renderingContext.moveTo(100, 420);
-            renderingContext.quadraticCurveTo(120, 440, 100, 450);
-            renderingContext.quadraticCurveTo(80, 460, 100, 480);
+            renderingContext.moveTo(100, height + 20);
+            renderingContext.quadraticCurveTo(120, height + 40, 100, height + 50);
+            renderingContext.quadraticCurveTo(80, height + 60, 100, height + 80);
             renderingContext.stroke();
         },
         
         bird = function (renderingContext) {
-            
+            width = canvas.width
             renderingContext.beginPath();
-            renderingContext.moveTo(canvas.width, 200);
-            renderingContext.lineTo(canvas.width + 70, 230);
-            renderingContext.moveTo(canvas.width, 100);
-            renderingContext.lineTo(canvas.width + 700, 170);
+            renderingContext.moveTo(width, 200);
+            renderingContext.lineTo(width + 30, 230);
+            renderingContext.moveTo(width, 200);
+            renderingContext.lineTo(width + 30, 170);
+            renderingContext.stroke();
         },
         
         bird1 = function (renderingContext) {
-            
+            width = canvas.width
             renderingContext.beginPath();
-            renderingContext.moveTo(canvas.width, 200);
-            renderingContext.lineTo(canvas.width + 70, 270);
-            renderingContext.moveTo(canvas.width, 100);
-            renderingContext.lineTo(canvas.width + 700, 130);
+            renderingContext.moveTo(width, 200);
+            renderingContext.lineTo(width + 10, 230);
+            renderingContext.moveTo(width, 200);
+            renderingContext.lineTo(width + 10, 170);
+            renderingContext.stroke();
         },    
             
         
@@ -53,67 +55,74 @@
         sprites = [
             {
                 draw: [balloon],
-                innerFrame : function (currentFrame, lastFrame) {
-                    return 0;
-                },
+                currentInner: 0,
+                innerFrame : 0,
                 keyframes: [
                     {
                         frame: 0,
                         tx: 0,
-                        ty: -300,
+                        ty: 0,
                         ease: KeyframeTweener.linear
                     },
 
                     {
                         frame: 100,
                         tx: 0,
-                        ty: -200,
+                        ty: -400,
                         ease: KeyframeTweener.linear
                     },
 
-                    // The last keyframe does not need an easing function.
+                    {
+                        frame: 175,
+                        tx: 0,
+                        ty: -600,
+                        ease: KeyframeTweener.linear
+                    },
+                    
+                    {
+                        frame: 180,
+                        tx: -20,
+                        ty: -550,
+                        ease: KeyframeTweener.linear
+                    },
+                    
                     {
                         frame: 200,
-                        tx: 80,
-                        ty: -500
+                        tx: -20,
+                        ty: -600
                     }
                 ]
             },
             
             {
                 draw : [bird, bird1],
-                innerFrame: function (currentFrame, lastFrame) {
-                    if( currentFrame % 20 == 0 ){
-                        (lastFrame == 0) ? 1 : 0;
-                    }else{
-                        return 0;
-                    }
-                },
+                currentInner: 0,
+                innerFrame: 15,
                 keyframes: [
                     {
                         frame: 0,
-                        tx: 300,
-                        ty: 0,
+                        tx: 0,
+                        ty: 20,
                         ease : KeyframeTweener.linear
                     },
                     
                     {
                         frame : 100,
-                        tx: 500,
-                        ty: 0,
-                        ease: KeyframeTweener.linear
-                    },
-                    
-                    {
-                        frame: 150,
-                        tx: 300,
-                        ty: 100,
+                        tx: -500,
+                        ty: 20,
                         ease: KeyframeTweener.easeInOutCirc
                     },
                     
                     {
+                        frame: 175,
+                        tx: -900,
+                        ty: 100,
+                        ease: KeyframeTweener.linear
+                    },
+                    
+                    {
                         frame: 200,
-                        tx: 300,
+                        tx: -1000,
                         ty: -100
                     }
                 ]
