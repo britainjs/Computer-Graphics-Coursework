@@ -60,35 +60,35 @@
                 keyframes: [
                     {
                         frame: 0,
-                        tx: 0,
+                        tx: 50,
                         ty: 0,
                         ease: KeyframeTweener.linear
                     },
 
                     {
                         frame: 100,
-                        tx: 0,
+                        tx: 50,
                         ty: -400,
                         ease: KeyframeTweener.linear
                     },
 
                     {
                         frame: 175,
-                        tx: 0,
+                        tx: 50,
                         ty: -600,
                         ease: KeyframeTweener.linear
                     },
                     
                     {
                         frame: 180,
-                        tx: -20,
-                        ty: -550,
+                        tx: 20,
+                        ty: -600,
                         ease: KeyframeTweener.linear
                     },
                     
                     {
                         frame: 200,
-                        tx: -20,
+                        tx: 10,
                         ty: -600
                     }
                 ]
@@ -109,14 +109,14 @@
                     {
                         frame : 100,
                         tx: -500,
-                        ty: 20,
-                        ease: KeyframeTweener.easeInOutCirc
+                        ty: 10,
+                        ease: KeyframeTweener.expoEaseIn
                     },
                     
                     {
                         frame: 175,
                         tx: -900,
-                        ty: 100,
+                        ty: 10,
                         ease: KeyframeTweener.linear
                     },
                     

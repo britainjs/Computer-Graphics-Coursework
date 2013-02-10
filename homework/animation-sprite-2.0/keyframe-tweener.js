@@ -26,11 +26,10 @@ var KeyframeTweener = {
                 (-distance / 2) * ((percentComplete - 1) * (percentComplete - 3) - 1) + start;
     },
     
-    easeInOutCirc: function (currentTime, start, distance, duration) {
-        var percentComplete = currentTime / (duration / 2);
-		return(percentComplete < 1) ? (-distance/2) * (Math.sqrt(1 - percentComplete*percentComplete) - 1) + start:
-		    distance/2 * (Math.sqrt(1 - (percentComplete - 2)*percentComplete) + 1) + start;
-	},
+    expoEaseIn : function (currentTime, start, distance, duration) {
+        var percentComplete = currentTime / duration;
+        return (currentTime == 0) ? start : (distance * Math.pow(2, 10 * (percentComplete - 1)) + start);
+    },
 
     // The big one: animation initialization.  The settings parameter
     // is expected to be a JavaScript object with the following
