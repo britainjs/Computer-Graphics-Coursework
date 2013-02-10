@@ -31,9 +31,10 @@ var KeyframeTweener = {
         return (currentTime == 0) ? start : (distance * Math.pow(2, 10 * (percentComplete - 1)) + start);
     },
     
-    sineEaseInAndOut: function (currentTime, start, distance, duration) {
-        var percentComplete = Math.PI * (currentTime / duration);
-        return (-distance/2) * (Math.cos(percentComplete) - 1) + start;
+    expoEaseOut: function (currentTime, start, distance, duration) {
+        var percentComplete = currentTime / duration;
+        return (currentTime == 0) ? (start + distance) :
+            (distance * (-Math.pow(2, -10 * percentComplete) + 1) + start);  
     },
 
     // The big one: animation initialization.  The settings parameter

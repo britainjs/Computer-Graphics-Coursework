@@ -76,7 +76,7 @@
                         frame: 175,
                         tx: 50,
                         ty: -600,
-                        ease: KeyframeTweener.linear
+                        ease: KeyframeTweener.sineEaseInAndOut
                     },
                     
                     {
