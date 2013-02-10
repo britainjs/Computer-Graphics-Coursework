@@ -21,6 +21,21 @@
             renderingContext.stroke();
         },
         
+        balloon1 = function (renderingContext) {
+            height = canvas.height;
+            renderingContext.fillStyle = "red";
+            renderingContext.beginPath();
+            renderingContext.moveTo(100, height + 20);
+            renderingContext.quadraticCurveTo(90, height - 60, 100, height - 30);
+            renderingContext.closePath();
+            renderingContext.fill();
+            renderingContext.beginPath();
+            renderingContext.moveTo(100, height + 20);
+            renderingContext.quadraticCurveTo(120, height + 40, 100, height + 50);
+            renderingContext.quadraticCurveTo(80, height + 60, 100, height + 80);
+            renderingContext.stroke();
+        },
+        
         bird = function (renderingContext) {
             width = canvas.width
             renderingContext.beginPath();
@@ -43,8 +58,13 @@
             
         
         background = function (renderingContext) {
-            renderingContext.fillStyle = "white";
+            renderingContext.fillStyle = "rgb(204, 229, 255)";
             renderingContext.fillRect(0, 0, canvas.width, canvas.height);
+            
+            renderingContext.fillStyle = "yellow";
+            renderingContext.beginPath();
+            renderingContext.arc(950, 50, 100, 0, Math.PI * 2);
+            renderingContext.fill();
         },
 
         // Then, we have "easing functions" that determine how
@@ -54,9 +74,12 @@
         // has a drawing function and an array of keyframes.
         sprites = [
             {
-                draw: [balloon],
+                draw: [balloon, balloon1],
                 currentInner: 0,
                 innerFrame : 0,
+                customFrame : function (currentFrame) {
+                    return (currentFrame >= 180) ? 1 : 0;
+                },
                 keyframes: [
                     {
                         frame: 0,
@@ -76,20 +99,20 @@
                         frame: 175,
                         tx: 50,
                         ty: -600,
-                        ease: KeyframeTweener.sineEaseInAndOut
-                    },
-                    
-                    {
-                        frame: 180,
-                        tx: 20,
-                        ty: -600,
                         ease: KeyframeTweener.linear
                     },
                     
                     {
-                        frame: 200,
-                        tx: 10,
-                        ty: -600
+                        frame: 185,
+                        tx: 20,
+                        ty: -600,
+                        ease: KeyframeTweener.cubicEaseIn
+                    },
+                    
+                    {
+                        frame: 250,
+                        tx: 20,
+                        ty: 0
                     }
                 ]
             },

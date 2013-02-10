@@ -28,13 +28,13 @@ var KeyframeTweener = {
     
     expoEaseIn: function (currentTime, start, distance, duration) {
         var percentComplete = currentTime / duration;
-        return (currentTime == 0) ? start : (distance * Math.pow(2, 10 * (percentComplete - 1)) + start);
+        return (percentComplete == 0) ? start : (distance * Math.pow(2, 10 * (percentComplete - 1)) + start);
     },
     
-    expoEaseOut: function (currentTime, start, distance, duration) {
+    cubicEaseIn: function (currentTime, start, distance, duration) {
         var percentComplete = currentTime / duration;
-        return (currentTime == 0) ? (start + distance) :
-            (distance * (-Math.pow(2, -10 * percentComplete) + 1) + start);  
+        return distance * (percentComplete * percentComplete * percentComplete) + start;
+        
     },
 
     // The big one: animation initialization.  The settings parameter
@@ -162,7 +162,7 @@ var KeyframeTweener = {
                         // Draw the sprite. Will use the custom frame function if defined.
                         // Will otherwise use the innerFrame.
                         if(sprites[i].customFrame){
-                            sprites[i].draw[sprites[i].customFrame(currentFrame)];
+                            sprites[i].draw[sprites[i].customFrame(currentFrame)](renderingContext);
                         }else{
                             sprites[i].draw[sprites[i].currentInner](renderingContext);
                         }
