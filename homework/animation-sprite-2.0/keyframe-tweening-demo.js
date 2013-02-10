@@ -53,21 +53,21 @@
         sprites = [
             {
                 draw: [balloon],
-                innerFrame : function (currentFrame) {
+                innerFrame : function (currentFrame, lastFrame) {
                     return 0;
                 },
                 keyframes: [
                     {
                         frame: 0,
-                        tx: 100,
-                        ty: 300,
+                        tx: 0,
+                        ty: -300,
                         ease: KeyframeTweener.linear
                     },
 
                     {
-                        frame: 30,
-                        tx: 100,
-                        ty: 200,
+                        frame: 100,
+                        tx: 0,
+                        ty: -200,
                         ease: KeyframeTweener.linear
                     },
 
@@ -81,7 +81,43 @@
             },
             
             {
-                draw :
+                draw : [bird, bird1],
+                innerFrame: function (currentFrame, lastFrame) {
+                    if( currentFrame % 20 == 0 ){
+                        (lastFrame == 0) ? 1 : 0;
+                    }else{
+                        return 0;
+                    }
+                },
+                keyframes: [
+                    {
+                        frame: 0,
+                        tx: 300,
+                        ty: 0,
+                        ease : KeyframeTweener.linear
+                    },
+                    
+                    {
+                        frame : 100,
+                        tx: 500,
+                        ty: 0,
+                        ease: KeyframeTweener.linear
+                    },
+                    
+                    {
+                        frame: 150,
+                        tx: 300,
+                        ty: 100,
+                        ease: KeyframeTweener.easeInOutCirc
+                    },
+                    
+                    {
+                        frame: 200,
+                        tx: 300,
+                        ty: -100
+                    }
+                ]
+            }
             
         ];
         
