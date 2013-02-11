@@ -108,7 +108,7 @@ var KeyframeTweener = {
                 
             
 
-            // Redraw the background.
+            // Redraw the background. Defaults to a white background if none is supplied.
             if(settings.background){
                 background(renderingContext);
             }else{
@@ -170,6 +170,8 @@ var KeyframeTweener = {
                         renderingContext.restore();
                     }
                 }
+                //Increment the current inner frame if applicable. Reset if it hits the
+                //cap.
                 drawLength = sprites[i].draw.length;
                 if( (drawLength > 1) && (sprites[i].innerFrame)){
                     if(currentFrame % sprites[i].innerFrame == 0){

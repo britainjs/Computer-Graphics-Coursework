@@ -1,13 +1,12 @@
 /*
- * This file demonstrates how our homebrew keyframe-tweening
- * engine is used.
+ * This file animates a minimalistic bird which flies through the air along with a rising
+ * red balloon. Upon seeing the balloon, the bird takes aim and attacks, smashing the 
+ * balloon and causing it to fall.
  */
 (function () {
     var canvas = document.getElementById("canvas"),
 
-        // First, a selection of "drawing functions" from which we
-        // can choose.  Their common trait: they all accept a single
-        // renderingContext argument.
+        //The normal balloon model
         balloon = function (renderingContext) {
             height = canvas.height;
             renderingContext.fillStyle = "red";
@@ -21,6 +20,7 @@
             renderingContext.stroke();
         },
         
+        //The popped balloon model
         balloon1 = function (renderingContext) {
             height = canvas.height;
             renderingContext.fillStyle = "red";
@@ -36,6 +36,7 @@
             renderingContext.stroke();
         },
         
+        // A bird with closed wings
         bird = function (renderingContext) {
             width = canvas.width
             renderingContext.beginPath();
@@ -46,6 +47,7 @@
             renderingContext.stroke();
         },
         
+        // A bird with wider, open wings
         bird1 = function (renderingContext) {
             width = canvas.width
             renderingContext.beginPath();
@@ -56,7 +58,7 @@
             renderingContext.stroke();
         },    
             
-        
+        //A blue sky with a yellow sun in the corner
         background = function (renderingContext) {
             renderingContext.fillStyle = "rgb(204, 229, 255)";
             renderingContext.fillRect(0, 0, canvas.width, canvas.height);
