@@ -32,5 +32,29 @@ var Nanoshop = {
     grayScale: function (r, g, b, a) {
         var average = (r + g + b)/2;
         return [average, average, average, a];
+    },
+    
+    // Only display the blue value of each pixel
+    blueShift: function (r, g, b, a) {
+        return [0, 0, b, a];
+    },
+    
+    //Only display the red value of each pixel
+    redShift: function (r, g, b, a) {
+        return [r, 0, 0, a];
+    },
+    
+    // Only display the green value of each pixel
+    greenShift: function (r, g, b, a) {
+        return [0, g, 0, a];
+    },
+    
+    //Randomize each pixel, creating an effect that looks like tv static.
+    madness: function (r, g, b, a) {
+        var colors = [r, g, b, a];
+        for(var i = 0; i < colors.length - 1; i++){
+            colors[i] = Math.floor(Math.random() * 256);
+        }
+        return colors;
     }
 };
