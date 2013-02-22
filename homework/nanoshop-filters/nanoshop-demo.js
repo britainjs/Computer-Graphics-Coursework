@@ -49,6 +49,8 @@
     renderingContext.fill();
     renderingContext.closePath();
     
+    //I couldn't get a reset function to work properly, so currently you have to refresh
+    //the page to get the next filter to work properly.
     $("#apply-gray-button").click(function () {
         // Filter time.
         renderingContext.putImageData(
