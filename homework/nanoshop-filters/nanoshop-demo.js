@@ -48,18 +48,70 @@
     renderingContext.lineTo(435, 265);
     renderingContext.fill();
     renderingContext.closePath();
-
-    // Display a quick alert that we are about to apply the filter.
-    alert("Here goes...");
-
-    // Filter time.
-    renderingContext.putImageData(
-        Nanoshop.applyFilter(
-            renderingContext.getImageData(0, 0, canvas.width, canvas.height),
-            //Demo the grayscale filter
-            Nanoshop.madness
-        ),
-        0,
-        0
-    );
+    
+    $("#apply-gray-button").click(function () {
+        // Filter time.
+        renderingContext.putImageData(
+            Nanoshop.applyFilter(
+                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
+                //Demo the grayscale filter
+                Nanoshop.grayScale
+            ),
+            0,
+            0
+        );
+    });
+    
+    $("#apply-red-button").click(function () {
+        // Filter time.
+        renderingContext.putImageData(
+            Nanoshop.applyFilter(
+                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
+                //Demo the grayscale filter
+                Nanoshop.redShift
+            ),
+            0,
+            0
+        );
+    });
+    
+    $("#apply-blue-button").click(function () {
+        // Filter time.
+        renderingContext.putImageData(
+            Nanoshop.applyFilter(
+                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
+                //Demo the grayscale filter
+                Nanoshop.blueShift
+            ),
+            0,
+            0
+        );
+    });
+    
+    $("#apply-green-button").click(function () {
+        // Filter time.
+        renderingContext.putImageData(
+            Nanoshop.applyFilter(
+                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
+                //Demo the grayscale filter
+                Nanoshop.greenShift
+            ),
+            0,
+            0
+        );
+    });
+    
+    $("#apply-madness-button").click(function () {
+        // Filter time.
+        renderingContext.putImageData(
+            Nanoshop.applyFilter(
+                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
+                //Demo the grayscale filter
+                Nanoshop.madness
+            ),
+            0,
+            0
+        );
+    });
+    
 }());

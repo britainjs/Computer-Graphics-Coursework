@@ -30,7 +30,7 @@ var Nanoshop = {
     
     //A filter that turns the image into a grayscale image.
     grayScale: function (r, g, b, a) {
-        var average = (r + g + b)/2;
+        var average = (r + g + b)/3;
         return [average, average, average, a];
     },
     
