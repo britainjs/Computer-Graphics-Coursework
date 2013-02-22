@@ -37,8 +37,8 @@ var NanoshopNeighborhood = {
         return [ rTotal / 9, gTotal / 9, bTotal / 9, aTotal / 9 ];
     },
     
-    /* An absolutely insane function that randomizes all the pixels in the given 
-     * neighborhood
+    /* A filter that sums the average of the colors of each pixel in the neighborhood,
+     * then averages that sum, creating a grayscale look.
      */
     grayScale: function (rgbaNeighborhood) {
         var average = 0,
@@ -54,6 +54,19 @@ var NanoshopNeighborhood = {
         return [average / 9, average / 9, average / 9, rgbaNeighborhood[4].a]; 
                 
     }, 
+    
+    /*
+     * A filter that turns the image purple, while lowering the green value by 20%
+     */
+    purpleize: function (rgbaNeighborhood) {
+        var purple = 0,
+            i;
+        for ( i = 0; i < 9; i += 1) {
+            purple += ( (rgbaNeighborhood[i].r + rgbaNeighborhood[i].b) / 2);
+        }
+        
+        return [ purple / 9, rgbaNeighborhood[4].g / 1.2, purple / 9, rgbaNeighborhood[4].a ];
+    },
     
 
     /*

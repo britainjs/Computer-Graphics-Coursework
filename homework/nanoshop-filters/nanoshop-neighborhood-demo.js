@@ -90,7 +90,8 @@
                 renderingContext.getImageData(0, 0, canvas.width, canvas.height),
                 //NanoshopNeighborhood.darkener
                 //NanoshopNeighborhood.averager // Convenience comment for easy switching.
-                NanoshopNeighborhood.grayScale
+                //NanoshopNeighborhood.grayScale
+                NanoshopNeighborhood.purpleize
             ),
             0, 0
         );
