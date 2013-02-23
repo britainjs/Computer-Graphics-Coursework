@@ -106,7 +106,8 @@ var KeyframeTweener = {
                 currentTweenFrame,
                 duration;
                 
-            
+            // JD: In contrast to your otherwise well-spaced code, this block
+            //     sticks out a bit.
 
             // Redraw the background. Defaults to a white background if none is supplied.
             if(settings.background){
@@ -161,6 +162,7 @@ var KeyframeTweener = {
 
                         // Draw the sprite. Will use the custom frame function if defined.
                         // Will otherwise use the innerFrame.
+                        // JD: Spacing is slightly better here, but can still see improvement.
                         if(sprites[i].customFrame){
                             sprites[i].draw[sprites[i].customFrame(currentFrame)](renderingContext);
                         }else{
@@ -170,14 +172,19 @@ var KeyframeTweener = {
                         renderingContext.restore();
                     }
                 }
-                //Increment the current inner frame if applicable. Reset if it hits the
-                //cap.
+
+                // JD: I cleaned this one up for you.  Didn't take long.
+                //     Note also the replacement of == 0 with plain truthiness.
+                //     Just more JavaScript-y is all.
+                //
+                // Increment the current inner frame if applicable. Reset if it hits the
+                // cap.
                 drawLength = sprites[i].draw.length;
-                if( (drawLength > 1) && (sprites[i].innerFrame)){
-                    if(currentFrame % sprites[i].innerFrame == 0){
-                        if(sprites[i].currentInner + 1 >= drawLength){
+                if ((drawLength > 1) && (sprites[i].innerFrame)) {
+                    if (!(currentFrame % sprites[i].innerFrame)) {
+                        if (sprites[i].currentInner + 1 >= drawLength) {
                             sprites[i].currentInner = 0;
-                        }else{
+                        } else {
                             sprites[i].currentInner += 1;
                         }
                     }
