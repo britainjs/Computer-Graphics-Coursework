@@ -254,9 +254,9 @@ var Primitives = {
 
         color = color || [0, 0, 0];
         while (true) {
-            if(pixelsDrawn != dash){
+            if (pixelsDrawn !== dash) {
                 this.setPixel(context, x, y, color[0], color[1], color[2]);
-            }else{
+            } else {
                 pixelsDrawn = 0;
             }
 
@@ -266,7 +266,6 @@ var Primitives = {
 
             x += 1;
             pixelsDrawn += 1;
-            
             if (err < 0) {
                 err += k1;
             } else {
@@ -287,37 +286,40 @@ var Primitives = {
             c1 = c1 || [0, 0, 0],
             c2 = c2 || c1,
             color = c1 ? [c1[0], c1[1], c1[2]] : c1,
+            upkeep,
             i,
             j;
-            
-
-           
         leftVDelta = [(c2[0] - c1[0]) / (2 * r),
                       (c2[1] - c1[1]) / (2 * r),
-                      (c2[2] - c1[2]) / (2 * r)];
-        
-        var upkeep = xc - r;
-        /*while (upkeep < xc - x) {
+                      (c2[2] - c1[2]) / (2 * r)];   
+        upkeep = xc - x;
+        while (upkeep > xc - r) {
             color[0] += leftVDelta[0];
             color[1] += leftVDelta[1];
             color[2] += leftVDelta[2];
-            upkeep += 1;
-        }*/
-        j = xc - y;
+            upkeep -= 1;
+        }
         for (i = xc - x; i <= xc + x; i += 1) {
             this.setPixel(context, i, yc + y, color[0], color[1], color[2]);
             this.setPixel(context, i, yc - y, color[0], color[1], color[2]);
-        
-            if (j <= xc + y) {
-                this.setPixel(context, j, yc + x, color[0], color[1], color[2]);
-                this.setPixel(context, j, yc - x, color[0], color[1], color[2]);
-            }
-            
             color[0] += leftVDelta[0];
             color[1] += leftVDelta[1];
             color[2] += leftVDelta[2];
-            
-            j += 1;
+        }
+        color = c1 ? [c1[0], c1[1], c1[2]] : c1;
+        upkeep = xc - y;
+        while (upkeep > xc - r) {
+            color[0] += leftVDelta[0];
+            color[1] += leftVDelta[1];
+            color[2] += leftVDelta[2];
+            upkeep -= 1;
+        }
+        for (j = xc - y; j <= xc + y; j += 1) {
+            this.setPixel(context, j, yc + x, color[0], color[1], color[2]);
+            this.setPixel(context, j, yc - x, color[0], color[1], color[2]);
+            color[0] += leftVDelta[0];
+            color[1] += leftVDelta[1];
+            color[2] += leftVDelta[2];
         }
 
     },
