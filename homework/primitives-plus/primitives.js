@@ -282,16 +282,38 @@ var Primitives = {
      * permutations of that eighth's coordinates.  So we define a helper
      * function that all of the circle implementations will use...
      */
-    plotCirclePoints: function (context, xc, yc, x, y, color) {
-        color = color || [0, 0, 0];
-        this.setPixel(context, xc + x, yc + y, color[0], color[1], color[2]);
-        this.setPixel(context, xc + x, yc - y, color[0], color[1], color[2]);
-        this.setPixel(context, xc + y, yc + x, color[0], color[1], color[2]);
-        this.setPixel(context, xc + y, yc - x, color[0], color[1], color[2]);
-        this.setPixel(context, xc - x, yc + y, color[0], color[1], color[2]);
-        this.setPixel(context, xc - x, yc - y, color[0], color[1], color[2]);
-        this.setPixel(context, xc - y, yc + x, color[0], color[1], color[2]);
-        this.setPixel(context, xc - y, yc - x, color[0], color[1], color[2]);
+    plotCirclePoints: function (context, xc, yc, x, y, c1, c2, r) {
+        var leftVDelta,
+            leftColor = c1 || [0, 0, 0],
+            i,
+            j;
+            
+        //leftVDelta = [(c2[0] - c1[0]) / 2 * r,
+          //            (c2[1] - c1[1]) / 2 * r,
+            //          (c2[2] - c1[2]) / 2 * r];    
+        
+        c1 = c1 || [0, 0, 0];
+        c2 = c2 || c1;
+        
+        //this.setPixel(context, xc + x, yc + y, c1[0], c1[1], c1[2]);
+        //this.setPixel(context, xc + x, yc - y, c1[0], c1[1], c1[2]);
+        //this.setPixel(context, xc + y, yc + x, c1[0], c1[1], c1[2]);
+        //this.setPixel(context, xc + y, yc - x, c1[0], c1[1], c1[2]);
+        //this.setPixel(context, xc - x, yc + y, c1[0], c1[1], c1[2]);
+        //this.setPixel(context, xc - x, yc - y, c1[0], c1[1], c1[2]);
+        //this.setPixel(context, xc - y, yc + x, c1[0], c1[1], c1[2]);
+        //this.setPixel(context, xc - y, yc - x, c1[0], c1[1], c1[2]);
+        
+        for (i = xc - x; i <= xc + x; i += 1) {
+            this.setPixel(context, i, yc + y, c1[0], c1[1], c1[2]);
+            this.setPixel(context, i, yc - y, c1[0], c1[1], c1[2]);
+        }
+        
+        for (i = xc - y; i <= xc + y; i += 1) {
+            this.setPixel(context, i, yc + x, c1[0], c1[1], c1[2]);
+            this.setPixel(context, i, yc - x, c1[0], c1[1], c1[2]);
+        }
+
     },
 
     // First, the most naive possible implementation: circle by trigonometry.
@@ -307,7 +329,7 @@ var Primitives = {
             y = 0;
 
         while (x >= y) {
-            this.plotCirclePoints(context, xc, yc, x, y, color);
+            this.plotCirclePoints(context, xc, yc, x, y, color, r);
             x = x * c - y * s;
             y = x * s + y * c;
         }
@@ -320,7 +342,7 @@ var Primitives = {
             y = 0;
 
         while (x >= y) {
-            this.plotCirclePoints(context, xc, yc, x, y, color);
+            this.plotCirclePoints(context, xc, yc, x, y, color, r);
             x = x - (epsilon * y);
             y = y + (epsilon * x);
         }
@@ -333,7 +355,7 @@ var Primitives = {
             y = r;
 
         while (x < y) {
-            this.plotCirclePoints(context, xc, yc, x, y, color);
+            this.plotCirclePoints(context, xc, yc, x, y, color, r);
             if (p < 0) {
                 p = p + 4 * x + 6;
             } else {
@@ -343,7 +365,7 @@ var Primitives = {
             x += 1;
         }
         if (x === y) {
-            this.plotCirclePoints(context, xc, yc, x, y, color);
+            this.plotCirclePoints(context, xc, yc, x, y, color, r);
         }
     },
 
@@ -356,7 +378,7 @@ var Primitives = {
             v = e - r;
 
         while (x <= y) {
-            this.plotCirclePoints(context, xc, yc, x, y, color);
+            this.plotCirclePoints(context, xc, yc, x, y, color, r);
             if (e < 0) {
                 x += 1;
                 u += 2;
@@ -379,7 +401,7 @@ var Primitives = {
             e = 0;
 
         while (y <= x) {
-            this.plotCirclePoints(context, xc, yc, x, y, color);
+            this.plotCirclePoints(context, xc, yc, x, y, color, r);
             y += 1;
             e += (2 * y - 1);
             if (e > x) {
