@@ -291,7 +291,11 @@ var Primitives = {
             j;
         leftVDelta = [(c2[0] - c1[0]) / (2 * r),
                       (c2[1] - c1[1]) / (2 * r),
-                      (c2[2] - c1[2]) / (2 * r)];   
+                      (c2[2] - c1[2]) / (2 * r)];
+        /*This function is called multiple times to draw the circle, so it can't
+         *remember the progress of the gradient. Therefore, we must manually catch up
+         *with where the gradient should be.
+         */   
         upkeep = xc - x;
         while (upkeep > xc - r) {
             color[0] += leftVDelta[0];
@@ -306,6 +310,8 @@ var Primitives = {
             color[1] += leftVDelta[1];
             color[2] += leftVDelta[2];
         }
+        //This part feels redundant, but it was the only way I could get the bottom
+        //and top portions of the circle to color correctly.
         color = c1 ? [c1[0], c1[1], c1[2]] : c1;
         upkeep = xc - y;
         while (upkeep > xc - r) {
@@ -363,6 +369,8 @@ var Primitives = {
             y = r;
 
         while (x < y) {
+            //We switch the x and the y for the function call to make it easier on
+            //the helper function.
             this.plotCirclePoints(context, xc, yc, y, x, r, c1, c2);
             if (p < 0) {
                 p = p + 4 * x + 6;
@@ -409,6 +417,8 @@ var Primitives = {
             e = 0;
 
         while (y <= x) {
+            //We switch the x and the y for the function call to make it easier on
+            //the helper function.
             this.plotCirclePoints(context, xc, yc, x, y, r, c1, c2);
             y += 1;
             e += (2 * y - 1);
