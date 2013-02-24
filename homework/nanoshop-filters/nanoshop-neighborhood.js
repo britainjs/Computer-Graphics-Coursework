@@ -68,6 +68,14 @@ var NanoshopNeighborhood = {
         return [ purple / 9, rgbaNeighborhood[4].g / 1.2, purple / 9, rgbaNeighborhood[4].a ];
     },
     
+    brightener : function (rgbaNeighborhood) {
+        return [
+            rgbaNeighborhood[4].r * 1.5,
+            rgbaNeighborhood[4].g * 1.5,
+            rgbaNeighborhood[4].b * 1.5,
+            rgbaNeighborhood[4].a
+        ];
+    },
 
     /*
      * Applies the given filter to the given ImageData object,

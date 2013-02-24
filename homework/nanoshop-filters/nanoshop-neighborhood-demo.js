@@ -82,16 +82,61 @@
     // (end of adapted code by Tyler Nichols)
 
     // Set a little event handler to apply the filter.
-    $("#apply-filter-button").click(function () {
+    $("#apply-gray-button").click(function () {
         // Filter time.
         renderingContext.putImageData(
             NanoshopNeighborhood.applyFilter(
                 renderingContext,
                 renderingContext.getImageData(0, 0, canvas.width, canvas.height),
-                //NanoshopNeighborhood.darkener
-                //NanoshopNeighborhood.averager // Convenience comment for easy switching.
-                //NanoshopNeighborhood.grayScale
+                NanoshopNeighborhood.grayScale
+            ),
+            0, 0
+        );
+    });
+    
+    $("#apply-purple-button").click(function () {
+        // Filter time.
+        renderingContext.putImageData(
+            NanoshopNeighborhood.applyFilter(
+                renderingContext,
+                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
                 NanoshopNeighborhood.purpleize
+            ),
+            0, 0
+        );
+    });
+    
+    $("#apply-averager-button").click(function () {
+        // Filter time.
+        renderingContext.putImageData(
+            NanoshopNeighborhood.applyFilter(
+                renderingContext,
+                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
+                NanoshopNeighborhood.averager
+            ),
+            0, 0
+        );
+    });
+    
+    $("#apply-darkener-button").click(function () {
+        // Filter time.
+        renderingContext.putImageData(
+            NanoshopNeighborhood.applyFilter(
+                renderingContext,
+                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
+                NanoshopNeighborhood.darkener
+            ),
+            0, 0
+        );
+    });
+    
+    $("#apply-brightener-button").click(function () {
+        // Filter time.
+        renderingContext.putImageData(
+            NanoshopNeighborhood.applyFilter(
+                renderingContext,
+                renderingContext.getImageData(0, 0, canvas.width, canvas.height),
+                NanoshopNeighborhood.brightener
             ),
             0, 0
         );
