@@ -243,6 +243,9 @@ var Primitives = {
     lineBresenham: function (context, x1, y1, x2, y2, dash, color) {
         //the dash parameter sets the number of pixels to draw before skipping one,
         //creating a dashed line effect. Set it to -1 for no dashes.
+        // JD: ^Or, place the dash parameter at the end so that it
+        //      behaves like an "optional" parameter---if you call
+        //      this function without it, it shows up as undefined.
         var x = x1,
             y = y1,
             dx = x2 - x1,
@@ -295,7 +298,10 @@ var Primitives = {
         /*This function is called multiple times to draw the circle, so it can't
          *remember the progress of the gradient. Therefore, we must manually catch up
          *with where the gradient should be.
-         */   
+         */
+        // JD: ^Yes indeed!  But there's a way to "jump" to where
+        //      you should be without the loop.  (remember from elementary
+        //      school: repeated addition is simply multiplication!)
         upkeep = xc - x;
         while (upkeep > xc - r) {
             color[0] += leftVDelta[0];
@@ -312,6 +318,9 @@ var Primitives = {
         }
         //This part feels redundant, but it was the only way I could get the bottom
         //and top portions of the circle to color correctly.
+        // JD: Well, the gradient progression is somewhat redundant, but
+        //     the pixels covered are distinct.  It will be enough to unify
+        //     the gradient computation part.
         color = c1 ? [c1[0], c1[1], c1[2]] : c1;
         upkeep = xc - y;
         while (upkeep > xc - r) {

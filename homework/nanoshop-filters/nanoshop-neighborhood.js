@@ -40,6 +40,8 @@ var NanoshopNeighborhood = {
     /* A filter that sums the average of the colors of each pixel in the neighborhood,
      * then averages that sum, creating a grayscale look.
      */
+    // JD: It would be interesting to see this side by side with a single-pixel
+    //     grayscale filter, to see how the results differ.
     grayScale: function (rgbaNeighborhood) {
         var average = 0,
             i;
@@ -58,6 +60,9 @@ var NanoshopNeighborhood = {
     /*
      * A filter that turns the image purple, while lowering the green value by 20%
      */
+    // JD: Same here---this can also theoretically have a single-pixel version,
+    //     but with slightly different results.  A visual comparison would be
+    //     enlightening.
     purpleize: function (rgbaNeighborhood) {
         var purple = 0,
             i;

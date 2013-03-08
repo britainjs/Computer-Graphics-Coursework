@@ -50,6 +50,11 @@ var Nanoshop = {
     },
     
     //Randomize each pixel, creating an effect that looks like tv static.
+    // JD: This is fun, but for an image with no transparent areas,
+    //     the result is completely random.  It would be good to still
+    //     leave some vestige of the original image---maybe, instead of
+    //     a totally random new value, just modify the original value
+    //     in a random way?
     madness: function (r, g, b, a) {
         var colors = [r, g, b, a];
         for(var i = 0; i < colors.length - 1; i++){
