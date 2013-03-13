@@ -103,6 +103,23 @@ var Shapes = {
         }
 
         return result;
+    },
+    
+    tetrahedron: function () {
+        return {
+            vertices: [
+                //top
+                [0.0, 1.0, 0.5],
+                //front left
+                [-0.5, 0.0, -1.0],
+                //front right
+                [0.5, 0.0, -1.0],
+                //back
+                [-0.5, 0.0, 1.0]
+            ]
+        
+        }
+    
     }
 
 };
