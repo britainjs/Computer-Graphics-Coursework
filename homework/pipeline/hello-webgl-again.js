@@ -235,9 +235,10 @@
     rotationMatrix = gl.getUniformLocation(shaderProgram, "rotationMatrix");
 
     /*
-     * Displays an individual object.
+     * Displays an individual object or a composite object. 
      */
     drawObject = function (object) {
+        
         // Set the varying colors.
         gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
         gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);

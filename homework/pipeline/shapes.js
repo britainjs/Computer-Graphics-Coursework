@@ -174,6 +174,21 @@ var Shapes = {
                 [4, 1]
             ]
         }
+    },
+    
+    sphere: function (latitude, longitude) {
+        //Adapted from Angel's book
+        
+        var DEGREES_TO_RADIANS = Math.PI / 180.0;
+        var points = [];
+        for (var phi = -80.0; phi <= 80.0; phi += latitude) {
+            var rPhi = phi * DEGREES_TO_RADIANS;
+            var rPhiPlus = (phi + 20.0) * DEGREES_TO_RADIANS;
+            
+            for (var theta = -180.0; theta <= 180.0; theta += longitude) {
+                    
+            }
+        }
     }
 
 };
