@@ -127,6 +127,33 @@ var Shapes = {
         
         };
     
+    },
+    
+    blade: function () {
+        return {
+            vertices: [
+                //point
+                [-1.0, 0.0, 0.0],
+                //back
+                [-0.75, 0.0, -0.25],
+                //front
+                [-0.75, 0.0, 0.25],
+                //top
+                [-1.0, 0.1, 0.0],
+                //bottom
+                [-1.0, -0.1, 0.0],
+                //base top back
+                [0.5, 0.1, -0.25] ,
+                //base bottom back
+                [0.5, -0.1, -0.25],
+                //base top front
+                [0.5, 0.1, 0.25],
+                //base bottom front
+                [0.5, -0.1, 0.25]
+            ]
+            
+            
+        }
     }
 
 };
