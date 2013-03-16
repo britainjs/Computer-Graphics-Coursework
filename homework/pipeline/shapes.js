@@ -104,7 +104,6 @@ var Shapes = {
                 
             }
         }
-        console.log(result);
         return result;
     },
     
@@ -210,9 +209,9 @@ var Shapes = {
         
         var route = [];
         var j = 0;
-        points = points.concat([0, 0, 1]);
+        
         //Time to set the indices
-        for (var i = 0; i <= points.length; i += 2) {
+        for (var i = 0; i < points.length; i += 2) {
             route[j] = [i, i + 1];
             j += 1;
         }
