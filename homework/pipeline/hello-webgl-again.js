@@ -171,8 +171,8 @@
 
         {
             color: { r: 0.0, g: 0.5, b: 0.0 },
-            vertices: Shapes.toRawLineArray(Shapes.blade()),
-            mode: gl.LINES
+            vertices: Shapes.toRawLineArray(Shapes.sphere(10, 10, 1)),
+            mode: gl.LINE_LOOP
         }
     ];
 

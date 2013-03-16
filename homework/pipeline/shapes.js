@@ -82,6 +82,7 @@ var Shapes = {
      * arranged as line segments.
      */
     toRawLineArray: function (indexedVertices) {
+        console.log("HERE!");
         var result = [],
             i,
             j,
@@ -98,10 +99,12 @@ var Shapes = {
                     indexedVertices.vertices[
                         indexedVertices.indices[i][(j + 1) % maxj]
                     ]
+                    
                 );
+                
             }
         }
-
+        console.log(result);
         return result;
     },
     
@@ -181,13 +184,42 @@ var Shapes = {
         
         var DEGREES_TO_RADIANS = Math.PI / 180.0;
         var points = [];
+        var index = 0;
+        
         for (var phi = -80.0; phi <= 80.0; phi += latitude) {
             var rPhi = phi * DEGREES_TO_RADIANS;
-            var rPhiPlus = (phi + 20.0) * DEGREES_TO_RADIANS;
+            var rPhiPlus = (phi + latitude) * DEGREES_TO_RADIANS;
             
             for (var theta = -180.0; theta <= 180.0; theta += longitude) {
-                    
+                var rTheta = theta * DEGREES_TO_RADIANS;
+                points[index] = [
+                                    Math.sin(rTheta) * Math.cos(rPhi), 
+                                    Math.cos(rTheta) * Math.cos(rPhi) ,
+                                    Math.sin(rPhi)
+                                 ];
+                index += 1;
+                
+                points[index] = [
+                                    Math.sin(rTheta) * Math.cos(rPhiPlus),
+                                    Math.cos(rTheta) * Math.cos(rPhiPlus),
+                                    Math.sin(rPhiPlus)
+                                ];
+                index += 1;
             }
+        }
+        
+        var route = [];
+        var j = 0;
+        points = points.concat([0, 0, 1]);
+        //Time to set the indices
+        for (var i = 0; i <= points.length; i += 2) {
+            route[j] = [i, i + 1];
+            j += 1;
+        }
+        
+        return {
+            vertices: points,
+            indices:  route
         }
     }
 
