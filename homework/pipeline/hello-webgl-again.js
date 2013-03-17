@@ -237,16 +237,28 @@
     /*
      * Displays an individual object or a composite object. 
      */
-    drawObject = function (object) {
-        
-        // Set the varying colors.
-        gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
-        gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
+    drawObject = function (object, composite) {
+        if(composite) {
+            for(component in object) {
+                // Set the varying colors.
+                gl.bindBuffer(gl.ARRAY_BUFFER, component.colorBuffer);
+                gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
 
-        // Set the varying vertex coordinates.
-        gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
-        gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
-        gl.drawArrays(object.mode, 0, object.vertices.length / 3);
+                // Set the varying vertex coordinates.
+                gl.bindBuffer(gl.ARRAY_BUFFER, component.buffer);
+                gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
+                gl.drawArrays(component.mode, 0, component.vertices.length / 3);
+            }
+        }else {
+            // Set the varying colors.
+            gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
+            gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
+
+            // Set the varying vertex coordinates.
+            gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
+            gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
+            gl.drawArrays(object.mode, 0, object.vertices.length / 3);
+        }
     };
 
     /*
