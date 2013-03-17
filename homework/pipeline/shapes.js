@@ -82,7 +82,6 @@ var Shapes = {
      * arranged as line segments.
      */
     toRawLineArray: function (indexedVertices) {
-        console.log("HERE!");
         var result = [],
             i,
             j,
@@ -181,39 +180,66 @@ var Shapes = {
     sphere: function (latitude, longitude) {
         //Adapted from Angel's book
         
-        var DEGREES_TO_RADIANS = Math.PI / 180.0;
-        var points = [];
-        var index = 0;
+        var DEGREES_TO_RADIANS = Math.PI / 180.0,
+            points = [],
+            polarRegion = [],
+            route = [],
+            theta,
+            phi,
+            rPhi,
+            rPhiPlus,
+            rTheta,
+            sin80,
+            cos80;
         
-        for (var phi = -80.0; phi <= 80.0; phi += latitude) {
-            var rPhi = phi * DEGREES_TO_RADIANS;
-            var rPhiPlus = (phi + latitude) * DEGREES_TO_RADIANS;
+        for (phi = -80.0; phi <= 80.0; phi += latitude) {
+            rPhi = phi * DEGREES_TO_RADIANS;
+            rPhiPlus = (phi + latitude) * DEGREES_TO_RADIANS;
             
-            for (var theta = -180.0; theta <= 180.0; theta += longitude) {
-                var rTheta = theta * DEGREES_TO_RADIANS;
-                points[index] = [
+            for (theta = -180.0; theta <= 180.0; theta += longitude) {
+                rTheta = theta * DEGREES_TO_RADIANS;
+                points.push([
                                     Math.sin(rTheta) * Math.cos(rPhi), 
                                     Math.cos(rTheta) * Math.cos(rPhi) ,
                                     Math.sin(rPhi)
-                                 ];
-                index += 1;
-                
-                points[index] = [
+                                 ]);
+                points.push([
                                     Math.sin(rTheta) * Math.cos(rPhiPlus),
                                     Math.cos(rTheta) * Math.cos(rPhiPlus),
                                     Math.sin(rPhiPlus)
-                                ];
-                index += 1;
+                                ]);
             }
         }
         
+        polarRegion.push([0.0, 0.0, 1.0]);
+        
+        sin80 = Math.sin(80.0 * DEGREES_TO_RADIANS);
+        cos80 = Math.cos(80.0 * DEGREES_TO_RADIANS); 
+        
+        for (theta = -180.0; theta <= 180.0; theta += longitude) {
+            rTheta = theta * DEGREES_TO_RADIANS;
+            polarRegion.push([
+                              Math.sin(rTheta) * cos80,
+                              Math.cos(rTheta) * cos80,
+                              sin80
+                              ]);
+        }
+        
+        polarRegion.push([0.0, 0.0, -1.0]);
+        
+        for (theta = -180.0; theta <= 180.0; theta += longitude) {
+            rTheta = theta * DEGREES_TO_RADIANS;
+            polarRegion.push([
+                              Math.sin(rTheta) * cos80,
+                              Math.cos(rTheta) * cos80,
+                              sin80
+                              ]);
+        }
         var route = [];
-        var j = 0;
         
         //Time to set the indices
-        for (var i = 0; i < points.length; i += 2) {
-            route[j] = [i, i + 1];
-            j += 1;
+        for (var i = 0; i < points.length; i += 3) {
+            route.push([i, i + 1, i + 2]);
         }
         
         return {
