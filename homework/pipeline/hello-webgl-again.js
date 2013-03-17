@@ -178,8 +178,15 @@
 
     // Pass the vertices to WebGL.
     for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
-        objectsToDraw[i].buffer = GLSLUtilities.initVertexBuffer(gl,
-                objectsToDraw[i].vertices);
+        if (objectsToDraw[i].composite) {
+            for (component in objectsToDraw[i]) {
+                objectsToDraw[i].component.buffer = GLSLUtilities.initVertexBuffer(gl,
+                        objectsToDraw[i].component.vertices);
+            }
+        } else {
+            objectsToDraw[i].buffer = GLSLUtilities.initVertexBuffer(gl,
+                    objectsToDraw[i].vertices);
+        }
 
         if (!objectsToDraw[i].colors) {
             // If we have a single color, we expand that into an array
@@ -235,7 +242,9 @@
     rotationMatrix = gl.getUniformLocation(shaderProgram, "rotationMatrix");
 
     /*
-     * Displays an individual object or a composite object. 
+     * Displays an individual object or a composite object. A composite object is
+     * marked with a composite property (a boolean), and contains multiple component
+     * objects, each of which is a shape object with its own vertices and indices, etc.
      */
     drawObject = function (object, composite) {
         if(composite) {
