@@ -184,13 +184,15 @@ var Shapes = {
             points = [],
             polarRegion = [],
             route = [],
+            polarRoute = [],
             theta,
             phi,
             rPhi,
             rPhiPlus,
             rTheta,
             sin80,
-            cos80;
+            cos80,
+            i;
         
         for (phi = -80.0; phi <= 80.0; phi += latitude) {
             rPhi = phi * DEGREES_TO_RADIANS;
@@ -235,16 +237,21 @@ var Shapes = {
                               sin80
                               ]);
         }
-        var route = [];
         
         //Time to set the indices
-        for (var i = 0; i < points.length; i += 3) {
+        for (i = 0; i < points.length; i += 3) {
             route.push([i, i + 1, i + 2]);
         }
         
+        for (i = 0; i < polarRegion.length; i += 3) {
+            polarRoute.push([i, i + 1, i + 2]);
+        }
+        
+        //Currently the method does not return the polar region since composite object
+        //drawing is not fully implemented.
         return {
             vertices: points,
-            indices:  route
+            indices: route
         }
     }
 

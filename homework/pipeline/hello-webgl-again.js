@@ -168,25 +168,49 @@
             ),
             mode: gl.LINE_LOOP
         },*/
-
-        {
+        // I have not implemented (or figured out) transforms yet, so comment out the 
+        // shapes you do not wish displayed.
+        
+        //A blade shape
+        {   
             color: { r: 0.0, g: 0.5, b: 0.0 },
-            vertices: Shapes.toRawTriangleArray(Shapes.sphere(10, 10, 1)),
+            vertices: Shapes.toRawLineArray(Shapes.blade()),
+            mode: gl.LINES
+        }
+        
+        //A tetrahedron
+        /*
+        {
+            color: {r: 0.0, g: 0.5, b: 0.0},
+            vertices: Shapes.toRawLineArray(Shapes.tetrahedron()),
+            mode: gl.LINES
+        },
+        
+        //A sphere. Will currently display with a hole at the end
+        {
+            color: {r: 0.0, g:0.5, b:0.0,
+            vertices: Shapes.toRawLineArray(Shapes.sphere(20, 20)),
             mode: gl.LINE_LOOP
         }
+        */
+            
+        
+        
     ];
 
     // Pass the vertices to WebGL.
     for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
-        if (objectsToDraw[i].composite) {
+        /*if (objectsToDraw[i].composite) {
             for (component in objectsToDraw[i]) {
-                objectsToDraw[i].component.buffer = GLSLUtilities.initVertexBuffer(gl,
-                        objectsToDraw[i].component.vertices);
+                if(component != objectsToDraw[i].composite) {
+                    objectsToDraw[i].component.buffer = GLSLUtilities.initVertexBuffer(gl,
+                            objectsToDraw[i].component.vertices);
+                }
             }
-        } else {
+        } else {*/
             objectsToDraw[i].buffer = GLSLUtilities.initVertexBuffer(gl,
                     objectsToDraw[i].vertices);
-        }
+       // }
 
         if (!objectsToDraw[i].colors) {
             // If we have a single color, we expand that into an array
@@ -245,20 +269,22 @@
      * Displays an individual object or a composite object. A composite object is
      * marked with a composite property (a boolean), and contains multiple component
      * objects, each of which is a shape object with its own vertices and indices, etc.
+     * The composite object drawing function is not working correctly as of right now,
+     * so it has been commented out.
      */
     drawObject = function (object, composite) {
-        if(composite) {
+       /* if(composite) {
             for(component in object) {
-                // Set the varying colors.
-                gl.bindBuffer(gl.ARRAY_BUFFER, component.colorBuffer);
-                gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
+            // Set the varying colors.
+            gl.bindBuffer(gl.ARRAY_BUFFER, object[component].colorBuffer);
+            gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
 
-                // Set the varying vertex coordinates.
-                gl.bindBuffer(gl.ARRAY_BUFFER, component.buffer);
-                gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
-                gl.drawArrays(component.mode, 0, component.vertices.length / 3);
-            }
-        }else {
+            // Set the varying vertex coordinates.
+            gl.bindBuffer(gl.ARRAY_BUFFER, object[component].buffer);
+            gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
+            gl.drawArrays(object[component].mode, 0, object[component].vertices.length / 3);
+        }
+        }else {*/
             // Set the varying colors.
             gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
             gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
@@ -267,7 +293,7 @@
             gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
             gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
             gl.drawArrays(object.mode, 0, object.vertices.length / 3);
-        }
+        //}
     };
 
     /*
