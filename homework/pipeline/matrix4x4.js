@@ -49,6 +49,17 @@ var Matrix4x4 = (function () {
                              0, 0, 0, 1);
     };
     
+    //Scale
+    getScaleMatrix = function (sx, sy, sz) {
+        if ( (sx <= 0) || (sy <= 0) || (sz <= 0) ) {
+            throw "Scale factor must be greater than 0.";
+        }
+        return new matrix4x4(sx, 0, 0, 0,
+                             0, sy, 0, 0,
+                             0, 0, sz, 0,
+                             0, 0, 0, 1);
+    }
+    
     /*
     vector.prototype.subtract = function (v) {
         var result = new Vector(),

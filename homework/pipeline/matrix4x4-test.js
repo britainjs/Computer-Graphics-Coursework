@@ -114,21 +114,21 @@ $(function () {
     test("Scale", function () {
         var mscale = getScaleMatrix(0.5, 0.5, 0.5);
         
-        deepEqual(mscale, [0.5, 0, 0, 0,
+        deepEqual(mscale.elements, [0.5, 0, 0, 0,
                            0, 0.5, 0, 0,
                            0, 0, 0.5, 0,
                            0, 0, 0, 1], "Scale by 0.5 on all axis.");
         
         mscale = getScaleMatrix(2, 1, 1);
         
-        deepEqual(mscale, [2, 0, 0, 0,
+        deepEqual(mscale.elements, [2, 0, 0, 0,
                            0, 1, 0, 0,
                            0, 0, 1, 0,
                            0, 0, 0, 1], "Scale x value by 2.");
         
         mscale = getScaleMatrix(5, 3, 2);
         
-        deepEqual(mscale, [5, 0, 0, 0,
+        deepEqual(mscale.elements, [5, 0, 0, 0,
                            0, 3, 0, 0,
                            0, 0, 2, 0,
                            0, 0, 0, 1], "Scale by (5, 3, 2).");
