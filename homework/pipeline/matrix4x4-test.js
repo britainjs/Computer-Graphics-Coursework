@@ -1,42 +1,51 @@
 /*
- * Unit tests for our vector object.
+ * Unit tests for our matrix4x4 object.
  */
 $(function () {
 
     // This suite checks instantiation basics.
     test("Creation and Data Access", function () {
-        var v = new Vector(5, 6, 3);
+        var m = new Matrix4x4();
 
-        equal(v.dimensions(), 3, "Vector size");
-        equal(v.elements[0], 5, "First element by index");
-        equal(v.elements[1], 6, "Second element by index");
-        equal(v.elements[2], 3, "Third element by index");
-        equal(v.x(), 5, "First element by coordinate");
-        equal(v.y(), 6, "Second element by coordinate");
-        equal(v.z(), 3, "Third element by coordinate");
 
-        v = new Vector(300, 200);
+        deepEqual(m.elements, [1, 0, 0, 0,
+                               0, 1, 0, 0,
+                               0, 0, 1, 0,
+                               0, 0, 0, 1], "All elements of the default matrix");
+        deepEqual(m.elements[0], 1, "First element by index.");
+        deepEqual(m.elements[4], 0, "Fifth element by index.");
+        deepEqual(m.elements[10], 1, "11th element by index.");
+        deepEqual(m.elements[15], 1, "Last element by index.");
+        
+        var n = new Matrix4x4([1, 2, 3, 4,
+                               5, 6, 7, 8,
+                               9, 10, 11, 12,
+                               13, 14, 15, 16]);
+                               
+        deepEqual(n.elements, [1, 2, 3, 4,
+                               5, 6, 7, 8,
+                               9, 10, 11, 12,
+                               13, 14, 15, 16], "All elements of an initialized matrix");
+        deepEqual(n.elements[0], 1, "First element by index");
+        deepEqual(n.elements[5], 6, "Sixth element by index");
+        deepEqual(n.elements[11], 12, "Twelfth element by index");
+        deepEqual(n.elements[15], 16, "Last element by index");
 
-        equal(v.dimensions(), 2, "Vector size");
-        equal(v.elements[0], 300, "First element by index");
-        equal(v.elements[1], 200, "Second element by index");
-        equal(v.x(), 300, "First element by coordinate");
-        equal(v.y(), 200, "Second element by coordinate");
+        m = new Matrix4x4([0, 0, 0, 0
+                           0, 0, 0, 0
+                           0, 0, 0, 0
+                           0, 0, 0, 0]);
 
-        v = new Vector(3, 2, 1, 2);
-
-        equal(v.dimensions(), 4, "Vector size");
-        equal(v.elements[0], 3, "First element by index");
-        equal(v.elements[1], 2, "Second element by index");
-        equal(v.elements[2], 1, "Third element by index");
-        equal(v.elements[3], 2, "Fourth element by index");
-        equal(v.x(), 3, "First element by coordinate");
-        equal(v.y(), 2, "Second element by coordinate");
-        equal(v.z(), 1, "Third element by coordinate");
-        equal(v.w(), 2, "Fourth element by coordinate");
-
-        v = new Vector();
-        equal(v.dimensions(), 0, "Empty vector (boundary case)");
+        deepEqual(m.elements, [0, 0, 0, 0,
+                               0, 0, 0, 0,
+                               0, 0, 0, 0,
+                               0, 0, 0, 0], "All elements of a matrix of 0s");
+        deepEqual(m.elements[0], 0, "First element by index");
+        deepEqual(m.elements[1], 0, "Second element by index");
+        deepEqual(m.elements[3], 0, "Fourth element by index");
+        deepEqual(m.elements[7], 0, "Eighth element by index");
+        deepEqual(m.elements[12], 0, "Thirteenth element by index");
+        
     });
 
     test("Addition and Subtraction", function () {
