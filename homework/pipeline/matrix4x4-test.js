@@ -48,51 +48,35 @@ $(function () {
         
     });
 
-    test("Addition and Subtraction", function () {
-        var v1 = new Vector(4, 5),
-            v2 = new Vector(-10, 4),
-            vresult = v1.add(v2);
+    test("Multiplication", function () {
+        var m = new Matrix4x4(0, 4, 5, 1,
+                              1, 2, 3, 6,
+                              10, 4, 0, 8,
+                              15, 2, 1, 1),
+            n = new Matrix4x4(14, 4, 22, 10,
+                              0, 11, 14, 5,
+                              1, 6, 13, 7,
+                              9, 2, 8, 0),
+            o = new Matrix4x4(),
+            mresult = m.multiply(n);
 
-        equal(vresult.dimensions(), 2, "Vector sum size check");
-        equal(vresult.x(), -6, "Vector sum first element");
-        equal(vresult.y(), 9, "Vector sum second element");
-
-        v1 = new Vector(0, -2, 3, 5);
-        v2 = new Vector(-2, 1, 0, 7);
-        vresult = v1.subtract(v2);
-        equal(vresult.dimensions(), 4, "Vector difference size check");
-        equal(vresult.x(), 2, "Vector difference first element");
-        equal(vresult.y(), -3, "Vector difference second element");
-        equal(vresult.z(), 3, "Vector difference third element");
-        equal(vresult.w(), -2, "Vector difference fourth element");
-
-        // Check for errors.
-        v1 = new Vector(5, 8, 10, 2);
-        v2 = new Vector(1, 2, 2);
-
-        // We can actually check for a *specific* exception, but
-        // we won't go that far for now.
-        raises(
-            function () {
-                return v1.add(v2);
-            },
-            "Check for vectors of different sizes"
-        );
-    });
-
-    test("Scalar Multiplication and Division", function () {
-        var v = new Vector(8, 2, 3),
-            vresult = v.multiply(2);
-
-        equal(vresult.x(), 16, "Vector scalar multiplication first element");
-        equal(vresult.y(), 4, "Vector scalar multiplication second element");
-        equal(vresult.z(), 6, "Vector scalar multiplication third element");
-
-        vresult = vresult.divide(4);
-
-        equal(vresult.x(), 4, "Vector scalar division first element");
-        equal(vresult.y(), 1, "Vector scalar division second element");
-        equal(vresult.z(), 1.5, "Vector scalar division third element");
+        deepEqual(mresult.elements, [14, 76, 129, 55,
+                                     71, 56, 137, 41,
+                                     212, 100, 340, 120,
+                                     220, 90, 379, 167]  , "Matrix multiplication");
+        
+        mresult = m.multiply(o);
+        deepEqual(mresult.elements, [0, 4, 5, 1,
+                            1, 2, 3, 6,
+                            10, 4, 0, 8,
+                            15, 2, 1, 1], "Matrix Multiplication by Identity Matrix");
+                            
+        mresult = m.multiply(m);
+        deepEqual(mresut.elements, [69, 30, 13, 65,
+                                    122, 32, 17, 43,
+                                    124, 64, 70, 42,
+                                    27, 70, 82, 36], 
+                                    "Matrix multiplication using identical matrices.");
     });
 
     test("Dot Product", function () {
