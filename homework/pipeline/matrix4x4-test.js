@@ -79,34 +79,36 @@ $(function () {
                                     "Matrix multiplication using identical matrices.");
     });
 
-    test("Dot Product", function () {
-        var v1 = new Vector(-5, -2),
-            v2 = new Vector(-3, 4);
+    test("Translate", function () {
+        var m1 = matrix4x4.getTranslationMatrix(5, 7, 9);
 
-        equal(v1.dot(v2), 7, "2D dot product");
+        deepEqual(m1.elements, [1, 0, 0, 5,
+                                0, 1, 0, 7,
+                                0, 0, 1, 9,
+                                0, 0, 0, 1], "Translate x by 5, y by 7, and z by 9");
+                                
+        m1 = matrix4x4.getTranslationMatrix(0, 0, 4);
+        
+        deepEqual(m1.elements, [1, 0, 0, 0,
+                                0, 1, 0, 0,
+                                0, 0, 1, 4,
+                                0, 0, 0, 1], "Translate z by 4.");
+        
+        m1 = matrix4x4.getTranslationMatrix(-5, 0.011, -0.53);
+        
+        deepEqual(m1.elements, [1, 0, 0, -5,
+                                0, 1, 0, 0.011,
+                                0, 0, 1, -0.53,
+                                0, 0, 0, 1], 
+                                "Translate x by -5, y by 0.011, and z by -0.53");
+        var m2 = new Matrix4x4();
+        m1 = matrix4x4.getTranslationMatrix(0, 0, 0);
+        
+        deepEqual(m1, m2, "Translate by 0, 0, 0 yields the identity matrix.");
+                                            
+                                
 
-        // Try for a perpendicular.
-        v1 = new Vector(Math.sqrt(2) / 2, Math.sqrt(2) / 2);
-        v2 = new Vector(-Math.sqrt(2) / 2, Math.sqrt(2) / 2);
-        equal(v1.dot(v2), 0, "Perpendicular 2D dot product");
 
-        // Try 3D.
-        v1 = new Vector(3, 2, 5);
-        v2 = new Vector(4, -1, 3);
-        equal(v1.dot(v2), 25, "3D dot product");
-
-        // Check for errors.
-        v1 = new Vector(4, 2);
-        v2 = new Vector(3, 9, 1);
-
-        // We can actually check for a *specific* exception, but
-        // we won't go that far for now.
-        raises(
-            function () {
-                return v1.dot(v2);
-            },
-            "Check for vectors of different sizes"
-        );
     });
 
     test("Cross Product", function () {
