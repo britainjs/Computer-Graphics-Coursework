@@ -17,10 +17,10 @@ $(function () {
         deepEqual(m.elements[10], 1, "11th element by index.");
         deepEqual(m.elements[15], 1, "Last element by index.");
         
-        var n = new Matrix4x4([1, 2, 3, 4,
+        var n = new Matrix4x4(1, 2, 3, 4,
                                5, 6, 7, 8,
                                9, 10, 11, 12,
-                               13, 14, 15, 16]);
+                               13, 14, 15, 16);
                                
         deepEqual(n.elements, [1, 2, 3, 4,
                                5, 6, 7, 8,
@@ -31,10 +31,10 @@ $(function () {
         deepEqual(n.elements[11], 12, "Twelfth element by index");
         deepEqual(n.elements[15], 16, "Last element by index");
 
-        m = new Matrix4x4([0, 0, 0, 0
-                           0, 0, 0, 0
-                           0, 0, 0, 0
-                           0, 0, 0, 0]);
+        m = new Matrix4x4(0, 0, 0, 0,
+                           0, 0, 0, 0,
+                           0, 0, 0, 0,
+                           0, 0, 0, 0);
 
         deepEqual(m.elements, [0, 0, 0, 0,
                                0, 0, 0, 0,

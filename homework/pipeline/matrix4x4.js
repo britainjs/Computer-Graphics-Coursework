@@ -11,40 +11,18 @@
  * vectors.  Specific Vector2D and Vector3D implementations can be much
  * more compact, while sacrificing generality.
  */
-var Vector = (function () {
+var Matrix4x4 = (function () {
     // Define the constructor.
-    var vector = function () {
-        this.elements = [].slice.call(arguments);
-    },
+    var matrix4x4 = function () {
+        this.elements = arguments.length ? 
+            [].slice.call(arguments) :
+                [1, 0, 0, 0,
+                 0, 1, 0, 0,
+                 0, 0, 1, 0,
+                 0, 0, 0, 1]
+    };
     
-        // A private method for checking dimensions,
-        // throwing an exception when different.
-        checkDimensions = function (v1, v2) {
-            if (v1.dimensions() !== v2.dimensions()) {
-                throw "Vectors have different dimensions";
-            }
-        };
-
-    // Basic methods.
-    vector.prototype.dimensions = function () {
-        return this.elements.length;
-    };
-
-    vector.prototype.x = function () {
-        return this.elements[0];
-    };
-
-    vector.prototype.y = function () {
-        return this.elements[1];
-    };
-
-    vector.prototype.z = function () {
-        return this.elements[2];
-    };
-
-    vector.prototype.w = function () {
-        return this.elements[3];
-    };
+    /*
 
     // Addition and subtraction.
     vector.prototype.add = function (v) {
@@ -157,6 +135,6 @@ var Vector = (function () {
         unitv = v.unit();
         return unitv.multiply(this.dot(unitv));
     };
-
-    return vector;
+    */
+    return matrix4x4;
 })();
