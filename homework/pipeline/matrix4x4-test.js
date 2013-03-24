@@ -80,21 +80,21 @@ $(function () {
     });
 
     test("Translate", function () {
-        var m1 = matrix4x4.getTranslationMatrix(5, 7, 9);
+        var m1 = getTranslationMatrix(5, 7, 9);
 
         deepEqual(m1.elements, [1, 0, 0, 5,
                                 0, 1, 0, 7,
                                 0, 0, 1, 9,
                                 0, 0, 0, 1], "Translate x by 5, y by 7, and z by 9");
                                 
-        m1 = matrix4x4.getTranslationMatrix(0, 0, 4);
+        m1 = getTranslationMatrix(0, 0, 4);
         
         deepEqual(m1.elements, [1, 0, 0, 0,
                                 0, 1, 0, 0,
                                 0, 0, 1, 4,
                                 0, 0, 0, 1], "Translate z by 4.");
         
-        m1 = matrix4x4.getTranslationMatrix(-5, 0.011, -0.53);
+        m1 = getTranslationMatrix(-5, 0.011, -0.53);
         
         deepEqual(m1.elements, [1, 0, 0, -5,
                                 0, 1, 0, 0.011,
@@ -102,7 +102,7 @@ $(function () {
                                 0, 0, 0, 1], 
                                 "Translate x by -5, y by 0.011, and z by -0.53");
         var m2 = new Matrix4x4();
-        m1 = matrix4x4.getTranslationMatrix(0, 0, 0);
+        m1 = getTranslationMatrix(0, 0, 0);
         
         deepEqual(m1, m2, "Translate by 0, 0, 0 yields the identity matrix.");
                                             

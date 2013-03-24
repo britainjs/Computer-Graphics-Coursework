@@ -42,6 +42,14 @@ var Matrix4x4 = (function () {
             }
         
         return result;
+    },
+    
+    //Translation. Shifts the point in space by the given x, y, and z coordinate.
+    getTranslationMatrix = function (dx, dy, dz) {
+        return new matrix4x4(1, 0, 0, dx,
+                             0, 1, 0, dy,
+                             0, 0, 1, dz,
+                             0, 0, 0, 1);
     };
     
     /*
