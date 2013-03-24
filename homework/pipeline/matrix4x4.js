@@ -22,24 +22,29 @@ var Matrix4x4 = (function () {
                  0, 0, 0, 1]
     };
     
-    /*
+    
 
-    // Addition and subtraction.
-    vector.prototype.add = function (v) {
-        var result = new Vector(),
-            i,
-            max;
+    // Multiplication
+    matrix4x4.prototype.multiply = function (m) {
+        var result = new Matrix4x4(),
+            index = 0,
+            j,
+            k;
 
-        // Dimensionality check.
-        checkDimensions(this, v);
-
-        for (i = 0, max = this.dimensions(); i < max; i += 1) {
-            result.elements[i] = this.elements[i] + v.elements[i];
-        }
-
+            for (j = 0; j < 16; j += 4) {
+                for (k = 0; k < 4; k += 1) {
+                    result.elements[index] = (this.elements[j] * m.elements[k]) +
+                                    (this.elements[j + 1] * m.elements[k + 4]) +
+                                    (this.elements[j + 2] * m.elements[k + 8]) +
+                                    (this.elements[j + 3] * m.elements[k + 12]);
+                    index += 1;
+                }
+            }
+        
         return result;
     };
-
+    
+    /*
     vector.prototype.subtract = function (v) {
         var result = new Vector(),
             i,

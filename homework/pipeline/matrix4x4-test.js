@@ -72,7 +72,7 @@ $(function () {
                             15, 2, 1, 1], "Matrix Multiplication by Identity Matrix");
                             
         mresult = m.multiply(m);
-        deepEqual(mresut.elements, [69, 30, 13, 65,
+        deepEqual(mresult.elements, [69, 30, 13, 65,
                                     122, 32, 17, 43,
                                     124, 64, 70, 42,
                                     27, 70, 82, 36], 
