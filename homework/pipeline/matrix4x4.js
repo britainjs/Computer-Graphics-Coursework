@@ -1,18 +1,15 @@
 /*
- * This JavaScript file defines a Vector object and associated functions.
+ * This JavaScript file defines a Matrix4x4 object and associated functions.
  * The object itself is returned as the result of a function, allowing us
  * to encapsulate its code and module variables.
  *
  * This module's approach is non-destructive: methods always return new
- * Vector objects, and never modify the operands.  This is a design choice.
+ * Matrix4x4 objects, and never modify the operands.  This is a design choice.
  *
- * This module is designed for vectors of any number of dimensions.  The
- * implementations are generalized but not optimal for certain sizes of
- * vectors.  Specific Vector2D and Vector3D implementations can be much
- * more compact, while sacrificing generality.
+ * This module is designed for matrices of size 4x4 only.
  */
 var Matrix4x4 = (function () {
-    // Define the constructor.
+    // Define the constructor. By default returns the identity matrix.
     var matrix4x4 = function () {
         this.elements = arguments.length ? 
             [].slice.call(arguments) :

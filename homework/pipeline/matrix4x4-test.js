@@ -111,37 +111,42 @@ $(function () {
 
     });
 
-    test("Cross Product", function () {
-        var v1 = new Vector(3, 4),
-            v2 = new Vector(1, 2),
-            vresult;
+    test("Scale", function () {
+        var mscale = getScaleMatrix(0.5, 0.5, 0.5);
+        
+        deepEqual(mscale, [0.5, 0, 0, 0,
+                           0, 0.5, 0, 0,
+                           0, 0, 0.5, 0,
+                           0, 0, 0, 1], "Scale by 0.5 on all axis.");
+        
+        mscale = getScaleMatrix(2, 1, 1);
+        
+        deepEqual(mscale, [2, 0, 0, 0,
+                           0, 1, 0, 0,
+                           0, 0, 1, 0,
+                           0, 0, 0, 1], "Scale x value by 2.");
+        
+        mscale = getScaleMatrix(5, 3, 2);
+        
+        deepEqual(mscale, [5, 0, 0, 0,
+                           0, 3, 0, 0,
+                           0, 0, 2, 0,
+                           0, 0, 0, 1], "Scale by (5, 3, 2).");
 
-        // The cross product is restricted to 3D, so we start
-        // with an error check.
+        // Scaling works by multiplication, so a scale factor  of >= 0 is nonsensical.
         raises(
             function () {
-                return v1.cross(v2);
+                return getScaleMatrix(0, 5, 3);
             },
-            "Check for non-3D vectors"
+            "Check for a scale factor of 0."
         );
-
-        // Yeah, this is a bit of a trivial case.  But it at least
-        // establishes the right-handedness of a cross-product.
-        v1 = new Vector(1, 0, 0);
-        v2 = new Vector(0, 1, 0);
-        vresult = v1.cross(v2);
-
-        equal(vresult.x(), 0, "Cross product first element");
-        equal(vresult.y(), 0, "Cross product second element");
-        equal(vresult.z(), 1, "Cross product third element");
-
-        // This one shows that switching vector order produces
-        // the opposite-pointing normal.
-        vresult = v2.cross(v1);
-
-        equal(vresult.x(), 0, "Cross product first element");
-        equal(vresult.y(), 0, "Cross product second element");
-        equal(vresult.z(), -1, "Cross product third element");
+        
+        raises(
+            function () {
+                return getScaleMatrix(2, 3, -1);
+            },
+            "Check for a negative scale factor."
+        );
     });
 
     test("Magnitude and Unit Vectors", function () {
