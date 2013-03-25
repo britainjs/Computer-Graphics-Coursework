@@ -208,7 +208,7 @@ $(function () {
                                51, -3, 5, -1345,
                                12, 5, 6, 554,
                                0, 23, 0, 3],
-                               "Conversion to column major ordering.                              
+                               "Conversion to column major ordering.");                         
     });
 
 });
