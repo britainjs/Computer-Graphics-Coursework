@@ -145,6 +145,35 @@ var Matrix4x4 = (function () {
                 1.0
             );
         };
+        
+        getFrustumMatrix = function (left, right, bottom, top, zNear, zFar) {
+            var n2 = 2 * zNear,
+                width = right - left,
+                height = top - bottom,
+                depth = zFar - zNear;
+                
+            return new Matrix4x4(
+                n2 / width,
+                0.0,
+                (right + left) / width,
+                0.0,
+                
+                0.0,
+                n2 / height,
+                (top + bottom) / height,
+                0.0,
+                
+                0.0,
+                0.0,
+                -(zFar + zNear) / depth,
+                (-n2 * zFar) / depth,
+                
+                0.0,
+                0.0,
+                -1.0,
+                0.0
+            );
+        };
 
     return matrix4x4;
 })();

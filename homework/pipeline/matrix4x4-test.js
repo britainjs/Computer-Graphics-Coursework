@@ -180,6 +180,7 @@ $(function () {
     });
 
     test("Projection", function () {
+        //Test Ortho Matrix
         var m = getOrthoMatrix(-1, 1, -1, 1, -1, 1);
         
         deepEqual(m.elements, [2/(1 - -1), 0, 0, -((1 + -1)/(1 - -1)),
@@ -198,20 +199,22 @@ $(function () {
                                "Project onto a surface of left -5, right 3, bottom 0, top 4, near -3, and far 0."
         );
         
+        //Test Frustum Matrix
         m = getFrustumMatrix(10, 20, 15, 100, 0, 6);
         
         deepEqual(m.elements, [0, 0, 3, 0,
-                               0, 0, 1.35294117647, 0,
+                               0, 0, 1.3529411764705883, 0,
                                0, 0, -1, 0,
                                0, 0, -1, 0], 
                                "Perspective projection to left 10, right 20, bottom 15, top 100, near 0, far 6."
         );
         
-        m - getFrustumMatrix(-100, 100, -100, 100, -100, 100);
+        m = getFrustumMatrix(-100, 100, -100, 100, -100, 100);
         
         deepEqual(m.elements, [-1, 0, 0, 0,
                                0, -1, 0, 0,
-                               0, 0, 0, 100],
+                               0, 0, 0, 100,
+                               0, 0, -1, 0],
                                "Perspective projection to left -100, right 100, bottom -100, top 100, near -100, far 100."
         );      
     });
