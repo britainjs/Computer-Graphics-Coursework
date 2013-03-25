@@ -149,29 +149,34 @@ $(function () {
         );
     });
 
-    test("Magnitude and Unit Vectors", function () {
-        var v = new Vector(3, 4);
-
-        // The classic example.
-        equal(v.magnitude(), 5, "2D magnitude check");
-
-        // Kind of a cheat, but still tests the third dimension.
-        v = new Vector(5, 0, 12);
-        equal(v.magnitude(), 13, "3D magnitude check");
-
-        // Now for unit vectors.
-        v = (new Vector(3, 4)).unit();
-
-        equal(v.magnitude(), 1, "2D unit vector check");
-        equal(v.x(), 3 / 5, "2D unit vector first element");
-        equal(v.y(), 4 / 5, "2D unit vector second element");
-
-        v = (new Vector(0, -7, 24)).unit();
-
-        equal(v.magnitude(), 1, "3D unit vector check");
-        equal(v.x(), 0, "3D unit vector first element");
-        equal(v.y(), -7 / 25, "3D unit vector second element");
-        equal(v.z(), 24 / 25, "3D unit vector third element");
+    test("Rotation", function () {
+        var m = getRotationMatrix(45, 1, 0, 0);
+        
+        deepEqual(m.elements, [1, 0, 0, 0,
+                      0, 0.7071067811865476, -0.7071067811865475, 0,
+                      0, 0.7071067811865475, 0.7071067811865476, 0,
+                      0, 0, 0, 1], "Rotate about x-axis by 45.");
+        
+        m = getRotationMatrix(0, 0, 0, 1);
+        
+        deepEqual(m.elements, [1, 0, 0, 0,
+                               0, 1, 0, 0,
+                               0, 0, 1, 0,
+                               0, 0, 0, 1], "Rotate by 0 around the z axis.");
+        
+        m = getRotationMatrix(180, 0, 1, 0);
+        
+        deepEqual(m.elements, [-1, 0, 1.225, 0,
+                                0, 1, 0, 0,
+                                -1.225, 0, 1, 0,
+                                0, 0, 0, 1], "Rotate by 180 degrees around the y-axis.");
+        
+        m = getRotationMatrix(30, 0, 0, 1);
+        
+        deepEqual(m.elements, [0.866, -0.5, 0, 0,
+                               0.5, 0.866, 0, 0,
+                               0, 0, 1, 0,
+                               0, 0, 0, 1], "Rotate by 30 degrees around the z axis.");
     });
 
     test("Projection", function () {
