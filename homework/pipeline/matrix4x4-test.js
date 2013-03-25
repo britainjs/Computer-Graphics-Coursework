@@ -166,9 +166,9 @@ $(function () {
         
         m = getRotationMatrix(180, 0, 1, 0);
         
-        deepEqual(m.elements, [-1, 0, 1.224606353822377e-16, 0,
+        deepEqual(m.elements, [-1, 0, 1.2246063538223773e-16, 0,
                                 0, 1, 0, 0,
-                                -1.224606353822377e-16, 0, 1, 0,
+                                -1.2246063538223773e-16, 0, -1, 0,
                                 0, 0, 0, 1], "Rotate by 180 degrees around the y-axis.");
         
         m = getRotationMatrix(30, 0, 0, 1);
