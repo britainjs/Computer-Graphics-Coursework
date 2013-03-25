@@ -166,15 +166,15 @@ $(function () {
         
         m = getRotationMatrix(180, 0, 1, 0);
         
-        deepEqual(m.elements, [-1, 0, 1.225, 0,
+        deepEqual(m.elements, [-1, 0, 1.224606353822377e-16, 0,
                                 0, 1, 0, 0,
-                                -1.225, 0, 1, 0,
+                                -1.224606353822377e-16, 0, 1, 0,
                                 0, 0, 0, 1], "Rotate by 180 degrees around the y-axis.");
         
         m = getRotationMatrix(30, 0, 0, 1);
         
-        deepEqual(m.elements, [0.866, -0.5, 0, 0,
-                               0.5, 0.866, 0, 0,
+        deepEqual(m.elements, [0.8660254037844387, -0.49999999999999994, 0, 0,
+                               0.49999999999999994, 0.8660254037844387, 0, 0,
                                0, 0, 1, 0,
                                0, 0, 0, 1], "Rotate by 30 degrees around the z axis.");
     });
