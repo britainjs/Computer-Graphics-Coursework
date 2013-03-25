@@ -185,14 +185,14 @@ $(function () {
                               5, 6, 7, 8,
                               9, 10, 11, 12,
                               13, 14, 15, 16);
-        m.toColumnMajor();
+        m = m.toColumnMajor();
         deepEqual(m.elements, [1, 5, 9, 13,
                                2, 6, 10, 14,
                                3, 7, 11, 15,
                                4, 8, 12, 16], "Test conversion to column major ordering."
         );
         m = new Matrix4x4();
-        m.toColumnMajor();
+        m = m.toColumnMajor();
         deepEqual(m.elements, [1, 0, 0, 0,
                                0, 1, 0, 0,
                                0, 0, 1, 0,
@@ -203,7 +203,7 @@ $(function () {
                           -1, -3, 5, 23,
                           145, 5, 6, 0,
                           435, -1345, 554, 3);
-        m.toColumnMajor();
+       m =  m.toColumnMajor();
         deepEqual(m.elements, [14, -1, 145, 435,
                                51, -3, 5, -1345,
                                12, 5, 6, 554,
