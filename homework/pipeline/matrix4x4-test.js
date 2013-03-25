@@ -180,22 +180,32 @@ $(function () {
     });
 
     test("Projection", function () {
-        var v = new Vector(3, 3, 0),
-            vresult = v.projection(new Vector(5, 0, 0));
+        var m = getOrthoMatrix(-1, 1, -1, 1, -1, 1);
+        
+        deepEqual(m.elements, [2/(-1, 1), 0, 0, -((-1+1)/(-1-1)),
+                               0, 2/(1 - (-1)), 0, -((1 + -1)/(1 - -1)),
+                               0, 0, (-2)/(1 - -1), -((1 + -1)/(1 - -1)),
+                               0, 0, 0, 1], 
+                               "Project onto a surface with left -1, right 1, bottom -1, top 1, near -1, and far 1."
+        );
 
-        equal(vresult.magnitude(), 3, "3D vector projection magnitude check");
-        equal(vresult.x(), 3, "3D vector projection first element");
-        equal(vresult.y(), 0, "3D vector projection second element");
-        equal(vresult.z(), 0, "3D vector projection third element");
-
-        // Error check: projection only applies to vectors with the same
-        // number of dimensions.
+        m = getOrthoMatrix(-5, 3, 0, 4, -3, 0);
+        
+        deepEqual(m.elements, [2/(3 - -5), 0, 0, -((3 + -5)/(3 - -5)),
+                               0, 2/(4 - 0), 0, -((4 + 0)/(4 - 0)),
+                               0, 0, (-2)/(0 - -3), -((0 + -3)/(0 - -3)),
+                               0, 0, 0, 1], 
+                               "Project onto a surface of left -5, right 3, bottom 0, top 4, near -3, and far 0."
+        );
+        
         raises(
             function () {
-                (new Vector(5, 2)).projection(new Vector(9, 8, 1));
+               return getOrthoMatrix(0, 0, 0, 0, 0, 0);
             },
-            "Ensure that projection applies only to vectors with the same number of dimensions"
+            "Mathematically impossible."
         );
+        
+        
     });
 
 });
