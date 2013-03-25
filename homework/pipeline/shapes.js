@@ -201,6 +201,9 @@ var Shapes = {
             for (theta = -180.0; theta <= 180.0; theta += longitude) {
                 rTheta = theta * DEGREES_TO_RADIANS;
                 points.push([
+                    // JD: Whoa, that is quite an indent!
+                    //     You can just keep those around where this
+                    //     comment starts.
                                     Math.sin(rTheta) * Math.cos(rPhi), 
                                     Math.cos(rTheta) * Math.cos(rPhi) ,
                                     Math.sin(rPhi)

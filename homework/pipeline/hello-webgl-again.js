@@ -172,27 +172,28 @@
         // shapes you do not wish displayed.
         
         //A blade shape
+        // JD: Watch your winding here.
         {   
             color: { r: 0.0, g: 0.5, b: 0.0 },
-            vertices: Shapes.toRawLineArray(Shapes.blade()),
-            mode: gl.LINES
-        }
-        
-        //A tetrahedron
-        /*
-        {
-            color: {r: 0.0, g: 0.5, b: 0.0},
-            vertices: Shapes.toRawLineArray(Shapes.tetrahedron()),
-            mode: gl.LINES
+            vertices: Shapes.toRawTriangleArray(Shapes.blade()),
+            mode: gl.TRIANGLES
         },
         
-        //A sphere. Will currently display with a hole at the end
+        //A tetrahedron
         {
-            color: {r: 0.0, g:0.5, b:0.0,
-            vertices: Shapes.toRawLineArray(Shapes.sphere(20, 20)),
-            mode: gl.LINE_LOOP
-        }
-        */
+            color: {r: 0.5, g: 0.5, b: 0.0},
+            vertices: Shapes.toRawTriangleArray(Shapes.tetrahedron()),
+            mode: gl.TRIANGLES
+        }/*,
+        
+        //A sphere. Will currently display with a hole at the end
+        // JD: Actually, based on the TRIANGLES rendering, there are quite
+        //     a few holes!
+        {
+            color: {r: 0.0, g:0.5, b:0.5},
+            vertices: Shapes.toRawTriangleArray(Shapes.sphere(20, 20)),
+            mode: gl.TRIANGLES
+        }*/
             
         
         
@@ -272,6 +273,7 @@
      * The composite object drawing function is not working correctly as of right now,
      * so it has been commented out.
      */
+    // JD: OK, missing composite functionality noted.
     drawObject = function (object, composite) {
        /* if(composite) {
             for(component in object) {
