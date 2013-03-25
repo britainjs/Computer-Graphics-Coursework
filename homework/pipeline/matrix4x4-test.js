@@ -182,7 +182,7 @@ $(function () {
     test("Projection", function () {
         var m = getOrthoMatrix(-1, 1, -1, 1, -1, 1);
         
-        deepEqual(m.elements, [2/(-1, 1), 0, 0, -((-1+1)/(-1-1)),
+        deepEqual(m.elements, [2/(1 - -1), 0, 0, -((1 + -1)/(1 - -1)),
                                0, 2/(1 - (-1)), 0, -((1 + -1)/(1 - -1)),
                                0, 0, (-2)/(1 - -1), -((1 + -1)/(1 - -1)),
                                0, 0, 0, 1], 
@@ -197,15 +197,7 @@ $(function () {
                                0, 0, 0, 1], 
                                "Project onto a surface of left -5, right 3, bottom 0, top 4, near -3, and far 0."
         );
-        
-        raises(
-            function () {
-               return getOrthoMatrix(0, 0, 0, 0, 0, 0);
-            },
-            "Mathematically impossible."
-        );
-        
-        
+              
     });
 
 });

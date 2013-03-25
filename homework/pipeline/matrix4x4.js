@@ -117,6 +117,34 @@ var Matrix4x4 = (function () {
                 1.0
             );
     };
+    
+     getOrthoMatrix = function (left, right, bottom, top, zNear, zFar) {
+            var width = right - left,
+                height = top - bottom,
+                depth = zFar - zNear;
+
+            return new Matrix4x4(
+                2.0 / width,
+                0.0,
+                0.0,
+                -(right + left) / width,
+
+                0.0,
+                2.0 / height,
+                0.0, 
+                -(top + bottom) / height,
+                
+                0.0,
+                0.0,
+                -2.0 / depth,
+                -(zFar + zNear) / depth,
+            
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            );
+        };
 
     return matrix4x4;
 })();
