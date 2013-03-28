@@ -173,27 +173,27 @@
         
         //A blade shape
         // JD: Watch your winding here.
-        {   
+        /*{   
             color: { r: 0.0, g: 0.5, b: 0.0 },
             vertices: Shapes.toRawTriangleArray(Shapes.blade()),
             mode: gl.TRIANGLES
-        },
+        },*/
         
         //A tetrahedron
-        {
+        /*{
             color: {r: 0.5, g: 0.5, b: 0.0},
             vertices: Shapes.toRawTriangleArray(Shapes.tetrahedron()),
             mode: gl.TRIANGLES
-        }/*,
+        },*/
         
         //A sphere. Will currently display with a hole at the end
         // JD: Actually, based on the TRIANGLES rendering, there are quite
         //     a few holes!
         {
             color: {r: 0.0, g:0.5, b:0.5},
-            vertices: Shapes.toRawTriangleArray(Shapes.sphere(20, 20)),
-            mode: gl.TRIANGLES
-        }*/
+            vertices: Shapes.toRawTriangleArray(Shapes.sphere(10, 10)),
+            mode: gl.TRIANGLE_STRIP
+        }
             
         
         
