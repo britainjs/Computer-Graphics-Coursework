@@ -136,13 +136,15 @@ $(function () {
                                0, 0, 1, 0,
                                0, 0, 0, 1], "Rotate by 0 around the z axis.");
         m = getRotationMatrix(180, 0, 1, 0);
-        deepEqual(m.elements, [-1, 0, 1.2246063538223773e-16, 0,
+        var radians = 180 * (Math.PI / 180);
+        deepEqual(m.elements, [Math.cos(radians), 0, Math.sin(radians), 0,
                                 0, 1, 0, 0,
-                                -1.2246063538223773e-16, 0, -1, 0,
+                                -Math.sin(radians), 0, Math.cos(radians), 0,
                                 0, 0, 0, 1], "Rotate by 180 degrees around the y-axis.");
         m = getRotationMatrix(30, 0, 0, 1);
-        deepEqual(m.elements, [0.8660254037844387, -0.49999999999999994, 0, 0,
-                               0.49999999999999994, 0.8660254037844387, 0, 0,
+        radians = 30 * (Math.PI / 180);
+        deepEqual(m.elements, [Math.cos(radians), -Math.sin(radians), 0, 0,
+                               Math.sin(radians), Math.cos(radians), 0, 0,
                                0, 0, 1, 0,
                                0, 0, 0, 1], "Rotate by 30 degrees around the z axis.");
     });
