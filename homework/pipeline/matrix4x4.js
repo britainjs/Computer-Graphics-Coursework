@@ -191,6 +191,17 @@ var Matrix4x4 = (function () {
             );
         };
         
+        //A catch-all transform. At least one of x, y, z must be 1 to avoid errors
+        instanceTransform = function (dx, dy, dz, sx, sy, sz, angle, x, y, z) {
+            var t = getTranslationMatrix(dx, dy, dz),
+                s = getScaleMatrix(sx, sy, sz),
+                r = getRotationMatrix(angle, x, y, z),
+                m1 = t.multiply(s),
+                m2 = m1.multiply(r);
+            return m2.toColumnMajor();
+        
+        };
+        
         
 
     return matrix4x4;

@@ -256,15 +256,6 @@ var Shapes = {
             vertices: points,
             indices: route
         }
-    },
-    
-    instanceTransform: function (dx, dy, dz, sx, sy, sz, angle, x, y, z) {
-        var t = getTranslationMatrix(dx, dy, dz),
-            s = getScaleMatrix(sx, sy, sz),
-            r = getRotationMatrix(angle, x, y, z);
-            
-        return t.multiply(s).multiply(r);
-        
     }
 
 };
