@@ -58,6 +58,9 @@ var Matrix4x4 = (function () {
     },
     
     //Translation. Shifts the point in space by the given x, y, and z coordinate.
+    //
+    // JD: *Deet deet deet* global name alert!  Global name alert!
+    //     Assign these to matrix4x4 instead.
     getTranslationMatrix = function (dx, dy, dz) {
         return new matrix4x4(1, 0, 0, dx,
                              0, 1, 0, dy,
@@ -192,6 +195,21 @@ var Matrix4x4 = (function () {
         };
         
         //A catch-all transform. At least one of x, y, z must be 1 to avoid errors
+        //
+        // JD: You can use the || idiom to capture default values, e.g.:
+        //
+        //         getTranslationMatrix(dx || 0, dy || 0, dz || 0);
+        //
+        //     That might help keep things compact.
+        //
+        //     Also, it doesn't look like you need variables.  You can just
+        //     chain the thing:
+        //
+        //         return getTranslationMatrix(...)
+        //                    .multiply(getScaleMatrix(...))
+        //                    .multiply(getRotationMatrix(...))
+        //                    .toColumnMajor();
+        //
         instanceTransform = function (dx, dy, dz, sx, sy, sz, angle, x, y, z) {
             var t = getTranslationMatrix(dx, dy, dz),
                 s = getScaleMatrix(sx, sy, sz),

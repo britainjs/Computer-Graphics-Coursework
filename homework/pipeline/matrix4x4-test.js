@@ -7,7 +7,8 @@ $(function () {
     test("Creation and Data Access", function () {
         var m = new Matrix4x4();
 
-
+        // JD: For the matrices with larger numbers, I'd say there's not that
+        //     huge a need to force that 4x4 look.  Just indent as normal.
         deepEqual(m.elements, [1, 0, 0, 0,
                                0, 1, 0, 0,
                                0, 0, 1, 0,
@@ -74,6 +75,11 @@ $(function () {
     });
 
     test("Translate", function () {
+        // JD: What you have below should be:
+        //
+        //         var m1 = Matrix4x4.getTranslationMatrix(5, 7, 9);
+        //
+        //     Ditto for the other functions.
         var m1 = getTranslationMatrix(5, 7, 9);
         deepEqual(m1.elements, [1, 0, 0, 5,
                                 0, 1, 0, 7,
