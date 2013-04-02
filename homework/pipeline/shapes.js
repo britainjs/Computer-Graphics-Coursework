@@ -177,92 +177,42 @@ var Shapes = {
         }
     },
     
-    sphere: function (latitude, longitude) {
-        //Adapted from Angel's book
+    sphere: function (latitude, longitude, radius) {
+        //Adapted from github.com/gpjt/webgl-lessons/blob/master/lesson11/index.html
         
-        var DEGREES_TO_RADIANS = Math.PI / 180.0,
-            points = [],
-            polarRegion = [],
-            route = [],
-            polarRoute = [],
-            theta,
-            phi,
-            rPhi,
-            rPhiPlus,
-            rTheta,
-            sin80,
-            cos80,
-            i;
-        
-        for (phi = -80.0; phi <= 80.0; phi += latitude) {
-            rPhi = phi * DEGREES_TO_RADIANS;
-            rPhiPlus = (phi + latitude) * DEGREES_TO_RADIANS;
-            
-            for (theta = -180.0; theta <= 180.0; theta += longitude) {
-                rTheta = theta * DEGREES_TO_RADIANS;
-                points.push([
-                    // JD: Whoa, that is quite an indent!
-                    //     You can just keep those around where this
-                    //     comment starts.
-                                    Math.sin(rTheta) * Math.cos(rPhi), 
-                                    Math.cos(rTheta) * Math.cos(rPhi) ,
-                                    Math.sin(rPhi)
-                                 ]);
-                points.push([
-                                    Math.sin(rTheta) * Math.cos(rPhiPlus),
-                                    Math.cos(rTheta) * Math.cos(rPhiPlus),
-                                    Math.sin(rPhiPlus)
-                                ]);
+            var vertices = [],
+                indexData = [];
+        for (var latNumber = 0; latNumber <= latitude; latNumber++) {
+            var theta = latNumber * Math.PI / latitude,
+                sinTheta = Math.sin(theta),
+                cosTheta = Math.cos(theta);
+
+            for (var longNumber = 0; longNumber <= longitude; longNumber++) {
+                var phi = longNumber * 2 * Math.PI / longitude,
+                    sinPhi = Math.sin(phi),
+                    cosPhi = Math.cos(phi),
+                    x = cosPhi * sinTheta,
+                    y = cosTheta,
+                    z = sinPhi * sinTheta;
+
+                vertices.push([radius * x, radius * y, radius * z]);
             }
-        }
-        
-        polarRegion.push([0.0, 0.0, 1.0]);
-        
-        sin80 = Math.sin(80.0 * DEGREES_TO_RADIANS);
-        cos80 = Math.cos(80.0 * DEGREES_TO_RADIANS); 
-        
-        for (theta = -180.0; theta <= 180.0; theta += longitude) {
-            rTheta = theta * DEGREES_TO_RADIANS;
-            polarRegion.push([
-                              Math.sin(rTheta) * cos80,
-                              Math.cos(rTheta) * cos80,
-                              sin80
-                              ]);
-        }
-        
-        polarRegion.push([0.0, 0.0, -1.0]);
-        
-        for (theta = -180.0; theta <= 180.0; theta += longitude) {
-            rTheta = theta * DEGREES_TO_RADIANS;
-            polarRegion.push([
-                              Math.sin(rTheta) * cos80,
-                              Math.cos(rTheta) * cos80,
-                              sin80
-                              ]);
-        }
-        
-        //Time to set the indices
-        for (i = 0; i < points.length; i += 3) {
-            route.push([i, i + 1, i + 2]);
-        }
-        
-        for (i = 0; i < polarRegion.length; i += 3) {
-            polarRoute.push([i, i + 1, i + 2]);
-        }
-        
-        //Currently the method does not return the polar region since composite object
-        //drawing is not fully implemented.
-        return [
-            {
-                vertices: points,
-                indices: route
-            },
-            
-            {
-                vertices: polarRegion,
-                indices: polarRoute
-            }
-        ]
+         }
+
+         for (var latNumber = 0; latNumber < latitude; latNumber++) {
+             for (var longNumber = 0; longNumber < longitude; longNumber++) {
+                 var first = (latNumber * (longitude + 1)) + longNumber,
+                     second = first + longitude + 1;
+                 indexData.push([first, second, first + 1]);
+
+                 indexData.push([second, second + 1, first + 1]);
+             }
+         }
+      
+         return {
+             vertices: vertices,
+             indices: indexData
+         }
     }
 
 };

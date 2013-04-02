@@ -123,21 +123,9 @@
         // JD: Actually, based on the TRIANGLES rendering, there are quite
         //     a few holes!
         {   
-            shapes: [
-                {
-                    color: {r: 0.0, g:0.5, b:0.5},
-                    vertices: Shapes.toRawTriangleArray(Shapes.sphere(10, 10)[0]),
-                    mode: gl.LINES
-                },
-                {
-                    color: {r: 0.0, g: 0.5, b: 0.5},
-                    vertices: Shapes.toRawTriangleArray(Shapes.sphere(10, 10)[1]),
-                    mode: gl.TRIANGLE_FAN
-                }
-            ],
-            
-            composite: true
-            
+            color: {r: 0.0, g:0.5, b:0.5},
+            vertices: Shapes.toRawTriangleArray(Shapes.sphere(30, 30, 1)),
+            mode: gl.TRIANGLES
         }
             
         
