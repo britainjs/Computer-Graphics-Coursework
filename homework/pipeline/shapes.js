@@ -252,10 +252,17 @@ var Shapes = {
         
         //Currently the method does not return the polar region since composite object
         //drawing is not fully implemented.
-        return {
-            vertices: points,
-            indices: route
-        }
+        return [
+            {
+                vertices: points,
+                indices: route
+            },
+            
+            {
+                vertices: polarRegion,
+                indices: polarRoute
+            }
+        ]
     }
 
 };
