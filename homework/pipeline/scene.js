@@ -21,7 +21,7 @@
         // Important state variables.
         currentRotation = 0.0,
         currentInterval,
-        rotationMatrix,
+        transformMatrix,
         vertexPosition,
         vertexColor,
 
@@ -113,11 +113,12 @@
         },*/
         
         //A tetrahedron
-        /*{
-            color: {r: 0.5, g: 0.5, b: 0.0},
+        {
+            color: {r: 1.0, g: 1.0, b: 1.0},
             vertices: Shapes.toRawTriangleArray(Shapes.tetrahedron()),
-            mode: gl.TRIANGLES
-        },*/
+            mode: gl.TRIANGLES,
+            transform: Matrix4x4.instanceTransform(0, -0.5, 0, 0.5, 0.5, 0.5, currentRotation, 0, 1, 0).elements
+        },
         
         //A sphere. Will currently display with a hole at the end
         // JD: Actually, based on the TRIANGLES rendering, there are quite
@@ -125,7 +126,8 @@
         {   
             color: {r: 0.0, g:0.5, b:0.5},
             vertices: Shapes.toRawTriangleArray(Shapes.sphere(30, 30, 1)),
-            mode: gl.TRIANGLES
+            mode: gl.TRIANGLES,
+            transform: Matrix4x4.instanceTransform(-0.5, 0.5, 0, 0.25, 0.25 ,0.25, currentRotation, 0, 1, 0).elements
         }
             
         
@@ -208,13 +210,16 @@
 
     // All done --- tell WebGL to use the shader program from now on.
     gl.useProgram(shaderProgram);
+    
 
-    // Hold on to the important variables within the shaders.
+
     vertexPosition = gl.getAttribLocation(shaderProgram, "vertexPosition");
     gl.enableVertexAttribArray(vertexPosition);
     vertexColor = gl.getAttribLocation(shaderProgram, "vertexColor");
     gl.enableVertexAttribArray(vertexColor);
-    rotationMatrix = gl.getUniformLocation(shaderProgram, "rotationMatrix");
+    transformMatrix = gl.getUniformLocation(shaderProgram, "transformMatrix");
+   // };
+
 
     /*
      * Displays an individual object or a composite object. A composite object is
@@ -255,11 +260,10 @@
         // Clear the display.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        // Set up the rotation matrix.
-        gl.uniformMatrix4fv(rotationMatrix, gl.FALSE, new Float32Array(Matrix4x4.instanceTransform(0, 0, 0, 1, 1, 1, currentRotation, 0, 1, 0).elements));
-
+        
         // Display the objects.
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
+            gl.uniformMatrix4fv(transformMatrix, gl.FALSE, new Float32Array(objectsToDraw[i].transform));
             drawObject(objectsToDraw[i]);
         }
 
@@ -281,6 +285,7 @@
                 drawScene();
                 if (currentRotation >= 360.0) {
                     currentRotation -= 360.0;
+                    
                 }
             }, 30);
         }
