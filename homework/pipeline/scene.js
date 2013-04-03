@@ -20,6 +20,8 @@
 
         // Important state variables.
         currentRotation = 0.0,
+        currentDX,
+        currentDY = -0.5,
         currentInterval,
         transformMatrix,
         vertexPosition,
@@ -117,7 +119,15 @@
             color: {r: 1.0, g: 1.0, b: 1.0},
             vertices: Shapes.toRawTriangleArray(Shapes.tetrahedron()),
             mode: gl.TRIANGLES,
-            transform: Matrix4x4.instanceTransform(0, -0.5, 0, 0.5, 0.5, 0.5, currentRotation, 0, 1, 0).elements
+            transform: {dy: -0.5,
+                        sx: 0.5,
+                        sy: 1,
+                        sz: 0.5,
+                        angle: 180,
+                        x: 0,
+                        y: 1,
+                        z: 0
+            }
         },
         
         //A sphere. Will currently display with a hole at the end
@@ -127,7 +137,40 @@
             color: {r: 0.0, g:0.5, b:0.5},
             vertices: Shapes.toRawTriangleArray(Shapes.sphere(30, 30, 1)),
             mode: gl.TRIANGLES,
-            transform: Matrix4x4.instanceTransform(-0.5, 0.5, 0, 0.25, 0.25 ,0.25, currentRotation, 0, 1, 0).elements
+            transform: {dx: -0.5,
+                        dy: 0.5,
+                        sx: 0.25,
+                        sy: 0.25,
+                        sz: 0.25,
+                        angle: currentRotation,
+                        x: 0,
+                        y: 1,
+                        z: 0
+            }
+        },
+
+        {
+            color: {r: 0.5, g: 0.2, b: 0.0},
+            vertices: [].concat(
+                [1.0, -0.5, -1.0],
+                [1.0, -1.0, 1.0],
+                [-1.0, -1.0, 1.0],
+                [-1.0, -0.5, -1.0]
+            ),
+            mode: gl.TRIANGLE_FAN,
+            transform: {x: 1}
+        },
+        
+        {
+            color: {r: 0.7, g: 0.0, b: 0.5},
+            vertices: [].concat(
+                [-1.0, -1.0, 0.7],
+                [1.0, -1.0, 0.7],
+                [1.0, 1.0, 0.7],
+                [-1.0, 1.0, 0.7]
+            ),
+            mode: gl.TRIANGLE_FAN,
+            transform: {x: 1}
         }
             
         
@@ -263,7 +306,10 @@
         
         // Display the objects.
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
-            gl.uniformMatrix4fv(transformMatrix, gl.FALSE, new Float32Array(objectsToDraw[i].transform));
+            objectsToDraw[0].transform.angle = currentRotation;
+            objectsToDraw[1].transform.dx;
+            objectsToDraw[1].transform.dy;
+            gl.uniformMatrix4fv(transformMatrix, gl.FALSE, new Float32Array(Matrix4x4.instanceTransform(objectsToDraw[i].transform).elements));
             drawObject(objectsToDraw[i]);
         }
 
@@ -282,6 +328,8 @@
         } else {
             currentInterval = setInterval(function () {
                 currentRotation += 1.0;
+                currentDX -= 0.1;
+                currentDY -= 0.1;
                 drawScene();
                 if (currentRotation >= 360.0) {
                     currentRotation -= 360.0;

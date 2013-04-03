@@ -193,10 +193,10 @@ var Matrix4x4 = (function () {
         
         //A catch-all transform.
 
-        matrix4x4.instanceTransform = function (dx, dy, dz, sx, sy, sz, angle, x, y, z) {
-            return matrix4x4.getTranslationMatrix(dx || 0, dy || 0, dz || 0).multiply(
-                matrix4x4.getScaleMatrix(sx || 1, sy || 1, sz || 1).multiply(
-                    matrix4x4.getRotationMatrix(angle || 0, x || 1, y || 1, z || 1))).toColumnMajor();
+        matrix4x4.instanceTransform = function (object) {
+            return matrix4x4.getTranslationMatrix(object.dx || 0, object.dy || 0, object.dz || 0).multiply(
+                matrix4x4.getScaleMatrix(object.sx || 1, object.sy || 1, object.sz || 1).multiply(
+                    matrix4x4.getRotationMatrix(object.angle || 0, object.x || 0, object.y || 0, object.z || 0))).toColumnMajor();
         };
         
         
