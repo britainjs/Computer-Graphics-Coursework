@@ -58,14 +58,7 @@ var Matrix4x4 = (function () {
     },
     
     //Translation. Shifts the point in space by the given x, y, and z coordinate.
-<<<<<<< HEAD
-    //
-    // JD: *Deet deet deet* global name alert!  Global name alert!
-    //     Assign these to matrix4x4 instead.
-    getTranslationMatrix = function (dx, dy, dz) {
-=======
     matrix4x4.getTranslationMatrix = function (dx, dy, dz) {
->>>>>>> Tied the different transform matrices to the matrix4x4 object.
         return new matrix4x4(1, 0, 0, dx,
                              0, 1, 0, dy,
                              0, 0, 1, dz,
@@ -198,37 +191,12 @@ var Matrix4x4 = (function () {
             );
         };
         
-        //A catch-all transform. At least one of x, y, z must be 1 to avoid errors
-<<<<<<< HEAD
-        //
-        // JD: You can use the || idiom to capture default values, e.g.:
-        //
-        //         getTranslationMatrix(dx || 0, dy || 0, dz || 0);
-        //
-        //     That might help keep things compact.
-        //
-        //     Also, it doesn't look like you need variables.  You can just
-        //     chain the thing:
-        //
-        //         return getTranslationMatrix(...)
-        //                    .multiply(getScaleMatrix(...))
-        //                    .multiply(getRotationMatrix(...))
-        //                    .toColumnMajor();
-        //
-        instanceTransform = function (dx, dy, dz, sx, sy, sz, angle, x, y, z) {
-            var t = getTranslationMatrix(dx, dy, dz),
-                s = getScaleMatrix(sx, sy, sz),
-                r = getRotationMatrix(angle, x, y, z),
-=======
+        //A catch-all transform.
+
         matrix4x4.instanceTransform = function (dx, dy, dz, sx, sy, sz, angle, x, y, z) {
-            var t = matrix4x4.getTranslationMatrix(dx, dy, dz),
-                s = matrix4x4.getScaleMatrix(sx, sy, sz),
-                r = matrix4x4.getRotationMatrix(angle, x, y, z),
->>>>>>> Tied the different transform matrices to the matrix4x4 object.
-                m1 = t.multiply(s),
-                m2 = m1.multiply(r);
-            return m2.toColumnMajor();
-        
+            return matrix4x4.getTranslationMatrix(dx || 0, dy || 0, dz || 0).multiply(
+                matrix4x4.getScaleMatrix(sx || 1, sy || 1, sz || 1).multiply(
+                    matrix4x4.getRotationMatrix(angle || 0, x || 1, y || 1, z || 1))).toColumnMajor();
         };
         
         
