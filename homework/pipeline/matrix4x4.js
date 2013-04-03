@@ -58,10 +58,14 @@ var Matrix4x4 = (function () {
     },
     
     //Translation. Shifts the point in space by the given x, y, and z coordinate.
+<<<<<<< HEAD
     //
     // JD: *Deet deet deet* global name alert!  Global name alert!
     //     Assign these to matrix4x4 instead.
     getTranslationMatrix = function (dx, dy, dz) {
+=======
+    matrix4x4.getTranslationMatrix = function (dx, dy, dz) {
+>>>>>>> Tied the different transform matrices to the matrix4x4 object.
         return new matrix4x4(1, 0, 0, dx,
                              0, 1, 0, dy,
                              0, 0, 1, dz,
@@ -69,7 +73,7 @@ var Matrix4x4 = (function () {
     };
     
     //Scale
-    getScaleMatrix = function (sx, sy, sz) {
+    matrix4x4.getScaleMatrix = function (sx, sy, sz) {
         if ( (sx <= 0) || (sy <= 0) || (sz <= 0) ) {
             throw "Scale factor must be greater than 0.";
         }
@@ -79,7 +83,7 @@ var Matrix4x4 = (function () {
                              0, 0, 0, 1);
     };
     
-    getRotationMatrix = function (angle, x, y, z) {
+    matrix4x4.getRotationMatrix = function (angle, x, y, z) {
          var axisLength = Math.sqrt((x * x) + (y * y) + (z * z)),
                 s = Math.sin(angle * Math.PI / 180.0),
                 c = Math.cos(angle * Math.PI / 180.0),
@@ -137,7 +141,7 @@ var Matrix4x4 = (function () {
             );
     };
     
-     getOrthoMatrix = function (left, right, bottom, top, zNear, zFar) {
+     matrix4x4.getOrthoMatrix = function (left, right, bottom, top, zNear, zFar) {
             var width = right - left,
                 height = top - bottom,
                 depth = zFar - zNear;
@@ -165,7 +169,7 @@ var Matrix4x4 = (function () {
             );
         };
         
-        getFrustumMatrix = function (left, right, bottom, top, zNear, zFar) {
+        matrix4x4.getFrustumMatrix = function (left, right, bottom, top, zNear, zFar) {
             var n2 = 2 * zNear,
                 width = right - left,
                 height = top - bottom,
@@ -195,6 +199,7 @@ var Matrix4x4 = (function () {
         };
         
         //A catch-all transform. At least one of x, y, z must be 1 to avoid errors
+<<<<<<< HEAD
         //
         // JD: You can use the || idiom to capture default values, e.g.:
         //
@@ -214,6 +219,12 @@ var Matrix4x4 = (function () {
             var t = getTranslationMatrix(dx, dy, dz),
                 s = getScaleMatrix(sx, sy, sz),
                 r = getRotationMatrix(angle, x, y, z),
+=======
+        matrix4x4.instanceTransform = function (dx, dy, dz, sx, sy, sz, angle, x, y, z) {
+            var t = matrix4x4.getTranslationMatrix(dx, dy, dz),
+                s = matrix4x4.getScaleMatrix(sx, sy, sz),
+                r = matrix4x4.getRotationMatrix(angle, x, y, z),
+>>>>>>> Tied the different transform matrices to the matrix4x4 object.
                 m1 = t.multiply(s),
                 m2 = m1.multiply(r);
             return m2.toColumnMajor();
