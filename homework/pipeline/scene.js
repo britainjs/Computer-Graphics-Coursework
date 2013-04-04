@@ -21,9 +21,11 @@
         // Important state variables.
         currentRotation = 0.0,
         currentDX,
-        currentDY = -0.5,
+        currentDY = 0.7,
+        up = true,
         currentInterval,
         transformMatrix,
+        //projectionMatrix,
         vertexPosition,
         vertexColor,
 
@@ -59,67 +61,13 @@
 
     // Build the objects to display.
     objectsToDraw = [
-       /* {
-            vertices: [].concat(
-                [ 0.0, 0.0, 0.0 ],
-                [ 0.5, 0.0, -0.75 ],
-                [ 0.0, 0.5, 0.0 ]
-            ),
-            colors: [].concat(
-                [ 1.0, 0.0, 0.0 ],
-                [ 0.0, 1.0, 0.0 ],
-                [ 0.0, 0.0, 1.0 ]
-            ),
-            mode: gl.TRIANGLES
-        },
-
-        {
-            color: { r: 0.0, g: 1.0, b: 0 },
-            vertices: [].concat(
-                [ 0.25, 0.0, -0.5 ],
-                [ 0.75, 0.0, -0.5 ],
-                [ 0.25, 0.5, -0.5 ]
-            ),
-            mode: gl.TRIANGLES
-        },
-
-        {
-            color: { r: 0.0, g: 0.0, b: 1.0 },
-            vertices: [].concat(
-                [ -0.25, 0.0, 0.5 ],
-                [ 0.5, 0.0, 0.5 ],
-                [ -0.25, 0.5, 0.5 ]
-            ),
-            mode: gl.TRIANGLES
-        }, 
-
-        {
-            color: { r: 0.0, g: 0.0, b: 1.0 },
-            vertices: [].concat(
-                [ -1.0, -1.0, 0.75 ],
-                [ -1.0, -0.1, -1.0 ],
-                [ -0.1, -0.1, -1.0 ],
-                [ -0.1, -1.0, 0.75 ]
-            ),
-            mode: gl.LINE_LOOP
-        },*/
-        // I have not implemented (or figured out) transforms yet, so comment out the 
-        // shapes you do not wish displayed.
-        
-        //A blade shape
-        // JD: Watch your winding here.
-        /*{   
-            color: { r: 0.0, g: 0.5, b: 0.0 },
-            vertices: Shapes.toRawTriangleArray(Shapes.blade()),
-            mode: gl.TRIANGLES
-        },*/
         
         //A tetrahedron
         {
             color: {r: 1.0, g: 1.0, b: 1.0},
             vertices: Shapes.toRawTriangleArray(Shapes.tetrahedron()),
             mode: gl.TRIANGLES,
-            transform: {dy: -0.5,
+            transform: {dy:- 0.5,
                         sx: 0.5,
                         sy: 1,
                         sz: 0.5,
@@ -148,7 +96,8 @@
                         z: 0
             }
         },
-
+        
+        //The ground
         {
             color: {r: 0.5, g: 0.2, b: 0.0},
             vertices: [].concat(
@@ -161,6 +110,7 @@
             transform: {x: 1}
         },
         
+        //the sky
         {
             color: {r: 0.7, g: 0.0, b: 0.5},
             vertices: [].concat(
@@ -171,6 +121,33 @@
             ),
             mode: gl.TRIANGLE_FAN,
             transform: {x: 1}
+        },
+        
+        {
+            composite: true,
+            shapes: [
+                {
+                    color: {r: 1.0, g: 1.0, b: 1.0},
+                    vertices: Shapes.toRawTriangleArray(Shapes.sphere(10, 10, 0.15)),
+                    mode: gl.LINE_LOOP,
+                    transform: {
+                        dy: 0.7,
+                        angle: 0,
+                        y: 1
+                    }
+                },
+                
+                {
+                    color: {r: 1.0, g: 1.0, b: 1.0},
+                    vertices: Shapes.toRawTriangleArray(Shapes.sphere(30, 30, 0.07)),
+                    mode: gl.LINE_LOOP,
+                    transform: {
+                        dy: 0.7,
+                        angle: 0,
+                        y: 1
+                    }
+                }           
+            ]
         }
             
         
@@ -261,6 +238,7 @@
     vertexColor = gl.getAttribLocation(shaderProgram, "vertexColor");
     gl.enableVertexAttribArray(vertexColor);
     transformMatrix = gl.getUniformLocation(shaderProgram, "transformMatrix");
+    //projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
    // };
 
 
@@ -302,15 +280,25 @@
     drawScene = function () {
         // Clear the display.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
+        //gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix4x4.getFrustumMatrix(0, 1, 0, 1, 1, -10).elements));
         
         // Display the objects.
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
-            objectsToDraw[0].transform.angle = currentRotation;
-            objectsToDraw[1].transform.dx;
-            objectsToDraw[1].transform.dy;
-            gl.uniformMatrix4fv(transformMatrix, gl.FALSE, new Float32Array(Matrix4x4.instanceTransform(objectsToDraw[i].transform).elements));
-            drawObject(objectsToDraw[i]);
+            //Probably a better way to do this.
+            objectsToDraw[4].shapes[0].transform.angle = currentRotation;
+            objectsToDraw[4].shapes[1].transform.angle = currentRotation;
+            objectsToDraw[4].shapes[0].transform.dy = currentDY;
+            objectsToDraw[4].shapes[1].transform.dy = currentDY;
+            
+            if (objectsToDraw[i].composite){
+                for (j = 0; j < objectsToDraw[i].shapes.length; j += 1) {
+                    gl.uniformMatrix4fv(transformMatrix, gl.FALSE, new Float32Array(Matrix4x4.instanceTransform(objectsToDraw[i].shapes[j].transform).elements)); 
+                    drawObject(objectsToDraw[i].shapes[j]);
+                }
+            }else{  
+                gl.uniformMatrix4fv(transformMatrix, gl.FALSE, new Float32Array(Matrix4x4.instanceTransform(objectsToDraw[i].transform).elements));
+                drawObject(objectsToDraw[i]);
+            }
         }
 
         // All done.
@@ -328,14 +316,23 @@
         } else {
             currentInterval = setInterval(function () {
                 currentRotation += 1.0;
-                currentDX -= 0.1;
-                currentDY -= 0.1;
+                if (up) {
+                    currentDY += 0.001;
+                    if (currentDY >= 0.75) {
+                        up = false;
+                    }
+                } else {
+                    currentDY -= 0.001;
+                    if (currentDY <= 0.65) {
+                        up = true;
+                    }
+                }                
                 drawScene();
                 if (currentRotation >= 360.0) {
                     currentRotation -= 360.0;
                     
                 }
-            }, 30);
+            }, 5);
         }
     });
 
