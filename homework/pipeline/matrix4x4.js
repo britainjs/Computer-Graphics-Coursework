@@ -199,7 +199,21 @@ var Matrix4x4 = (function () {
                     matrix4x4.getRotationMatrix(object.angle || 0, object.x || 0, object.y || 0, object.z || 0))).toColumnMajor();
         };
         
-        
+        // The camera transform.
+        matrix4x4.getLookAtMatrix = function (p, q, up) {
+            var ze = (p.subtract(q)).unit(),
+                ye = (up.subtract(up.projection(ze))).unit(),
+                xe = ye.cross(ze);
+                console.log(ze);
+                console.log(ye);
+                console.log(xe);
+            return new Matrix4x4(
+                xe.x(), xe.y(), xe.z(), -(p.dot(xe)),
+                ye.x(), ye.y(), ye.z(), -(p.dot(ye)),
+                ze.x(), ze.y(), ze.z(), -(p.dot(ze)),
+                0, 0, 0, 1
+            );
+        };
 
     return matrix4x4;
 })();

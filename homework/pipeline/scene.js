@@ -25,6 +25,7 @@
         up = true,
         currentInterval,
         transformMatrix,
+        cameraMatrix,
         //projectionMatrix,
         vertexPosition,
         vertexColor,
@@ -238,6 +239,7 @@
     vertexColor = gl.getAttribLocation(shaderProgram, "vertexColor");
     gl.enableVertexAttribArray(vertexColor);
     transformMatrix = gl.getUniformLocation(shaderProgram, "transformMatrix");
+    cameraMatrix = gl.getUniformLocation(shaderProgram, "cameraMatrix");
     //projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
    // };
 
@@ -305,6 +307,9 @@
         gl.flush();
     };
 
+    gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(
+        new Matrix4x4().elements));
+
     // Draw the initial scene.
     drawScene();
 
@@ -327,6 +332,12 @@
                         up = true;
                     }
                 }                
+    gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(
+        Matrix4x4.getLookAtMatrix(
+            new Vector(currentRotation / 100, 0, 0),
+            new Vector(currentRotation / 100, 0, -1),
+            new Vector(0, 1, 0)
+        ).toColumnMajor().elements));
                 drawScene();
                 if (currentRotation >= 360.0) {
                     currentRotation -= 360.0;

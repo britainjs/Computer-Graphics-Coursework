@@ -31,7 +31,9 @@
 
         <!-- Shapes is a library that generates "canned" shapes. -->
         <script src="shapes.js"></script>
-        
+
+        <script src="vector.js"></script>
+
         <!-- Library of matrix transformations -->
         <script src="matrix4x4.js"></script>
 
@@ -52,10 +54,11 @@
             attribute vec3 vertexColor;
             varying vec4 finalVertexColor;
             uniform mat4 transformMatrix;
+            uniform mat4 cameraMatrix;
             //uniform mat4 projectionMatrix;
 
             void main(void) {
-                gl_Position = transformMatrix * vec4(vertexPosition, 1.0);
+                gl_Position = cameraMatrix * transformMatrix * vec4(vertexPosition, 1.0);
                 finalVertexColor = vec4(vertexColor, 1.0);
             }
         </script>
