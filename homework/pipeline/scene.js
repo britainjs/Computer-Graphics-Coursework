@@ -68,6 +68,7 @@
             color: {r: 1.0, g: 1.0, b: 1.0},
             vertices: Shapes.toRawTriangleArray(Shapes.tetrahedron()),
             mode: gl.TRIANGLES,
+            // JD: See the object below for the preferred indentation...
             transform: {dy:- 0.5,
                         sx: 0.5,
                         sy: 1,
@@ -86,15 +87,17 @@
             color: {r: 0.0, g:0.5, b:0.5},
             vertices: Shapes.toRawTriangleArray(Shapes.sphere(30, 30, 1)),
             mode: gl.TRIANGLES,
-            transform: {dx: -0.5,
-                        dy: 0.5,
-                        sx: 0.25,
-                        sy: 0.25,
-                        sz: 0.25,
-                        angle: currentRotation,
-                        x: 0,
-                        y: 1,
-                        z: 0
+            // JD: Preferred formatting is as follows (compare to above):
+            transform: {
+                dx: -0.5,
+                dy: 0.5,
+                sx: 0.25,
+                sy: 0.25,
+                sz: 0.25,
+                angle: currentRotation,
+                x: 0,
+                y: 1,
+                z: 0
             }
         },
         
@@ -112,6 +115,8 @@
         },
         
         //the sky
+        // JD: As you can see, you may need to expand this now---maybe even
+        //     make it a cylinder or a dome!
         {
             color: {r: 0.7, g: 0.0, b: 0.5},
             vertices: [].concat(
@@ -125,7 +130,10 @@
         },
         
         {
-            composite: true,
+            composite: true, // JD: In JavaScript, this is actually redundant; you
+                             //     can set things up so that the very presence of
+                             //     the shapes array signals that the current
+                             //     object has children.
             shapes: [
                 {
                     color: {r: 1.0, g: 1.0, b: 1.0},
@@ -157,6 +165,13 @@
 
     // Pass the vertices to WebGL.
     for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
+        // JD: Note that this goes to only one level of children.  Ideally your
+        //     object composition can go arbitrarily deep.
+        //
+        //     The other red flag that should be raised here is that you have
+        //     two fairly large chunks of nearly identical code.  This can be
+        //     unified (while also solving the only-one-level-of-children
+        //     limitation!).
         if (objectsToDraw[i].composite) {
             for (j = 0; j < objectsToDraw[i].shapes.length; j++) {
                  objectsToDraw[i].shapes[j].buffer = GLSLUtilities.initVertexBuffer(gl,
@@ -174,6 +189,7 @@
                         );
                     }
                 }
+            // JD: Bad indent here.
             objectsToDraw[i].shapes[j].colorBuffer = GLSLUtilities.initVertexBuffer(gl,
                     objectsToDraw[i].shapes[j].colors);
             
@@ -252,6 +268,9 @@
      * so it has been commented out.
      */
     // JD: OK, missing composite functionality noted.
+
+    // JD 0409: Composite functionality v1.0 seen, but can be improved (see
+    //     earlier inline comment---that applies here also).
     drawObject = function (object, composite) {
         if(object.composite) {
             for(i = 0; i < object.shapes.length; i++) {
@@ -282,16 +301,22 @@
     drawScene = function () {
         // Clear the display.
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        // JD: This will likely not change for the life of your scene, so you
+        //     can just set this once outside of this function.
         //gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix4x4.getFrustumMatrix(0, 1, 0, 1, 1, -10).elements));
         
         // Display the objects.
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
             //Probably a better way to do this.
+            // JD: Yes :)  You want to make this more general-purpose while
+            //     still capturing the possibility that specific objects
+            //     may behave in different ways.
             objectsToDraw[4].shapes[0].transform.angle = currentRotation;
             objectsToDraw[4].shapes[1].transform.angle = currentRotation;
             objectsToDraw[4].shapes[0].transform.dy = currentDY;
             objectsToDraw[4].shapes[1].transform.dy = currentDY;
-            
+
+            // JD: Composite note again.
             if (objectsToDraw[i].composite){
                 for (j = 0; j < objectsToDraw[i].shapes.length; j += 1) {
                     gl.uniformMatrix4fv(transformMatrix, gl.FALSE, new Float32Array(Matrix4x4.instanceTransform(objectsToDraw[i].shapes[j].transform).elements)); 
@@ -331,7 +356,11 @@
                     if (currentDY <= 0.65) {
                         up = true;
                     }
-                }                
+                }
+    // JD: Ack!  I can't believe I didn't indent this right.  Sorry.
+    //     But I think I intentionally did this as a one-off, and
+    //     that's why I let it stick out.  Yeah, that's right.
+    //     That's the reason  ;-)
     gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(
         Matrix4x4.getLookAtMatrix(
             new Vector(currentRotation / 100, 0, 0),

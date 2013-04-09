@@ -158,6 +158,8 @@ $(function () {
     test("Projection", function () {
         //Test Ortho Matrix
         var m = getOrthoMatrix(-1, 1, -1, 1, -1, 1);
+        // JD: These are elementary enough that you can write out the answer
+        //     instead of using expressions.
         deepEqual(m.elements, [2/(1 - -1), 0, 0, -((1 + -1)/(1 - -1)),
                                0, 2/(1 - (-1)), 0, -((1 + -1)/(1 - -1)),
                                0, 0, (-2)/(1 - -1), -((1 + -1)/(1 - -1)),
@@ -165,6 +167,7 @@ $(function () {
                                "Project onto a surface with left -1, right 1, bottom -1, top 1, near -1, and far 1."
         );
         m = getOrthoMatrix(-5, 3, 0, 4, -3, 0);
+        // JD: Same here---you can go all the way up to the fraction I'd say.
         deepEqual(m.elements, [2/(3 - -5), 0, 0, -((3 + -5)/(3 - -5)),
                                0, 2/(4 - 0), 0, -((4 + 0)/(4 - 0)),
                                0, 0, (-2)/(0 - -3), -((0 + -3)/(0 - -3)),
@@ -173,6 +176,8 @@ $(function () {
         );
         //Test Frustum Matrix
         m = getFrustumMatrix(10, 20, 15, 100, 0, 6);
+        // JD: Now this one does have a cell that deserves to be written as an
+        //     expression---but ironically it's the one written as a literal!
         deepEqual(m.elements, [0, 0, 3, 0,
                                0, 0, 1.3529411764705883, 0,
                                0, 0, -1, 0,
@@ -187,6 +192,9 @@ $(function () {
                                "Perspective projection to left -100, right 100, bottom -100, top 100, near -100, far 100."
         );      
     });
+
+    // JD: TODO camera matrix unit test(s)!
+
     test("Convenience and Conversion", function () {
         //Test conversion to column major
         var m = new Matrix4x4(1, 2, 3, 4,

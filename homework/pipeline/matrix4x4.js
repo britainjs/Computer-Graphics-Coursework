@@ -192,8 +192,12 @@ var Matrix4x4 = (function () {
         };
         
         //A catch-all transform.
-
+        // JD: Nice, but you should probably document the properties
+        //     that you expect object to have.  And probably rename it
+        //     to something more indicative of what it is, like
+        //     "transformParameters" or something like that.
         matrix4x4.instanceTransform = function (object) {
+            // JD: Yikes, this can use some reformatting.
             return matrix4x4.getTranslationMatrix(object.dx || 0, object.dy || 0, object.dz || 0).multiply(
                 matrix4x4.getScaleMatrix(object.sx || 1, object.sy || 1, object.sz || 1).multiply(
                     matrix4x4.getRotationMatrix(object.angle || 0, object.x || 0, object.y || 0, object.z || 0))).toColumnMajor();
