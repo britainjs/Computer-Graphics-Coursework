@@ -42,7 +42,10 @@
         j,
         maxj,
         k,
-        maxk;
+        maxk,
+        
+        // A reusable sphere
+        sphere = Shapes.sphere(30, 30);
 
     // Grab the WebGL rendering context.
     gl = GLSLUtilities.getGL(canvas);
