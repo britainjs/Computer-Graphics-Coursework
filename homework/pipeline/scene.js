@@ -26,7 +26,7 @@
         currentInterval,
         transformMatrix,
         cameraMatrix,
-        //projectionMatrix,
+        projectionMatrix,
         vertexPosition,
         vertexColor,
 
@@ -45,7 +45,7 @@
         maxk,
         
         // A reusable sphere
-        sphere = Shapes.sphere(30, 30);
+        sphere = Shapes.sphere(30, 30, 1);
 
     // Grab the WebGL rendering context.
     gl = GLSLUtilities.getGL(canvas);
@@ -72,15 +72,16 @@
             vertices: Shapes.toRawTriangleArray(Shapes.tetrahedron()),
             mode: gl.TRIANGLES,
             // JD: See the object below for the preferred indentation...
-            transform: {dy:- 0.5,
-                        sx: 0.5,
-                        sy: 1,
-                        sz: 0.5,
-                        angle: 180,
-                        x: 0,
-                        y: 1,
-                        z: 0
-            }
+            transform: {
+                dy:- 0.5,
+                sx: 0.5,
+                sy: 1,
+                sz: 0.5,
+                angle: 180,
+                x: 0,
+                y: 1,
+                z: 0
+             }
         },
         
         //A sphere. Will currently display with a hole at the end
@@ -88,7 +89,7 @@
         //     a few holes!
         {   
             color: {r: 0.0, g:0.5, b:0.5},
-            vertices: Shapes.toRawTriangleArray(Shapes.sphere(30, 30, 1)),
+            vertices: Shapes.toRawTriangleArray(sphere),
             mode: gl.TRIANGLES,
             // JD: Preferred formatting is as follows (compare to above):
             transform: {
@@ -133,7 +134,7 @@
         },
         
         {
-            composite: true, // JD: In JavaScript, this is actually redundant; you
+                             // JD: In JavaScript, this is actually redundant; you
                              //     can set things up so that the very presence of
                              //     the shapes array signals that the current
                              //     object has children.
@@ -175,7 +176,7 @@
         //     two fairly large chunks of nearly identical code.  This can be
         //     unified (while also solving the only-one-level-of-children
         //     limitation!).
-        if (objectsToDraw[i].composite) {
+        if (objectsToDraw[i].shapes) {
             for (j = 0; j < objectsToDraw[i].shapes.length; j++) {
                  objectsToDraw[i].shapes[j].buffer = GLSLUtilities.initVertexBuffer(gl,
                     objectsToDraw[i].shapes[j].vertices);
@@ -193,8 +194,8 @@
                     }
                 }
             // JD: Bad indent here.
-            objectsToDraw[i].shapes[j].colorBuffer = GLSLUtilities.initVertexBuffer(gl,
-                    objectsToDraw[i].shapes[j].colors);
+                objectsToDraw[i].shapes[j].colorBuffer = GLSLUtilities.initVertexBuffer(gl,
+                        objectsToDraw[i].shapes[j].colors);
             
             }
             
@@ -259,8 +260,7 @@
     gl.enableVertexAttribArray(vertexColor);
     transformMatrix = gl.getUniformLocation(shaderProgram, "transformMatrix");
     cameraMatrix = gl.getUniformLocation(shaderProgram, "cameraMatrix");
-    //projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
-   // };
+    projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
 
 
     /*
@@ -275,7 +275,7 @@
     // JD 0409: Composite functionality v1.0 seen, but can be improved (see
     //     earlier inline comment---that applies here also).
     drawObject = function (object, composite) {
-        if(object.composite) {
+        if(object.shapes) {
             for(i = 0; i < object.shapes.length; i++) {
                 // Set the varying colors.
                 gl.bindBuffer(gl.ARRAY_BUFFER, object.shapes[i].colorBuffer);
@@ -301,12 +301,9 @@
     /*
      * Displays the scene.
      */
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix4x4.getFrustumMatrix(-1, 1, -1, 1, 1,        -1).toColumnMajor().elements));
     drawScene = function () {
-        // Clear the display.
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        // JD: This will likely not change for the life of your scene, so you
-        //     can just set this once outside of this function.
-        //gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix4x4.getFrustumMatrix(0, 1, 0, 1, 1, -10).elements));
         
         // Display the objects.
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
@@ -320,7 +317,7 @@
             objectsToDraw[4].shapes[1].transform.dy = currentDY;
 
             // JD: Composite note again.
-            if (objectsToDraw[i].composite){
+            if (objectsToDraw[i].shapes){
                 for (j = 0; j < objectsToDraw[i].shapes.length; j += 1) {
                     gl.uniformMatrix4fv(transformMatrix, gl.FALSE, new Float32Array(Matrix4x4.instanceTransform(objectsToDraw[i].shapes[j].transform).elements)); 
                     drawObject(objectsToDraw[i].shapes[j]);

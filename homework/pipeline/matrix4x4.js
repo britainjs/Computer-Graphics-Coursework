@@ -198,9 +198,22 @@ var Matrix4x4 = (function () {
         //     "transformParameters" or something like that.
         matrix4x4.instanceTransform = function (object) {
             // JD: Yikes, this can use some reformatting.
-            return matrix4x4.getTranslationMatrix(object.dx || 0, object.dy || 0, object.dz || 0).multiply(
-                matrix4x4.getScaleMatrix(object.sx || 1, object.sy || 1, object.sz || 1).multiply(
-                    matrix4x4.getRotationMatrix(object.angle || 0, object.x || 0, object.y || 0, object.z || 0))).toColumnMajor();
+            return matrix4x4.getTranslationMatrix(
+                object.dx || 0,
+                object.dy || 0, 
+                object.dz || 0).multiply(
+                    matrix4x4.getScaleMatrix(
+                        object.sx || 1, 
+                        object.sy || 1, 
+                        object.sz || 1).multiply(
+                            matrix4x4.getRotationMatrix(
+                                object.angle || 0, 
+                                object.x || 0, 
+                                object.y || 0, 
+                                object.z || 0
+                            )
+                    )
+            ).toColumnMajor();
         };
         
         // The camera transform.
@@ -208,9 +221,6 @@ var Matrix4x4 = (function () {
             var ze = (p.subtract(q)).unit(),
                 ye = (up.subtract(up.projection(ze))).unit(),
                 xe = ye.cross(ze);
-                console.log(ze);
-                console.log(ye);
-                console.log(xe);
             return new Matrix4x4(
                 xe.x(), xe.y(), xe.z(), -(p.dot(xe)),
                 ye.x(), ye.y(), ye.z(), -(p.dot(ye)),

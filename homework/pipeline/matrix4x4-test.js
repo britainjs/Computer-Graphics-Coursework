@@ -80,38 +80,38 @@ $(function () {
         //         var m1 = Matrix4x4.getTranslationMatrix(5, 7, 9);
         //
         //     Ditto for the other functions.
-        var m1 = getTranslationMatrix(5, 7, 9);
+        var m1 = Matrix4x4.getTranslationMatrix(5, 7, 9);
         deepEqual(m1.elements, [1, 0, 0, 5,
                                 0, 1, 0, 7,
                                 0, 0, 1, 9,
                                 0, 0, 0, 1], "Translate x by 5, y by 7, and z by 9");      
-        m1 = getTranslationMatrix(0, 0, 4);
+        m1 = Matrix4x4.getTranslationMatrix(0, 0, 4);
         deepEqual(m1.elements, [1, 0, 0, 0,
                                 0, 1, 0, 0,
                                 0, 0, 1, 4,
                                 0, 0, 0, 1], "Translate z by 4.");
-        m1 = getTranslationMatrix(-5, 0.011, -0.53);
+        m1 = Matrix4x4.getTranslationMatrix(-5, 0.011, -0.53);
         deepEqual(m1.elements, [1, 0, 0, -5,
                                 0, 1, 0, 0.011,
                                 0, 0, 1, -0.53,
                                 0, 0, 0, 1], "Translate x by -5, y by 0.011, and z by -0.53");
         var m2 = new Matrix4x4();
-        m1 = getTranslationMatrix(0, 0, 0);
+        m1 = Matrix4x4.getTranslationMatrix(0, 0, 0);
         deepEqual(m1, m2, "Translate by 0, 0, 0 yields the identity matrix.");
     });
 
     test("Scale", function () {
-        var mscale = getScaleMatrix(0.5, 0.5, 0.5);
+        var mscale = Matrix4x4.getScaleMatrix(0.5, 0.5, 0.5);
         deepEqual(mscale.elements, [0.5, 0, 0, 0,
                            0, 0.5, 0, 0,
                            0, 0, 0.5, 0,
                            0, 0, 0, 1], "Scale by 0.5 on all axis.");
-        mscale = getScaleMatrix(2, 1, 1);
+        mscale = Matrix4x4.getScaleMatrix(2, 1, 1);
         deepEqual(mscale.elements, [2, 0, 0, 0,
                            0, 1, 0, 0,
                            0, 0, 1, 0,
                            0, 0, 0, 1], "Scale x value by 2.");
-        mscale = getScaleMatrix(5, 3, 2);
+        mscale = Matrix4x4.getScaleMatrix(5, 3, 2);
         deepEqual(mscale.elements, [5, 0, 0, 0,
                            0, 3, 0, 0,
                            0, 0, 2, 0,
@@ -119,35 +119,35 @@ $(function () {
         // Scaling works by multiplication, so a scale factor  of >= 0 is nonsensical.
         raises(
             function () {
-                return getScaleMatrix(0, 5, 3);
+                return Matrix4x4.getScaleMatrix(0, 5, 3);
             },
             "Check for a scale factor of 0."
         );
         raises(
             function () {
-                return getScaleMatrix(2, 3, -1);
+                return Matrix4x4.getScaleMatrix(2, 3, -1);
             },
             "Check for a negative scale factor."
         );
     });
     test("Rotation", function () {
-        var m = getRotationMatrix(45, 1, 0, 0);
+        var m = Matrix4x4.getRotationMatrix(45, 1, 0, 0);
         deepEqual(m.elements, [1, 0, 0, 0,
                       0, 0.7071067811865476, -0.7071067811865475, 0,
                       0, 0.7071067811865475, 0.7071067811865476, 0,
                       0, 0, 0, 1], "Rotate about x-axis by 45.");
-        m = getRotationMatrix(0, 0, 0, 1);
+        m = Matrix4x4.getRotationMatrix(0, 0, 0, 1);
         deepEqual(m.elements, [1, 0, 0, 0,
                                0, 1, 0, 0,
                                0, 0, 1, 0,
                                0, 0, 0, 1], "Rotate by 0 around the z axis.");
-        m = getRotationMatrix(180, 0, 1, 0);
+        m = Matrix4x4.getRotationMatrix(180, 0, 1, 0);
         var radians = 180 * (Math.PI / 180);
         deepEqual(m.elements, [Math.cos(radians), 0, Math.sin(radians), 0,
                                 0, 1, 0, 0,
                                 -Math.sin(radians), 0, Math.cos(radians), 0,
                                 0, 0, 0, 1], "Rotate by 180 degrees around the y-axis.");
-        m = getRotationMatrix(30, 0, 0, 1);
+        m = Matrix4x4.getRotationMatrix(30, 0, 0, 1);
         radians = 30 * (Math.PI / 180);
         deepEqual(m.elements, [Math.cos(radians), -Math.sin(radians), 0, 0,
                                Math.sin(radians), Math.cos(radians), 0, 0,
@@ -157,7 +157,7 @@ $(function () {
 
     test("Projection", function () {
         //Test Ortho Matrix
-        var m = getOrthoMatrix(-1, 1, -1, 1, -1, 1);
+        var m = Matrix4x4.getOrthoMatrix(-1, 1, -1, 1, -1, 1);
         // JD: These are elementary enough that you can write out the answer
         //     instead of using expressions.
         deepEqual(m.elements, [2/(1 - -1), 0, 0, -((1 + -1)/(1 - -1)),
@@ -166,7 +166,7 @@ $(function () {
                                0, 0, 0, 1], 
                                "Project onto a surface with left -1, right 1, bottom -1, top 1, near -1, and far 1."
         );
-        m = getOrthoMatrix(-5, 3, 0, 4, -3, 0);
+        m = Matrix4x4.getOrthoMatrix(-5, 3, 0, 4, -3, 0);
         // JD: Same here---you can go all the way up to the fraction I'd say.
         deepEqual(m.elements, [2/(3 - -5), 0, 0, -((3 + -5)/(3 - -5)),
                                0, 2/(4 - 0), 0, -((4 + 0)/(4 - 0)),
@@ -175,7 +175,7 @@ $(function () {
                                "Project onto a surface of left -5, right 3, bottom 0, top 4, near -3, and far 0."
         );
         //Test Frustum Matrix
-        m = getFrustumMatrix(10, 20, 15, 100, 0, 6);
+        m = Matrix4x4.getFrustumMatrix(10, 20, 15, 100, 0, 6);
         // JD: Now this one does have a cell that deserves to be written as an
         //     expression---but ironically it's the one written as a literal!
         deepEqual(m.elements, [0, 0, 3, 0,
@@ -184,7 +184,7 @@ $(function () {
                                0, 0, -1, 0], 
                                "Perspective projection to left 10, right 20, bottom 15, top 100, near 0, far 6."
         );
-        m = getFrustumMatrix(-100, 100, -100, 100, -100, 100);
+        m = Matrix4x4.getFrustumMatrix(-100, 100, -100, 100, -100, 100);
         deepEqual(m.elements, [-1, 0, 0, 0,
                                0, -1, 0, 0,
                                0, 0, 0, 100,
