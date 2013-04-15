@@ -58,7 +58,7 @@
             uniform mat4 projectionMatrix;
 
             void main(void) {
-                gl_Position = projectionMatrix * cameraMatrix* transformMatrix * vec4(vertexPosition, 1.0);
+                gl_Position = projectionMatrix * cameraMatrix * transformMatrix * vec4(vertexPosition, 1.0);
                 finalVertexColor = vec4(vertexColor, 1.0);
             }
         </script>

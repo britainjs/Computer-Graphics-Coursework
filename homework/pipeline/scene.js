@@ -21,7 +21,7 @@
         // Important state variables.
         currentRotation = 0.0,
         currentDX,
-        currentDY = 0.7,
+        currentDY = 0,
         up = true,
         currentInterval,
         transformMatrix,
@@ -73,7 +73,7 @@
             mode: gl.TRIANGLES,
             // JD: See the object below for the preferred indentation...
             transform: {
-                dy:- 0.5,
+                dy:- 1.2,
                 sx: 0.5,
                 sy: 1,
                 sz: 0.5,
@@ -115,7 +115,10 @@
                 [-1.0, -0.5, -1.0]
             ),
             mode: gl.TRIANGLE_FAN,
-            transform: {x: 1}
+            transform: {dy: 4,
+                        sx: 10,
+                        sy: 10,
+                        x: 1}
         },
         
         //the sky
@@ -123,13 +126,8 @@
         //     make it a cylinder or a dome!
         {
             color: {r: 0.7, g: 0.0, b: 0.5},
-            vertices: [].concat(
-                [-1.0, -1.0, 0.7],
-                [1.0, -1.0, 0.7],
-                [1.0, 1.0, 0.7],
-                [-1.0, 1.0, 0.7]
-            ),
-            mode: gl.TRIANGLE_FAN,
+            vertices: Shapes.toRawTriangleArray(Shapes.sphere(10, 10, 10)),
+            mode: gl.TRIANGLES,
             transform: {x: 1}
         },
         
@@ -144,7 +142,7 @@
                     vertices: Shapes.toRawTriangleArray(Shapes.sphere(10, 10, 0.15)),
                     mode: gl.LINE_LOOP,
                     transform: {
-                        dy: 0.7,
+                        dy: 1.4,
                         angle: 0,
                         y: 1
                     }
@@ -155,7 +153,7 @@
                     vertices: Shapes.toRawTriangleArray(Shapes.sphere(30, 30, 0.07)),
                     mode: gl.LINE_LOOP,
                     transform: {
-                        dy: 0.7,
+                        dy: 1.4,
                         angle: 0,
                         y: 1
                     }
@@ -302,7 +300,7 @@
      * Displays the scene.
      */
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix4x4.getFrustumMatrix(-1, 1, -1, 1, 1,        -1).toColumnMajor().elements));
+    gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix4x4.getFrustumMatrix(-1, 1, -1, 1, 5,        100).toColumnMajor().elements));
     drawScene = function () {
         
         // Display the objects.
@@ -332,8 +330,16 @@
         gl.flush();
     };
 
-    gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(
-        new Matrix4x4().elements));
+// JD: Ack!  I can't believe I didn't indent this right.  Sorry.
+//     But I think I intentionally did this as a one-off, and
+//     that's why I let it stick out.  Yeah, that's right.
+//     That's the reason  ;-)
+gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(
+    Matrix4x4.getLookAtMatrix(
+        new Vector(0, 0, -8),
+        new Vector(0, 0, 10),
+        new Vector(0, 1, 0)
+    ).toColumnMajor().elements));
 
     // Draw the initial scene.
     drawScene();
@@ -348,25 +354,16 @@
                 currentRotation += 1.0;
                 if (up) {
                     currentDY += 0.001;
-                    if (currentDY >= 0.75) {
+                    if (currentDY >= 0.05) {
                         up = false;
                     }
                 } else {
                     currentDY -= 0.001;
-                    if (currentDY <= 0.65) {
+                    if (currentDY <= -0.05) {
                         up = true;
                     }
                 }
-    // JD: Ack!  I can't believe I didn't indent this right.  Sorry.
-    //     But I think I intentionally did this as a one-off, and
-    //     that's why I let it stick out.  Yeah, that's right.
-    //     That's the reason  ;-)
-    gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(
-        Matrix4x4.getLookAtMatrix(
-            new Vector(currentRotation / 100, 0, 0),
-            new Vector(currentRotation / 100, 0, -1),
-            new Vector(0, 1, 0)
-        ).toColumnMajor().elements));
+
                 drawScene();
                 if (currentRotation >= 360.0) {
                     currentRotation -= 360.0;
