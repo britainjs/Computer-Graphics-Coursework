@@ -24,13 +24,18 @@
         currentDX,
         currentDY = 0,
         up = true,
-        currentInterval,
         transformMatrix,
         cameraMatrix,
         projectionMatrix,
         vertexPosition,
         vertexColor,
 
+        // Scene state variables.
+        sceneState = {
+            orbitSpeed: 0.0,
+            orbitDirection: 1.0
+        },
+ 
         // An individual "draw object" function.
         drawObject,
 
@@ -303,22 +308,26 @@
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix4x4.getFrustumMatrix(-1, 1, -1, 1, 5,        100).toColumnMajor().elements));
 
-    $(document).keydown(function(event) {
+    $(document).keydown(function (event) {
         if (event.which == 37) {
-            currentOrbit += 0.1;
+            sceneState.orbitDirection = 1.0;
         } else if (event.which == 39) {
-            currentOrbit -= 0.1;
-        }
-                
-        if (currentOrbit >= Math.PI * 2) {
-            currentOrbit -= Math.PI * 2;
+            sceneState.orbitDirection = -1.0;
+        } else if (event.which == 38) {
+            sceneState.orbitSpeed += 0.1;
+            event.preventDefault();
+        } else if (event.which == 40) {
+            sceneState.orbitSpeed -= 0.1;
+            event.preventDefault();
         }
 
-        drawScene();
+        if (sceneState.orbitSpeed < 0.0) {
+            sceneState.orbitSpeed = 0.0;
+        }
     });
 
     drawScene = function () {
-        
+
         Animator.orbit([objectsToDraw[1]], currentOrbit, 1, 0.5);
         Animator.hover([objectsToDraw[4].shapes[0], objectsToDraw[4].shapes[1]], currentDY, currentRotation);
         // Display the objects.
@@ -350,37 +359,32 @@ gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(
         new Vector(0, 1, 0)
     ).toColumnMajor().elements));
 
-    // Draw the initial scene.
-    drawScene();
+    // Start animating.  This scene is always animating.
+    setInterval(function () {
+        currentRotation += 1.0;
 
-    // Set up the rotation toggle: clicking on the canvas does it.
-    $(canvas).click(function () {
-        if (currentInterval) {
-            clearInterval(currentInterval);
-            currentInterval = null;
+        if (up) {
+            currentDY += 0.001;
+            if (currentDY >= 0.05) {
+                up = false;
+            }
         } else {
-            currentInterval = setInterval(function () {
-                currentRotation += 1.0;
-
-                if (up) {
-                    currentDY += 0.001;
-                    if (currentDY >= 0.05) {
-                        up = false;
-                    }
-                } else {
-                    currentDY -= 0.001;
-                    if (currentDY <= -0.05) {
-                        up = true;
-                    }
-                }
-                
-                drawScene();
-                if (currentRotation >= 360.0) {
-                    currentRotation -= 360.0;
-                    
-                }
-            }, 5);
+            currentDY -= 0.001;
+            if (currentDY <= -0.05) {
+                up = true;
+            }
         }
-    });
+
+        currentOrbit += sceneState.orbitSpeed * sceneState.orbitDirection;
+        if (currentOrbit >= Math.PI * 2) {
+            currentOrbit -= Math.PI * 2;
+        }
+
+        drawScene();
+        if (currentRotation >= 360.0) {
+            currentRotation -= 360.0;
+            
+        }
+    }, 5);
 
 }(document.getElementById("scene")));
