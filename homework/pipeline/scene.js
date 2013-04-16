@@ -20,6 +20,7 @@
 
         // Important state variables.
         currentRotation = 0.0,
+        currentOrbit = 0.0,
         currentDX,
         currentDY = 0,
         up = true,
@@ -301,12 +302,25 @@
      */
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix4x4.getFrustumMatrix(-1, 1, -1, 1, 5,        100).toColumnMajor().elements));
+
+    $(document).keydown(function(event) {
+        if(event.which == 37) {
+            currentOrbit += 0.01;
+        }
+    });
+
+    $(document).keydown(function (event) {
+        if(event.which == 39) {
+            currentOrbit -= 0.01;
+        }
+    });
+
     drawScene = function () {
         
+        Animator.orbit([objectsToDraw[1]], currentOrbit);
+        Animator.hover([objectsToDraw[4].shapes[0], objectsToDraw[4].shapes[1]], currentDY, currentRotation);
         // Display the objects.
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
-            Animator.hover([objectsToDraw[4].shapes[0], objectsToDraw[4].shapes[1]], currentDY, currentRotation);
-
             // JD: Composite note again.
             if (objectsToDraw[i].shapes){
                 for (j = 0; j < objectsToDraw[i].shapes.length; j += 1) {
@@ -345,6 +359,7 @@ gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(
         } else {
             currentInterval = setInterval(function () {
                 currentRotation += 1.0;
+
                 if (up) {
                     currentDY += 0.001;
                     if (currentDY >= 0.05) {
@@ -356,11 +371,15 @@ gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(
                         up = true;
                     }
                 }
-
+                
                 drawScene();
                 if (currentRotation >= 360.0) {
                     currentRotation -= 360.0;
                     
+                }
+                
+                if (currentOrbit >= Math.PI * 2) {
+                    currentOrbit -= Math.PI * 2;
                 }
             }, 5);
         }

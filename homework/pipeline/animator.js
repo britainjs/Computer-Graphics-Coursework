@@ -13,7 +13,7 @@ var Animator = {
         var i;
         for (i = 0; i < shapes.length; i++) {
             shapes[i].transform.dx = Math.sin (rotation);
-            shapes[i].transform.dz = Math.cos (rotation);
+            shapes[i].transform.dy = Math.cos (rotation);
         }
     }
 };
