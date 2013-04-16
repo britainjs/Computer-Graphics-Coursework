@@ -304,20 +304,22 @@
     gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix4x4.getFrustumMatrix(-1, 1, -1, 1, 5,        100).toColumnMajor().elements));
 
     $(document).keydown(function(event) {
-        if(event.which == 37) {
-            currentOrbit += 0.01;
+        if (event.which == 37) {
+            currentOrbit += 0.1;
+        } else if (event.which == 39) {
+            currentOrbit -= 0.1;
         }
-    });
+                
+        if (currentOrbit >= Math.PI * 2) {
+            currentOrbit -= Math.PI * 2;
+        }
 
-    $(document).keydown(function (event) {
-        if(event.which == 39) {
-            currentOrbit -= 0.01;
-        }
+        drawScene();
     });
 
     drawScene = function () {
         
-        Animator.orbit([objectsToDraw[1]], currentOrbit);
+        Animator.orbit([objectsToDraw[1]], currentOrbit, 1, 0.5);
         Animator.hover([objectsToDraw[4].shapes[0], objectsToDraw[4].shapes[1]], currentDY, currentRotation);
         // Display the objects.
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
@@ -376,10 +378,6 @@ gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(
                 if (currentRotation >= 360.0) {
                     currentRotation -= 360.0;
                     
-                }
-                
-                if (currentOrbit >= Math.PI * 2) {
-                    currentOrbit -= Math.PI * 2;
                 }
             }, 5);
         }

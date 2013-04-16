@@ -9,11 +9,34 @@ var Animator = {
     },
     
     //A function to make an object rotate in a circle.
-    orbit: function (shapes, rotation) {
-        var i;
+    orbit: function (shapes, rotation, horizontalRadius, verticalRadius) {
+        var i,
+            radii = this.getRadii(horizontalRadius, verticalRadius);
+
         for (i = 0; i < shapes.length; i++) {
-            shapes[i].transform.dx = Math.sin (rotation);
-            shapes[i].transform.dy = Math.cos (rotation);
+            shapes[i].transform.dx = radii.horizontalRadius * Math.sin(rotation);
+            shapes[i].transform.dy = radii.verticalRadius * Math.cos(rotation);
         }
+    },
+
+    // TODO Helper function that, given two radii which may be undefined,
+    //      returns the final values for each.
+    getRadii: function (horizontalRadius, verticalRadius) {
+        var radii = {
+                horizontalRadius: horizontalRadius,
+                verticalRadius: verticalRadius
+            };
+
+        // If neither radius is provided, then we default to a circle of 1.
+        // If only the first radius is provided, we have a circle with that
+        // radius.  If both are provided, then we have an ellipse.
+        if (!(horizontalRadius || verticalRadius)) {
+            radii.horizontalRadius = 1;
+            radii.verticalRadius = 1;
+        } else if (horizontalRadius && !verticalRadius) {
+            radii.verticalRadius = horizontalRadius;
+        }
+
+        return radii;
     }
 };
