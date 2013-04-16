@@ -305,14 +305,7 @@
         
         // Display the objects.
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
-            //Probably a better way to do this.
-            // JD: Yes :)  You want to make this more general-purpose while
-            //     still capturing the possibility that specific objects
-            //     may behave in different ways.
-            objectsToDraw[4].shapes[0].transform.angle = currentRotation;
-            objectsToDraw[4].shapes[1].transform.angle = currentRotation;
-            objectsToDraw[4].shapes[0].transform.dy = currentDY;
-            objectsToDraw[4].shapes[1].transform.dy = currentDY;
+            Animator.hover([objectsToDraw[4].shapes[0], objectsToDraw[4].shapes[1]], currentDY, currentRotation);
 
             // JD: Composite note again.
             if (objectsToDraw[i].shapes){
