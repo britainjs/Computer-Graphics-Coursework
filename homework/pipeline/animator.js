@@ -9,18 +9,16 @@ var Animator = {
     },
     
     //A function to make an object rotate in a circle.
-    orbit: function (shapes, rotation, horizontalRadius, verticalRadius) {
+    orbit: function (shapes, rotation, horizontalRadius, verticalRadius, xOff, yOff) {
         var i,
             radii = this.getRadii(horizontalRadius, verticalRadius);
 
         for (i = 0; i < shapes.length; i++) {
-            shapes[i].transform.dx = radii.horizontalRadius * Math.sin(rotation);
-            shapes[i].transform.dy = radii.verticalRadius * Math.cos(rotation);
+            shapes[i].transform.dx = radii.horizontalRadius * Math.sin(rotation) + xOff;
+            shapes[i].transform.dy = radii.verticalRadius * Math.cos(rotation) + yOff;
         }
     },
 
-    // TODO Helper function that, given two radii which may be undefined,
-    //      returns the final values for each.
     getRadii: function (horizontalRadius, verticalRadius) {
         var radii = {
                 horizontalRadius: horizontalRadius,

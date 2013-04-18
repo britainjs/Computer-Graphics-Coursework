@@ -35,6 +35,7 @@
             orbitSpeed: 0.0,
             orbitDirection: 1.0
         },
+        sunOffset = -1.0,
  
         // An individual "draw object" function.
         drawObject,
@@ -90,9 +91,7 @@
              }
         },
         
-        //A sphere. Will currently display with a hole at the end
-        // JD: Actually, based on the TRIANGLES rendering, there are quite
-        //     a few holes!
+        // The sun.
         {   
             color: {r: 0.0, g:0.5, b:0.5},
             vertices: Shapes.toRawTriangleArray(sphere),
@@ -100,7 +99,7 @@
             // JD: Preferred formatting is as follows (compare to above):
             transform: {
                 dx: -0.5,
-                dy: 0.5,
+                dz: 1.0,
                 sx: 0.25,
                 sy: 0.25,
                 sz: 0.25,
@@ -306,7 +305,7 @@
      * Displays the scene.
      */
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix4x4.getFrustumMatrix(-1, 1, -1, 1, 5,        100).toColumnMajor().elements));
+    gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix4x4.getFrustumMatrix(-1, 1, -1, 1, 5, 100).toColumnMajor().elements));
 
     $(document).keydown(function (event) {
         if (event.which == 37) {
@@ -314,10 +313,10 @@
         } else if (event.which == 39) {
             sceneState.orbitDirection = -1.0;
         } else if (event.which == 38) {
-            sceneState.orbitSpeed += 0.1;
+            sceneState.orbitSpeed += 0.01;
             event.preventDefault();
         } else if (event.which == 40) {
-            sceneState.orbitSpeed -= 0.1;
+            sceneState.orbitSpeed -= 0.01;
             event.preventDefault();
         }
 
@@ -328,7 +327,7 @@
 
     drawScene = function () {
 
-        Animator.orbit([objectsToDraw[1]], currentOrbit, 1, 0.5);
+        Animator.orbit([objectsToDraw[1]], currentOrbit, 2.0, 2.0, 0.0, sunOffset);
         Animator.hover([objectsToDraw[4].shapes[0], objectsToDraw[4].shapes[1]], currentDY, currentRotation);
         // Display the objects.
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
