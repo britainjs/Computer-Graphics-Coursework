@@ -30,6 +30,20 @@
         vertexPosition,
         vertexColor,
         
+        //Shape variables
+        obelisk = Shapes.tetrahedron(),
+        sun = Shapes.sphere(30, 30, 1),
+        ground = [].concat(
+            [1.0, -0.5, -1.0],
+            [1.0, -1.0, 1.0],
+            [-1.0, -1.0, 1.0],
+            [-1.0, -0.5, -1.0]
+        ),
+        sky = Shapes.sphere(10, 10, 10),
+        orbLarge = Shapes.sphere(10, 10, 0.15),
+        orbSmall = Shapes.sphere(30, 30, 0.07),
+        
+        
         // Lighting variables.
         normalVector,
         lightPosition,
@@ -56,8 +70,6 @@
         k,
         maxk,
         
-        // A reusable sphere
-        sphere = Shapes.sphere(30, 30, 1);
 
     // Grab the WebGL rendering context.
     gl = GLSLUtilities.getGL(canvas);
@@ -81,7 +93,7 @@
         //A tetrahedron
         {
             color: {r: 1.0, g: 1.0, b: 1.0},
-            vertices: Shapes.toRawTriangleArray(Shapes.tetrahedron()),
+            vertices: Shapes.toRawTriangleArray(obelisk),
             mode: gl.TRIANGLES,
             // JD: See the object below for the preferred indentation...
             transform: {
@@ -93,13 +105,14 @@
                 x: 0,
                 y: 1,
                 z: 0
-             }
+             },
+             normals: Shapes.toNormalArray(obelisk)
         },
         
         // The sun.
         {   
             color: {r: 0.0, g:0.5, b:0.5},
-            vertices: Shapes.toRawTriangleArray(sphere),
+            vertices: Shapes.toRawTriangleArray(sun),
             mode: gl.TRIANGLES,
             // JD: Preferred formatting is as follows (compare to above):
             transform: {
@@ -112,23 +125,27 @@
                 x: 0,
                 y: 1,
                 z: 0
-            }
+            },
+            normals: Shapes.toNormalArray(sun)
         },
         
         //The ground
         {
             color: {r: 0.5, g: 0.2, b: 0.0},
-            vertices: [].concat(
-                [1.0, -0.5, -1.0],
-                [1.0, -1.0, 1.0],
-                [-1.0, -1.0, 1.0],
-                [-1.0, -0.5, -1.0]
-            ),
+            vertices: ground,
             mode: gl.TRIANGLE_FAN,
-            transform: {dy: 4,
-                        sx: 10,
-                        sy: 10,
-                        x: 1}
+            transform: {
+                dy: 4,
+                sx: 10,
+                sy: 10,
+                x: 1
+            },
+            normals: [].concat(
+                [1.0, 0.0, 0.0],
+                [1.0, 0.0, 0.0],
+                [1.0, 0.0, 0.0],
+                [1.0, 0.0, 0.0]
+            )
         },
         
         //the sky
@@ -136,37 +153,36 @@
         //     make it a cylinder or a dome!
         {
             color: {r: 0.7, g: 0.0, b: 0.5},
-            vertices: Shapes.toRawTriangleArray(Shapes.sphere(10, 10, 10)),
+            vertices: Shapes.toRawTriangleArray(sky),
             mode: gl.TRIANGLES,
-            transform: {x: 1}
+            transform: {x: 1},
+            normals: Shapes.toNormalArray(sky)
         },
         
         {
-                             // JD: In JavaScript, this is actually redundant; you
-                             //     can set things up so that the very presence of
-                             //     the shapes array signals that the current
-                             //     object has children.
             shapes: [
                 {
                     color: {r: 1.0, g: 1.0, b: 1.0},
-                    vertices: Shapes.toRawTriangleArray(Shapes.sphere(10, 10, 0.15)),
+                    vertices: Shapes.toRawTriangleArray(orbLarge),
                     mode: gl.LINE_LOOP,
                     transform: {
                         dy: 1.4,
                         angle: 0,
                         y: 1
-                    }
+                    },
+                    normals: Shapes.toNormalArray(orbLarge)
                 },
                 
                 {
                     color: {r: 1.0, g: 1.0, b: 1.0},
-                    vertices: Shapes.toRawTriangleArray(Shapes.sphere(30, 30, 0.07)),
+                    vertices: Shapes.toRawTriangleArray(orbSmall),
                     mode: gl.LINE_LOOP,
                     transform: {
                         dy: 1.4,
                         angle: 0,
                         y: 1
-                    }
+                    },
+                    normals: Shapes.toNormalArray(orbSmall)
                 }           
             ]
         }
