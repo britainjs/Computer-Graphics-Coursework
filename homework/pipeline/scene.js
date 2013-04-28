@@ -29,6 +29,11 @@
         projectionMatrix,
         vertexPosition,
         vertexColor,
+        
+        // Lighting variables.
+        normalVector,
+        lightPosition,
+        lightDiffuse,
 
         // Scene state variables.
         sceneState = {
