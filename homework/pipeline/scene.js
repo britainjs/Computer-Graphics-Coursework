@@ -29,6 +29,9 @@
         projectionMatrix,
         vertexPosition,
         vertexColor,
+        normalVector,
+        lightPosition,
+        lightDiffuse,
         
         //Shape variables
         obelisk = Shapes.tetrahedron(),
@@ -220,10 +223,9 @@
             // JD: Bad indent here.
                 objectsToDraw[i].shapes[j].colorBuffer = GLSLUtilities.initVertexBuffer(gl,
                         objectsToDraw[i].shapes[j].colors);
-            
+                objectsToDraw[i].shapes[j].normalBuffer = GLSLUtilities.initVertexBuffer(gl,
+                objectsToDraw[i].shapes[j].normals);
             }
-            
-            
         } else {
             objectsToDraw[i].buffer = GLSLUtilities.initVertexBuffer(gl,
                     objectsToDraw[i].vertices);
@@ -242,6 +244,8 @@
             }
             objectsToDraw[i].colorBuffer = GLSLUtilities.initVertexBuffer(gl,
                     objectsToDraw[i].colors);
+            objectsToDraw[i].normalBuffer = GLSLUtilities.initVertexBuffer(gl,
+                objectsToDraw[i].normals);
         }
         
         
@@ -282,9 +286,15 @@
     gl.enableVertexAttribArray(vertexPosition);
     vertexColor = gl.getAttribLocation(shaderProgram, "vertexColor");
     gl.enableVertexAttribArray(vertexColor);
+    normalVector = gl.getAttribLocation(shaderProgram, "normalVector");
+    gl.enableVertexAttribArray(normalVector);
+    
     transformMatrix = gl.getUniformLocation(shaderProgram, "transformMatrix");
     cameraMatrix = gl.getUniformLocation(shaderProgram, "cameraMatrix");
     projectionMatrix = gl.getUniformLocation(shaderProgram, "projectionMatrix");
+    
+    lightPosition = gl.getUniformLocation(shaderProgram, "lightPosition");
+    lightDiffuse = gl.getUniformLocation(shaderProgram, "lightDiffuse");
 
 
     /*
@@ -309,6 +319,10 @@
                 gl.bindBuffer(gl.ARRAY_BUFFER, object.shapes[i].buffer);
                 gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
                 gl.drawArrays(object.shapes[i].mode, 0, object.shapes[i].vertices.length / 3);
+                
+                // Set the varying normal vectors.
+                gl.bindBuffer(gl.ARRAY_BUFFER, object.shapes[i].normalBuffer);
+                gl.vertexAttribPointer(normalVector, 3, gl.FLOAT, false, 0, 0);
             }
         }else {
             // Set the varying colors.
@@ -319,6 +333,10 @@
             gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
             gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
             gl.drawArrays(object.mode, 0, object.vertices.length / 3);
+            
+            // Set the varying normal vectors.
+            gl.bindBuffer(gl.ARRAY_BUFFER, object.normalBuffer);
+            gl.vertexAttribPointer(normalVector, 3, gl.FLOAT, false, 0, 0);
         }
     };
 
