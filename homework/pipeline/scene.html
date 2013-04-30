@@ -62,6 +62,8 @@
             uniform mat4 projectionMatrix;
 
             void main(void) {
+                vec4 test = vec4(normalVector, 1.0);
+                // JD: ^^^Temporary dummy code just so normalVector is being used.
                 gl_Position = projectionMatrix * cameraMatrix * transformMatrix * vec4(vertexPosition, 1.0);
                 finalVertexColor = vec4(vertexColor, 1.0);
             }

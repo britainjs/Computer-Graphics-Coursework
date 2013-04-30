@@ -314,29 +314,32 @@
                 // Set the varying colors.
                 gl.bindBuffer(gl.ARRAY_BUFFER, object.shapes[i].colorBuffer);
                 gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
-
-                // Set the varying vertex coordinates.
-                gl.bindBuffer(gl.ARRAY_BUFFER, object.shapes[i].buffer);
-                gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
-                gl.drawArrays(object.shapes[i].mode, 0, object.shapes[i].vertices.length / 3);
                 
                 // Set the varying normal vectors.
                 gl.bindBuffer(gl.ARRAY_BUFFER, object.shapes[i].normalBuffer);
                 gl.vertexAttribPointer(normalVector, 3, gl.FLOAT, false, 0, 0);
+
+                // Set the varying vertex coordinates.
+                gl.bindBuffer(gl.ARRAY_BUFFER, object.shapes[i].buffer);
+                gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
+                // JD: Remember that drawArrays is the "money" function that actually
+                //     does things; thus, your vertexAttribPointer for normalBuffer
+                //     has to take place *before* this.
+                gl.drawArrays(object.shapes[i].mode, 0, object.shapes[i].vertices.length / 3);
             }
         }else {
             // Set the varying colors.
             gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
             gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
+            
+            // Set the varying normal vectors.
+            gl.bindBuffer(gl.ARRAY_BUFFER, object.normalBuffer);
+            gl.vertexAttribPointer(normalVector, 3, gl.FLOAT, false, 0, 0);
 
             // Set the varying vertex coordinates.
             gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
             gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
             gl.drawArrays(object.mode, 0, object.vertices.length / 3);
-            
-            // Set the varying normal vectors.
-            gl.bindBuffer(gl.ARRAY_BUFFER, object.normalBuffer);
-            gl.vertexAttribPointer(normalVector, 3, gl.FLOAT, false, 0, 0);
         }
     };
 
