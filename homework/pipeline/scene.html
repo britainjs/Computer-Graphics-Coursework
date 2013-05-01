@@ -67,7 +67,7 @@
             void main(void) {
                 // First, transform our vertex to its final eye location.
                 vec3 eyePosition = (cameraMatrix * vec4(vertexPosition, 1.0)).xyz;
-                vec4 test = vec4(normalVector, 1.0);
+                
                 // Figure out the color of the light that lands on the vertex.
                 vec3 diffuseProduct = vertexColor * lightDiffuse;
 
@@ -84,7 +84,7 @@
                 
                 // JD: ^^^Temporary dummy code just so normalVector is being used.
                 gl_Position = projectionMatrix * cameraMatrix * transformMatrix * vec4(vertexPosition, 1.0);
-                finalVertexColor = vec4(vertexColor, 1.0);
+                finalVertexColor = vec4(finalDiffuse, 1.0);
             }
         </script>
 

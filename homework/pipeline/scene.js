@@ -144,10 +144,10 @@
                 x: 1
             },
             normals: [].concat(
-                [1.0, 0.0, 0.0],
-                [1.0, 0.0, 0.0],
-                [1.0, 0.0, 0.0],
-                [1.0, 0.0, 0.0]
+                [0.0, 0.0, 1.0],
+                [0.0, 0.0, 1.0],
+                [0.0, 0.0, 1.0],
+                [0.0, 0.0, 1.0]
             )
         },
         
@@ -347,11 +347,7 @@
      * Displays the scene.
      */
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix4x4.getFrustumMatrix(-1, 1, -1, 1, 5, 100).toColumnMajor().elements));
-
-    //Set up the lighting matrices  
-    gl.uniform3fv(lightPosition, [1.0, 1.0, 1.0]);
-    gl.uniform3fv(lightDiffuse, [1.0, 1.0, 1.0]);
+    gl.uniformMatrix4fv(projectionMatrix, gl.FALSE, new Float32Array(Matrix4x4.getFrustumMatrix(-1, 1, -1, 1, 5, 100).toColumnMajor().elements)); 
     
     $(document).keydown(function (event) {
         if (event.which == 37) {
@@ -375,6 +371,11 @@
 
         Animator.orbit([objectsToDraw[1]], currentOrbit, 2.0, 2.0, 0.0, sunOffset);
         Animator.hover([objectsToDraw[4].shapes[0], objectsToDraw[4].shapes[1]], currentDY, currentRotation);
+        
+        //Set the lighting
+        gl.uniform3fv(lightPosition, [0.0, 1.0, -10.0]);
+        gl.uniform3fv(lightDiffuse, [1.0, 1.0, 1.0]);
+        
         // Display the objects.
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
             // JD: Composite note again.
