@@ -36,12 +36,7 @@
         //Shape variables
         obelisk = Shapes.tetrahedron(),
         sun = Shapes.sphere(30, 30, 1),
-        ground = [].concat(
-            [1.0, -0.5, -1.0],
-            [1.0, -1.0, 1.0],
-            [-1.0, -1.0, 1.0],
-            [-1.0, -0.5, -1.0]
-        ),
+        ground = Shapes.cube(),
         sky = Shapes.sphere(10, 10, 10),
         orbLarge = Shapes.sphere(10, 10, 0.15),
         orbSmall = Shapes.sphere(30, 30, 0.07),
@@ -104,7 +99,7 @@
                 sx: 0.5,
                 sy: 1,
                 sz: 0.5,
-                angle: 180,
+                angle: 0,
                 x: 0,
                 y: 1,
                 z: 0
@@ -135,19 +130,58 @@
         //The ground
         {
             color: {r: 0.5, g: 0.2, b: 0.0},
-            vertices: ground,
-            mode: gl.TRIANGLE_FAN,
+            vertices: Shapes.toRawTriangleArray(ground),
+            mode: gl.TRIANGLES,
             transform: {
-                dy: 4,
-                sx: 10,
-                sy: 10,
+                dy: -1.5,
+                dz: 0,
+                sx: 100,
+                sy: 1,
+                sz: 100,
                 x: 1
             },
             normals: [].concat(
-                [0.0, 0.0, 1.0],
-                [0.0, 0.0, 1.0],
-                [0.0, 0.0, 1.0],
-                [0.0, 0.0, 1.0]
+                [ 0.0, 1.0, 0.0 ],
+                [ 0.0, 1.0, 0.0 ],
+                [ 0.0, 1.0, 0.0 ],
+                [ 0.0, 1.0, 0.0 ],
+                [ 0.0, 1.0, 0.0 ],
+                [ 0.0, 1.0, 0.0 ],
+
+                [ 0.0, 0.0, 1.0 ],
+                [ 0.0, 0.0, 1.0 ],
+                [ 0.0, 0.0, 1.0 ],
+                [ 0.0, 0.0, 1.0 ],
+                [ 0.0, 0.0, 1.0 ],
+                [ 0.0, 0.0, 1.0 ],
+
+                [ 1.0, 0.0, 0.0 ],
+                [ 1.0, 0.0, 0.0 ],
+                [ 1.0, 0.0, 0.0 ],
+                [ 1.0, 0.0, 0.0 ],
+                [ 1.0, 0.0, 0.0 ],
+                [ 1.0, 0.0, 0.0 ],
+
+                [ 0.0, 0.0, -1.0 ],
+                [ 0.0, 0.0, -1.0 ],
+                [ 0.0, 0.0, -1.0 ],
+                [ 0.0, 0.0, -1.0 ],
+                [ 0.0, 0.0, -1.0 ],
+                [ 0.0, 0.0, -1.0 ],
+
+                [ -1.0, 0.0, 0.0 ],
+                [ -1.0, 0.0, 0.0 ],
+                [ -1.0, 0.0, 0.0 ],
+                [ -1.0, 0.0, 0.0 ],
+                [ -1.0, 0.0, 0.0 ],
+                [ -1.0, 0.0, 0.0 ],
+
+                [ 0.0, -1.0, 0.0 ],
+                [ 0.0, -1.0, 0.0 ],
+                [ 0.0, -1.0, 0.0 ],
+                [ 0.0, -1.0, 0.0 ],
+                [ 0.0, -1.0, 0.0 ],
+                [ 0.0, -1.0, 0.0 ]
             )
         },
         
@@ -373,7 +407,9 @@
         Animator.hover([objectsToDraw[4].shapes[0], objectsToDraw[4].shapes[1]], currentDY, currentRotation);
         
         //Set the lighting
-        gl.uniform3fv(lightPosition, [0.0, 1.0, -10.0]);
+        var sourceX = objectsToDraw[1].transform.dx,
+            sourceY = objectsToDraw[1].transform.dy;
+        gl.uniform3fv(lightPosition, [sourceX, sourceY, -8.5]);
         gl.uniform3fv(lightDiffuse, [1.0, 1.0, 1.0]);
         
         // Display the objects.
@@ -401,7 +437,7 @@
 gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(
     Matrix4x4.getLookAtMatrix(
         new Vector(0, 0, -8),
-        new Vector(0, 0, 10),
+        new Vector(0, 0, 100),
         new Vector(0, 1, 0)
     ).toColumnMajor().elements));
 
