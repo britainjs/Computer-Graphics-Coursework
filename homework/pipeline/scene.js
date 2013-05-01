@@ -99,7 +99,7 @@
                 sx: 0.5,
                 sy: 1,
                 sz: 0.5,
-                angle: 0,
+                angle: 75,
                 x: 0,
                 y: 1,
                 z: 0
@@ -115,10 +115,10 @@
             // JD: Preferred formatting is as follows (compare to above):
             transform: {
                 dx: -0.5,
-                dz: 1.0,
-                sx: 0.25,
-                sy: 0.25,
-                sz: 0.25,
+                dz: 1.5,
+                sx: 0.3,
+                sy: 0.3,
+                sz: 0.3,
                 angle: currentRotation,
                 x: 0,
                 y: 1,
@@ -135,9 +135,9 @@
             transform: {
                 dy: -1.5,
                 dz: 0,
-                sx: 10,
+                sx: 100,
                 sy: 1,
-                sz: 10,
+                sz: 100,
                 x: 1
             },
             normals: [].concat(
@@ -410,8 +410,8 @@
         var sourceX = objectsToDraw[1].transform.dx,
             sourceY = objectsToDraw[1].transform.dy,
             sourceZ = objectsToDraw[1].transform.dz;
-            
-        gl.uniform4fv(lightPosition, [sourceX, sourceY, sourceZ - 0.5, 1.0]);
+
+        gl.uniform4fv(lightPosition, [sourceX, sourceY + 1, sourceZ, 1.0]);
         gl.uniform3fv(lightDiffuse, [1.0, 1.0, 1.0]);
         
         // Display the objects.
