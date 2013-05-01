@@ -28,7 +28,7 @@
         cameraMatrix,
         projectionMatrix,
         vertexPosition,
-        vertexColor,
+        vertexDiffuseColor,
         normalVector,
         lightPosition,
         lightDiffuse,
@@ -135,9 +135,9 @@
             transform: {
                 dy: -1.5,
                 dz: 0,
-                sx: 100,
+                sx: 10,
                 sy: 1,
-                sz: 100,
+                sz: 10,
                 x: 1
             },
             normals: [].concat(
@@ -318,8 +318,8 @@
 
     vertexPosition = gl.getAttribLocation(shaderProgram, "vertexPosition");
     gl.enableVertexAttribArray(vertexPosition);
-    vertexColor = gl.getAttribLocation(shaderProgram, "vertexColor");
-    gl.enableVertexAttribArray(vertexColor);
+    vertexDiffuseColor = gl.getAttribLocation(shaderProgram, "vertexDiffuseColor");
+    gl.enableVertexAttribArray(vertexDiffuseColor);
     normalVector = gl.getAttribLocation(shaderProgram, "normalVector");
     gl.enableVertexAttribArray(normalVector);
     
@@ -347,7 +347,7 @@
             for(i = 0; i < object.shapes.length; i++) {
                 // Set the varying colors.
                 gl.bindBuffer(gl.ARRAY_BUFFER, object.shapes[i].colorBuffer);
-                gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
+                gl.vertexAttribPointer(vertexDiffuseColor, 3, gl.FLOAT, false, 0, 0);
                 
                 // Set the varying normal vectors.
                 gl.bindBuffer(gl.ARRAY_BUFFER, object.shapes[i].normalBuffer);
@@ -364,7 +364,7 @@
         }else {
             // Set the varying colors.
             gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
-            gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
+            gl.vertexAttribPointer(vertexDiffuseColor, 3, gl.FLOAT, false, 0, 0);
             
             // Set the varying normal vectors.
             gl.bindBuffer(gl.ARRAY_BUFFER, object.normalBuffer);
@@ -408,8 +408,10 @@
         
         //Set the lighting
         var sourceX = objectsToDraw[1].transform.dx,
-            sourceY = objectsToDraw[1].transform.dy;
-        gl.uniform3fv(lightPosition, [sourceX, sourceY, -8.5]);
+            sourceY = objectsToDraw[1].transform.dy,
+            sourceZ = objectsToDraw[1].transform.dz;
+            
+        gl.uniform4fv(lightPosition, [sourceX, sourceY, sourceZ - 0.5, 1.0]);
         gl.uniform3fv(lightDiffuse, [1.0, 1.0, 1.0]);
         
         // Display the objects.
