@@ -241,6 +241,14 @@
             //     unified (while also solving the only-one-level-of-children
             //     limitation!).
         passVertices = function (objectToDraw) {
+            // JDrec: The fix to your problem will go on this line.
+            //     I think you should be the one to specifically find it.
+            //     Think about it this way: how exactly does recursion work?
+            //     What makes it work?  If you really follow, closely, how
+            //     your recursive calls are proceeding (log heavily!), you
+            //     will spot a modification that is needed by the sample code,
+            //     which you have not yet made, that is utterly necessary to
+            //     successfully go recursive.
             if (objectToDraw.shapes) {
                 for (j = 0; j < objectToDraw.shapes.length; j++) {
                      passVertices(objectToDraw.shapes[j]);
@@ -348,6 +356,10 @@
     // JD 0409: Composite functionality v1.0 seen, but can be improved (see
     //     earlier inline comment---that applies here also).
     drawObject = function (object) {
+        // JDrec: One of these blocks is redundant.  The first one iterates
+        //     through the shapes array, if object has it, and draws them.
+        //     The other one just assumes that is dealing with a single
+        //     object.  But contrast this with... GOTO ***
         if(object.shapes) {
             for(i = 0; i < object.shapes.length; i++) {
                 // Set the varying colors.
@@ -422,9 +434,17 @@
         // Display the objects.
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
             // JD: Composite note again.
+            // JDrec: *** Here, you have a conditional that checks for a shapes
+            //     array, then iterates through it if there.  This calls drawObject.
+            //     But wait, drawObject *also* checks for the shapes array, and
+            //     iterates through it also!
+            //
+            //     This iteration should take place only once.  Think through this
+            //     tree traversal and clean up when you iterate, when you recurse,
+            //     and when you treat a case as terminal.
             if (objectsToDraw[i].shapes){
                 for (j = 0; j < objectsToDraw[i].shapes.length; j += 1) {
-                    gl.uniformMatrix4fv(transformMatrix, gl.FALSE, new Float32Array(Matrix4x4.instanceTransform(objectsToDraw[i].shapes[j].transform).elements)); 
+                    gl.uniformMatrix4fv(transformMatrix, gl.FALSE, new Float32Array(Matrix4x4.instanceTransform(objectsToDraw[i].shapes[j].transform).elements));
                     drawObject(objectsToDraw[i].shapes[j]);
                 }
             }else{  
