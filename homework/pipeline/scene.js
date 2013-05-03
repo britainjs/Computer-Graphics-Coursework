@@ -303,7 +303,7 @@
                 objectToDraw.normalBuffer = GLSLUtilities.initVertexBuffer(gl,
                     objectToDraw.normals);
             }
-        }
+        };
     
     for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
         passVertices(objectsToDraw[i]);
@@ -362,6 +362,9 @@
      * The composite object drawing function is not working correctly as of right now,
      * so it has been commented out.
      */
+    setTransform = function (object) {
+        gl.uniformMatrix4fv(transformMatrix, gl.FALSE, new Float32Array(Matrix4x4.instanceTransform(object.transform).elements));
+    };
     // JD: OK, missing composite functionality noted.
 
     // JD 0409: Composite functionality v1.0 seen, but can be improved (see
@@ -371,29 +374,16 @@
         //     through the shapes array, if object has it, and draws them.
         //     The other one just assumes that is dealing with a single
         //     object.  But contrast this with... GOTO ***
-        if(object.shapes) {
-            for(i = 0; i < object.shapes.length; i++) {
-                // Set the varying colors.
-                gl.bindBuffer(gl.ARRAY_BUFFER, object.shapes[i].colorBuffer);
-                gl.vertexAttribPointer(vertexDiffuseColor, 3, gl.FLOAT, false, 0, 0);
-                
-                // Set the varying normal vectors.
-                gl.bindBuffer(gl.ARRAY_BUFFER, object.shapes[i].normalBuffer);
-                gl.vertexAttribPointer(normalVector, 3, gl.FLOAT, false, 0, 0);
-
-                // Set the varying vertex coordinates.
-                gl.bindBuffer(gl.ARRAY_BUFFER, object.shapes[i].buffer);
-                gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
-                // JD: Remember that drawArrays is the "money" function that actually
-                //     does things; thus, your vertexAttribPointer for normalBuffer
-                //     has to take place *before* this.
-                gl.drawArrays(object.shapes[i].mode, 0, object.shapes[i].vertices.length / 3);
+        if (object.shapes) {
+            for (j = 0; j < object.shapes.length; j++) {
+                drawObject(object.shapes[j]);
             }
-        }else {
+        } else {
             // Set the varying colors.
+            setTransform(object);
             gl.bindBuffer(gl.ARRAY_BUFFER, object.colorBuffer);
             gl.vertexAttribPointer(vertexDiffuseColor, 3, gl.FLOAT, false, 0, 0);
-            
+        
             // Set the varying normal vectors.
             gl.bindBuffer(gl.ARRAY_BUFFER, object.normalBuffer);
             gl.vertexAttribPointer(normalVector, 3, gl.FLOAT, false, 0, 0);
@@ -428,6 +418,8 @@
             sceneState.orbitSpeed = 0.0;
         }
     });
+    
+
 
     drawScene = function () {
 
@@ -453,15 +445,8 @@
             //     This iteration should take place only once.  Think through this
             //     tree traversal and clean up when you iterate, when you recurse,
             //     and when you treat a case as terminal.
-            if (objectsToDraw[i].shapes){
-                for (j = 0; j < objectsToDraw[i].shapes.length; j += 1) {
-                    gl.uniformMatrix4fv(transformMatrix, gl.FALSE, new Float32Array(Matrix4x4.instanceTransform(objectsToDraw[i].shapes[j].transform).elements));
-                    drawObject(objectsToDraw[i].shapes[j]);
-                }
-            }else{  
-                gl.uniformMatrix4fv(transformMatrix, gl.FALSE, new Float32Array(Matrix4x4.instanceTransform(objectsToDraw[i].transform).elements));
-                drawObject(objectsToDraw[i]);
-            }
+
+            drawObject(objectsToDraw[i]); 
         }
 
         // All done.
