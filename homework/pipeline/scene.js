@@ -68,6 +68,7 @@
         maxj,
         k,
         maxk,
+        l,
         
 
     // Grab the WebGL rendering context.
@@ -108,6 +109,7 @@
              normals: Shapes.toNormalArray(obelisk),
              specularColor: { r: 1.0, g: 1.0, b: 1.0 },
              shininess: 10,
+             name: "obelisk"
         },
         
         // The sun.
@@ -127,7 +129,8 @@
                 y: 1,
                 z: 0
             },
-            normals: Shapes.toNormalArray(sun)
+            normals: Shapes.toNormalArray(sun),
+            name: "sun"
         },
         
         //The ground
@@ -185,7 +188,8 @@
                 [ 0.0, -1.0, 0.0 ],
                 [ 0.0, -1.0, 0.0 ],
                 [ 0.0, -1.0, 0.0 ]
-            )
+            ),
+            name: "ground"
         },
         
         //the sky
@@ -196,7 +200,8 @@
             vertices: Shapes.toRawTriangleArray(sky),
             mode: gl.TRIANGLES,
             transform: {x: 1},
-            normals: Shapes.toNormalArray(sky)
+            normals: Shapes.toNormalArray(sky),
+            name: "sky"
         },
         
         {
@@ -210,7 +215,8 @@
                         angle: 0,
                         y: 1
                     },
-                    normals: Shapes.toNormalArray(orbLarge)
+                    normals: Shapes.toNormalArray(orbLarge),
+                    name: "Large Orb"
                 },
                 
                 {
@@ -222,7 +228,8 @@
                         angle: 0,
                         y: 1
                     },
-                    normals: Shapes.toNormalArray(orbSmall)
+                    normals: Shapes.toNormalArray(orbSmall),
+                    name: "Small Orb"
                 }           
             ]
         }
@@ -240,7 +247,7 @@
             //     two fairly large chunks of nearly identical code.  This can be
             //     unified (while also solving the only-one-level-of-children
             //     limitation!).
-        passVertices = function (objectToDraw) {
+        passVertices = function (objectToDraw) { 
             // JDrec: The fix to your problem will go on this line.
             //     I think you should be the one to specifically find it.
             //     Think about it this way: how exactly does recursion work?
@@ -249,9 +256,13 @@
             //     will spot a modification that is needed by the sample code,
             //     which you have not yet made, that is utterly necessary to
             //     successfully go recursive.
+            if(!objectToDraw) {
+                return;
+            }
             if (objectToDraw.shapes) {
-                for (j = 0; j < objectToDraw.shapes.length; j++) {
-                     passVertices(objectToDraw.shapes[j]);
+            
+                for (l = 0; l < objectToDraw.shapes.length; l++) { 
+                    passVertices(objectToDraw.shapes[l]);
                 }
             } else {
                 objectToDraw.buffer = GLSLUtilities.initVertexBuffer(gl,
