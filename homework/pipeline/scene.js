@@ -29,6 +29,7 @@
         projectionMatrix,
         vertexPosition,
         vertexDiffuseColor,
+        vertexSpecularColor,
         normalVector,
         lightPosition,
         lightDiffuse,
@@ -130,6 +131,8 @@
                 z: 0
             },
             normals: Shapes.toNormalArray(sun),
+            specularColor: { r: 1.0, g: 1.0, b: 1.0 },
+            shininess: 1,
             name: "sun"
         },
         
@@ -189,6 +192,8 @@
                 [ 0.0, -1.0, 0.0 ],
                 [ 0.0, -1.0, 0.0 ]
             ),
+            specularColor: { r: 1.0, g: 1.0, b: 1.0 },
+            shininess: 1,
             name: "ground"
         },
         
@@ -201,6 +206,8 @@
             mode: gl.TRIANGLES,
             transform: {x: 1},
             normals: Shapes.toNormalArray(sky),
+            specularColor: { r: 1.0, g: 1.0, b: 1.0 },
+            shininess: 1,
             name: "sky"
         },
         
@@ -216,6 +223,8 @@
                         y: 1
                     },
                     normals: Shapes.toNormalArray(orbLarge),
+                    specularColor: { r: 1.0, g: 1.0, b: 1.0 },
+                    shininess: 1,
                     name: "Large Orb"
                 },
                 
@@ -229,6 +238,8 @@
                         y: 1
                     },
                     normals: Shapes.toNormalArray(orbSmall),
+                    specularColor: { r: 1.0, g: 1.0, b: 1.0 },
+                    shininess: 1,
                     name: "Small Orb"
                 }           
             ]
@@ -256,9 +267,6 @@
             //     will spot a modification that is needed by the sample code,
             //     which you have not yet made, that is utterly necessary to
             //     successfully go recursive.
-            if(!objectToDraw) {
-                return;
-            }
             if (objectToDraw.shapes) {
             
                 for (l = 0; l < objectToDraw.shapes.length; l++) { 
@@ -283,7 +291,7 @@
             
                 objectToDraw.colorBuffer = GLSLUtilities.initVertexBuffer(gl,
                         objectToDraw.colors);
-                /*
+                
                 // Same trick with specular colors.
                 if (!objectToDraw.specularColors) {
                     // Future refactor: helper function to convert a single value or
@@ -299,7 +307,7 @@
                     }
                 }
                 objectToDraw.specularBuffer = GLSLUtilities.initVertexBuffer(gl,
-                    objectToDraw.specularColors);*/
+                    objectToDraw.specularColors);
                 objectToDraw.normalBuffer = GLSLUtilities.initVertexBuffer(gl,
                     objectToDraw.normals);
             }
@@ -353,6 +361,8 @@
     
     lightPosition = gl.getUniformLocation(shaderProgram, "lightPosition");
     lightDiffuse = gl.getUniformLocation(shaderProgram, "lightDiffuse");
+    lightSpecular = gl.getUniformLocation(shaderProgram, "lightSpecular");
+    shininess = gl.getUniformLocation(shaderProgram, "shininess");
 
 
     /*
@@ -391,6 +401,12 @@
             // Set the varying vertex coordinates.
             gl.bindBuffer(gl.ARRAY_BUFFER, object.buffer);
             gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
+            
+            gl.bindBuffer(gl.ARRAY_BUFFER, object.specularBuffer);
+            gl.vertexAttribPointer(vertexSpecularColor, 3, gl.FLOAT, false, 0, 0);
+
+            // Set the shininess.
+            gl.uniform1f(shininess, object.shininess);
             gl.drawArrays(object.mode, 0, object.vertices.length / 3);
         }
     };
@@ -433,6 +449,7 @@
 
         gl.uniform4fv(lightPosition, [sourceX, sourceY + 1, sourceZ, 1.0]);
         gl.uniform3fv(lightDiffuse, [1.0, 1.0, 1.0]);
+        gl.uniform3fv(lightSpecular, [1.0, 1.0, 1.0]);
         
         // Display the objects.
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {

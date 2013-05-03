@@ -55,9 +55,9 @@
             attribute vec3 normalVector;
             
             uniform vec4 lightPosition;
-            uniform vec3 lightDiffuse;
             
             attribute vec3 vertexDiffuseColor;
+            attribute vec3 vertexSpecularColor;
             varying vec4 finalVertexColor;
             uniform mat4 transformMatrix;
             uniform mat4 cameraMatrix;
@@ -86,6 +86,7 @@
 
                 // We now defer all color calculations to the fragment shader.
                 fragmentDiffuseColor = vertexDiffuseColor;
+                fragmentSpecularColor = vertexSpecularColor;
                 
                 gl_Position = projectionMatrix * cameraMatrix * transformMatrix * vec4(vertexPosition, 1.0);
             }
@@ -126,18 +127,18 @@
                 vec3 finalDiffuse = kd * diffuseProduct;
 
                 // Figure out the color of the specular light that lands on the vertex.
-                //vec3 specularProduct = fragmentSpecularColor * lightSpecular;
+                vec3 specularProduct = fragmentSpecularColor * lightSpecular;
 
                 // Calculate the amount of specular light that hits the vertex.
                 // Use dot(n, h) for the Blinn-Phong approximation.
-                //float ks = pow(max(dot(r, e), 0.0), shininess);
-                //vec3 finalSpecular = ks * specularProduct;
-                //if (dot(l, n) < 0.0) {
-                    //finalSpecular = vec3(0.0, 0.0, 0.0);
-                //}
+                float ks = pow(max(dot(r, e), 0.0), shininess);
+                vec3 finalSpecular = ks * specularProduct;
+                if (dot(l, n) < 0.0) {
+                    finalSpecular = vec3(0.0, 0.0, 0.0);
+                }
 
                 // .rgb suffix not really necessary, but included for emphasis.
-                gl_FragColor = vec4(finalDiffuse.rgb, 1.0);
+                gl_FragColor = vec4(finalDiffuse.rgb + finalSpecular.rgb, 1.0);
             }
         </script>
 
