@@ -46,6 +46,7 @@
         normalVector,
         lightPosition,
         lightDiffuse,
+        lightSpecular,
 
         // Scene state variables.
         sceneState = {
@@ -104,7 +105,9 @@
                 y: 1,
                 z: 0
              },
-             normals: Shapes.toNormalArray(obelisk)
+             normals: Shapes.toNormalArray(obelisk),
+             specularColor: { r: 1.0, g: 1.0, b: 1.0 },
+             shininess: 10,
         },
         
         // The sun.
@@ -227,62 +230,64 @@
         
         
     ];
-
-    // Pass the vertices to WebGL.
-    for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
-        // JD: Note that this goes to only one level of children.  Ideally your
-        //     object composition can go arbitrarily deep.
-        //
-        //     The other red flag that should be raised here is that you have
-        //     two fairly large chunks of nearly identical code.  This can be
-        //     unified (while also solving the only-one-level-of-children
-        //     limitation!).
-        if (objectsToDraw[i].shapes) {
-            for (j = 0; j < objectsToDraw[i].shapes.length; j++) {
-                 objectsToDraw[i].shapes[j].buffer = GLSLUtilities.initVertexBuffer(gl,
-                    objectsToDraw[i].shapes[j].vertices);
-                if (!objectsToDraw[i].shapes[j].colors) {
+    
+        // Pass the vertices to WebGL.
+        
+            // JD: Note that this goes to only one level of children.  Ideally your
+            //     object composition can go arbitrarily deep.
+            //
+            //     The other red flag that should be raised here is that you have
+            //     two fairly large chunks of nearly identical code.  This can be
+            //     unified (while also solving the only-one-level-of-children
+            //     limitation!).
+        passVertices = function (objectToDraw) {
+            if (objectToDraw.shapes) {
+                for (j = 0; j < objectToDraw.shapes.length; j++) {
+                     passVertices(objectToDraw.shapes[j]);
+                }
+            } else {
+                objectToDraw.buffer = GLSLUtilities.initVertexBuffer(gl,
+                        objectToDraw.vertices);
+                if (!objectToDraw.colors) {
                     // If we have a single color, we expand that into an array
                     // of the same color over and over.
-                    objectsToDraw[i].shapes[j].colors = [];
-                    for (k = 0, maxk = objectsToDraw[i].shapes[j].vertices.length / 3;
-                            k < maxk; k += 1) {
-                        objectsToDraw[i].shapes[j].colors = objectsToDraw[i].shapes[j].colors.concat(
-                            objectsToDraw[i].shapes[j].color.r,
-                            objectsToDraw[i].shapes[j].color.g,
-                            objectsToDraw[i].shapes[j].color.b
+                    objectToDraw.colors = [];
+                    for (j = 0, maxj = objectToDraw.vertices.length / 3;
+                            j < maxj; j += 1) {
+                        objectToDraw.colors = objectToDraw.colors.concat(
+                            objectToDraw.color.r,
+                            objectToDraw.color.g,
+                            objectToDraw.color.b
                         );
                     }
                 }
-            // JD: Bad indent here.
-                objectsToDraw[i].shapes[j].colorBuffer = GLSLUtilities.initVertexBuffer(gl,
-                        objectsToDraw[i].shapes[j].colors);
-                objectsToDraw[i].shapes[j].normalBuffer = GLSLUtilities.initVertexBuffer(gl,
-                objectsToDraw[i].shapes[j].normals);
-            }
-        } else {
-            objectsToDraw[i].buffer = GLSLUtilities.initVertexBuffer(gl,
-                    objectsToDraw[i].vertices);
-            if (!objectsToDraw[i].colors) {
-                // If we have a single color, we expand that into an array
-                // of the same color over and over.
-                objectsToDraw[i].colors = [];
-                for (j = 0, maxj = objectsToDraw[i].vertices.length / 3;
-                        j < maxj; j += 1) {
-                    objectsToDraw[i].colors = objectsToDraw[i].colors.concat(
-                        objectsToDraw[i].color.r,
-                        objectsToDraw[i].color.g,
-                        objectsToDraw[i].color.b
-                    );
+            
+                objectToDraw.colorBuffer = GLSLUtilities.initVertexBuffer(gl,
+                        objectToDraw.colors);
+                /*
+                // Same trick with specular colors.
+                if (!objectToDraw.specularColors) {
+                    // Future refactor: helper function to convert a single value or
+                    // array into an array of copies of itself.
+                    objectToDraw.specularColors = [];
+                    for (j = 0, maxj = objectToDraw.vertices.length / 3;
+                            j < maxj; j += 1) {
+                        objectToDraw.specularColors = objectToDraw.specularColors.concat(
+                            objectToDraw.specularColor.r,
+                            objectToDraw.specularColor.g,
+                            objectToDraw.specularColor.b
+                        );
+                    }
                 }
+                objectToDraw.specularBuffer = GLSLUtilities.initVertexBuffer(gl,
+                    objectToDraw.specularColors);*/
+                objectToDraw.normalBuffer = GLSLUtilities.initVertexBuffer(gl,
+                    objectToDraw.normals);
             }
-            objectsToDraw[i].colorBuffer = GLSLUtilities.initVertexBuffer(gl,
-                    objectsToDraw[i].colors);
-            objectsToDraw[i].normalBuffer = GLSLUtilities.initVertexBuffer(gl,
-                objectsToDraw[i].normals);
         }
-        
-        
+    
+    for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
+        passVertices(objectsToDraw[i]);
     }
 
     // Initialize the shaders.
@@ -342,7 +347,7 @@
 
     // JD 0409: Composite functionality v1.0 seen, but can be improved (see
     //     earlier inline comment---that applies here also).
-    drawObject = function (object, composite) {
+    drawObject = function (object) {
         if(object.shapes) {
             for(i = 0; i < object.shapes.length; i++) {
                 // Set the varying colors.
