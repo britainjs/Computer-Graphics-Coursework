@@ -352,6 +352,8 @@
     gl.enableVertexAttribArray(vertexPosition);
     vertexDiffuseColor = gl.getAttribLocation(shaderProgram, "vertexDiffuseColor");
     gl.enableVertexAttribArray(vertexDiffuseColor);
+    vertexSpecularColor = gl.getAttribLocation(shaderProgram, "vertexSpecularColor");
+    gl.enableVertexAttribArray(vertexSpecularColor);
     normalVector = gl.getAttribLocation(shaderProgram, "normalVector");
     gl.enableVertexAttribArray(normalVector);
     
@@ -447,7 +449,7 @@
             sourceY = objectsToDraw[1].transform.dy,
             sourceZ = objectsToDraw[1].transform.dz;
 
-        gl.uniform4fv(lightPosition, [sourceX, sourceY + 1, sourceZ, 1.0]);
+        gl.uniform4fv(lightPosition, [sourceX, sourceY, sourceZ, 1.0]);
         gl.uniform3fv(lightDiffuse, [1.0, 1.0, 1.0]);
         gl.uniform3fv(lightSpecular, [1.0, 1.0, 1.0]);
         
