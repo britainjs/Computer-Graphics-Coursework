@@ -73,8 +73,8 @@
 
             void main(void) {
                 
-                fragmentNormal = normalVector;
-                fragmentEye = vertexPosition;
+                fragmentNormal = (transformMatrix * vec4(normalVector, 0.0)).xyz;
+                fragmentEye = (transformMatrix * vec4(vertexPosition, 1.0)).xyz;
                 fragmentLight = lightPosition.xyz;
 
                 // No conditional expressions in GLSL, unfortunately.  We have to

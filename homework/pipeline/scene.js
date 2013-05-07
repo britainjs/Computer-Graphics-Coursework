@@ -69,7 +69,6 @@
         maxj,
         k,
         maxk,
-        l,
         
 
     // Grab the WebGL rendering context.
@@ -96,7 +95,6 @@
             color: {r: 1.0, g: 1.0, b: 1.0},
             vertices: Shapes.toRawTriangleArray(obelisk),
             mode: gl.TRIANGLES,
-            // JD: See the object below for the preferred indentation...
             transform: {
                 dy:- 1.2,
                 sx: 0.5,
@@ -118,7 +116,6 @@
             color: {r: 0.0, g:0.5, b:0.5},
             vertices: Shapes.toRawTriangleArray(sun),
             mode: gl.TRIANGLES,
-            // JD: Preferred formatting is as follows (compare to above):
             transform: {
                 dx: -0.5,
                 dz: 1.5,
@@ -198,8 +195,6 @@
         },
         
         //the sky
-        // JD: As you can see, you may need to expand this now---maybe even
-        //     make it a cylinder or a dome!
         {
             color: {r: 0.7, g: 0.0, b: 0.5},
             vertices: Shapes.toRawTriangleArray(sky),
@@ -244,32 +239,14 @@
                 }           
             ]
         }
-            
-        
-        
     ];
     
         // Pass the vertices to WebGL.
         
-            // JD: Note that this goes to only one level of children.  Ideally your
-            //     object composition can go arbitrarily deep.
-            //
-            //     The other red flag that should be raised here is that you have
-            //     two fairly large chunks of nearly identical code.  This can be
-            //     unified (while also solving the only-one-level-of-children
-            //     limitation!).
         passVertices = function (objectToDraw) { 
-            // JDrec: The fix to your problem will go on this line.
-            //     I think you should be the one to specifically find it.
-            //     Think about it this way: how exactly does recursion work?
-            //     What makes it work?  If you really follow, closely, how
-            //     your recursive calls are proceeding (log heavily!), you
-            //     will spot a modification that is needed by the sample code,
-            //     which you have not yet made, that is utterly necessary to
-            //     successfully go recursive.
             if (objectToDraw.shapes) {
             
-                for (l = 0; l < objectToDraw.shapes.length; l++) { 
+                for (var l = 0; l < objectToDraw.shapes.length; l++) { 
                     passVertices(objectToDraw.shapes[l]);
                 }
             } else {
@@ -279,7 +256,7 @@
                     // If we have a single color, we expand that into an array
                     // of the same color over and over.
                     objectToDraw.colors = [];
-                    for (j = 0, maxj = objectToDraw.vertices.length / 3;
+                    for (var j = 0, maxj = objectToDraw.vertices.length / 3;
                             j < maxj; j += 1) {
                         objectToDraw.colors = objectToDraw.colors.concat(
                             objectToDraw.color.r,
@@ -297,7 +274,7 @@
                     // Future refactor: helper function to convert a single value or
                     // array into an array of copies of itself.
                     objectToDraw.specularColors = [];
-                    for (j = 0, maxj = objectToDraw.vertices.length / 3;
+                    for (var j = 0, maxj = objectToDraw.vertices.length / 3;
                             j < maxj; j += 1) {
                         objectToDraw.specularColors = objectToDraw.specularColors.concat(
                             objectToDraw.specularColor.r,
@@ -345,8 +322,6 @@
 
     // All done --- tell WebGL to use the shader program from now on.
     gl.useProgram(shaderProgram);
-    
-
 
     vertexPosition = gl.getAttribLocation(shaderProgram, "vertexPosition");
     gl.enableVertexAttribArray(vertexPosition);
@@ -377,18 +352,11 @@
     setTransform = function (object) {
         gl.uniformMatrix4fv(transformMatrix, gl.FALSE, new Float32Array(Matrix4x4.instanceTransform(object.transform).elements));
     };
-    // JD: OK, missing composite functionality noted.
 
-    // JD 0409: Composite functionality v1.0 seen, but can be improved (see
-    //     earlier inline comment---that applies here also).
     drawObject = function (object) {
-        // JDrec: One of these blocks is redundant.  The first one iterates
-        //     through the shapes array, if object has it, and draws them.
-        //     The other one just assumes that is dealing with a single
-        //     object.  But contrast this with... GOTO ***
         if (object.shapes) {
-            for (j = 0; j < object.shapes.length; j++) {
-                drawObject(object.shapes[j]);
+            for (var m = 0; m < object.shapes.length; m++) {
+                drawObject(object.shapes[m]);
             }
         } else {
             // Set the varying colors.
@@ -455,27 +423,12 @@
         
         // Display the objects.
         for (i = 0, maxi = objectsToDraw.length; i < maxi; i += 1) {
-            // JD: Composite note again.
-            // JDrec: *** Here, you have a conditional that checks for a shapes
-            //     array, then iterates through it if there.  This calls drawObject.
-            //     But wait, drawObject *also* checks for the shapes array, and
-            //     iterates through it also!
-            //
-            //     This iteration should take place only once.  Think through this
-            //     tree traversal and clean up when you iterate, when you recurse,
-            //     and when you treat a case as terminal.
-
             drawObject(objectsToDraw[i]); 
         }
-
         // All done.
         gl.flush();
     };
 
-// JD: Ack!  I can't believe I didn't indent this right.  Sorry.
-//     But I think I intentionally did this as a one-off, and
-//     that's why I let it stick out.  Yeah, that's right.
-//     That's the reason  ;-)
 gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(
     Matrix4x4.getLookAtMatrix(
         new Vector(0, 0, -8),
@@ -486,7 +439,6 @@ gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(
     // Start animating.  This scene is always animating.
     setInterval(function () {
         currentRotation += 1.0;
-
         if (up) {
             currentDY += 0.001;
             if (currentDY >= 0.05) {
@@ -498,12 +450,10 @@ gl.uniformMatrix4fv(cameraMatrix, gl.FALSE, new Float32Array(
                 up = true;
             }
         }
-
         currentOrbit += sceneState.orbitSpeed * sceneState.orbitDirection;
         if (currentOrbit >= Math.PI * 2) {
             currentOrbit -= Math.PI * 2;
         }
-
         drawScene();
         if (currentRotation >= 360.0) {
             currentRotation -= 360.0;
