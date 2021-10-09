@@ -130,40 +130,7 @@
             normals: Shapes.toNormalArray(sun),
             specularColor: { r: 1.0, g: 1.0, b: 1.0 },
             shininess: 1,
-            name: "sun",
-
-            // JD: When the sun has children, it disappears.  Hmmm...
-            shapes: [
-                {
-                    color: {r: 1.0, g: 1.0, b: 1.0},
-                    vertices: Shapes.toRawTriangleArray(orbLarge),
-                    mode: gl.LINE_LOOP,
-                    transform: {
-                        dy: 1.4,
-                        angle: 0,
-                        y: 1
-                    },
-                    normals: Shapes.toNormalArray(orbLarge),
-                    specularColor: { r: 1.0, g: 1.0, b: 1.0 },
-                    shininess: 1,
-                    name: "Large Orb",
-                },
-                
-                {
-                    color: {r: 1.0, g: 1.0, b: 1.0},
-                    vertices: Shapes.toRawTriangleArray(orbSmall),
-                    mode: gl.LINE_LOOP,
-                    transform: {
-                        dy: 1.4,
-                        angle: 0,
-                        y: 1
-                    },
-                    normals: Shapes.toNormalArray(orbSmall),
-                    specularColor: { r: 1.0, g: 1.0, b: 1.0 },
-                    shininess: 1,
-                    name: "Small Orb"
-                }           
-            ]
+            name: "sun"
         },
         
         //The ground
@@ -253,7 +220,7 @@
                     normals: Shapes.toNormalArray(orbLarge),
                     specularColor: { r: 1.0, g: 1.0, b: 1.0 },
                     shininess: 1,
-                    name: "Large Orb",
+                    name: "Large Orb"
                 },
                 
                 {
